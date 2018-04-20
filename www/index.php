@@ -18,5 +18,5 @@ try {
 } catch (Exception $e) {
 
 
-    throw $e;
+    var_dump($e);
 }

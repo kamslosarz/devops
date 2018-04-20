@@ -63,7 +63,7 @@ class Container
         $this->logger->log('Sending Response, Application is shutting down' . PHP_EOL, LoggerLevel::INFO);
         $this->response->setResults($results);
 
-        return ($this->response)();
+        return $this->response;
     }
 
     public function setLogger($logger)

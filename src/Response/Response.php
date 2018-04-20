@@ -52,7 +52,7 @@ class Response
 
         header("X-PHP-Response-Code: {$this->code}", true, $this->code);
 
-        return $this->results;
+        echo $this->results;
     }
 
 }
