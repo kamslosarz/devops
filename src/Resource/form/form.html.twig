@@ -1,0 +1,10 @@
+{% block content %}
+    <form class="login-form" action="{{ form.action }}" method="{{ form.method }}">
+        <fieldset>
+            <legend>{{ form.title }}</legend>
+            {% for field in form.fields %}
+                {% include 'form/fields/'~field.tagname~'.html.twig' with {'form':form, 'field':field} %}
+            {% endfor %}
+        </fieldset>
+    </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{
+    "name": "root/devops",
+    "description": "Dev ops tool",
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "authors": [
+        {
+            "name": "Kamil Slosarz",
+            "email": "ka.slosarz@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Application\\": "src/"}
+    },
+    "require": {
+        "doctrine/orm": "^2.5",
+        "twig/twig": "^2.0",
+        "twig/extensions": "^1.5"
+    }
+}

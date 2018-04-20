@@ -1,0 +1,10 @@
+<p>
+    {% if field.option('label') %}
+        <label for="size_1">{{ field.label }}</label>
+    {% endif %}
+    <select name="{{ form.name(field.name) }}"{{ field.attributesAsString|raw }}>
+        {% for name, value in field.options %}
+            <option value="{{ name }}" {% if field.value == value %}selected="selected"{% endif %}>{{ value }}</option>
+        {% endfor %}
+    </select>
+</p>

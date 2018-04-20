@@ -1,0 +1,29 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Project details{% endblock %}
+
+{% block content %}
+
+    <table>
+        <th>Name</th>
+        <th>Repository</th>
+        <th>Status</th>
+        <th>actions</th>
+        <tbody class="main-table">
+            {% for project in projects %}
+            <tr>
+                <td>
+                    {{ project.name }}
+                </td>
+                <td>
+                    {{ project.repository }}
+                </td>
+                <td>
+                    {{ project.buildStatuses.first.status }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

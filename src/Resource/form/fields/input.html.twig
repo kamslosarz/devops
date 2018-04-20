@@ -1,0 +1,6 @@
+<p>
+    {% if field.label %}
+        <label for="size_1">{{ field.label }}</label>
+    {% endif %}
+    <input name="{{ form.name(field.name) }}"{{ field.attributesAsString|raw }}>
+</p>
