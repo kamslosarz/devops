@@ -42,11 +42,6 @@ class Container
      */
     public function __invoke()
     {
-        $this->logger->log('Initializing orm', LoggerLevel::INFO);
-        $doctrineConfig = Config::get('doctrine');
-        $config = Setup::createAnnotationMetadataConfiguration(array($doctrineConfig['models']), true);
-        $this->entityManager = EntityManager::create($doctrineConfig, $config);
-
         $this->logger->log('Executing Context', LoggerLevel::INFO);
         $results = ($this->context)();
 

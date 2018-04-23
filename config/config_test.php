@@ -6,6 +6,10 @@ return [
             'Admin\UserController',
             'loginAction',
         ],
+        '/admin/logout' => [
+            'Admin\UserController',
+            'logoutAction',
+        ],
         '/admin/index' => [
             'Admin\AdminController',
             'indexAction',

@@ -19,9 +19,8 @@ final class Context
     /** @var Controller * */
     private $logger;
     private $container;
-    private $route;
-    private $appender;
     private $router;
+    private $appender;
 
     /**
      * Context constructor.
@@ -46,18 +45,18 @@ final class Context
         /** @var Route $route */
 
         $this->router = new Router($this->container->getServiceContainer()->getService('request')->requestUri());
-        $this->route = ($this->router)();
+        $route = ($this->router)();
 
         $this->logger->log('Gathering controller', LoggerLevel::INFO);
-        $controller = $this->getControllerFullName($this->route->getController());
-        $action = $this->route->getAction();
+        $controller = $this->getControllerFullName($route->getController());
+        $action = $route->getAction();
 
         $this->logger->log('Validating controller', LoggerLevel::INFO);
         $this->validate($controller, $action);
 
         $this->logger->log('Dispatching controller', LoggerLevel::INFO);
         $dispatcher = new Dispatcher(Factory::getInstance($controller, [$this->container, $this->appender, $this->router]), $action);
-        $dispatcher->dispatch($this->route->getParameters());
+        $dispatcher->dispatch($route->getParameters());
 
         return $this->executeView($dispatcher->getResults(), $this->getViewName($route));
     }
@@ -95,7 +94,6 @@ final class Context
             {
                 $this->logger->log('Initializing View', LoggerLevel::INFO);
                 $view = new View($results, $this->container);
-                $view->setMessages($this->appender->flashMessages());
                 $this->logger->log(sprintf('Render View %s', $viewName), LoggerLevel::INFO);
                 $results = $view->render($viewName);
             }
@@ -110,7 +108,6 @@ final class Context
             if(!$this->isContextJson())
             {
                 $view = new View(['exception' => $e], $this->container);
-                $view->setMessages($this->appender->flashMessages());
                 $results = $view->render('error');
             }
             else
@@ -127,21 +124,21 @@ final class Context
         return $this->container->getResponse()->getType() === ResponseTypes::CONTEXT_JSON;
     }
 
-    private function getViewName()
+    private function getViewName($route)
     {
-        preg_match("/[a-z]+\\\+[a-z]+/", str_replace('controller', '', strtolower($this->route->getController())), $match);
-        $namespace = ltrim(str_replace('-action', '', strtolower(preg_replace("/([A-Z])/x", "-$1", $this->route->getAction()))), '-');
+        preg_match("/[a-z]+\\\+[a-z]+/", str_replace('controller', '', strtolower($route->getController())), $match);
+        $namespace = ltrim(str_replace('-action', '', strtolower(preg_replace("/([A-Z])/x", "-$1", $route->getAction()))), '-');
         return str_replace('\\', DIRECTORY_SEPARATOR, $match[0]) . DIRECTORY_SEPARATOR . $namespace;
-    }
-
-    public function getRoute()
-    {
-        return $this->route;
     }
 
     public function getRouter()
     {
         return $this->router;
+    }
+
+    public function getAppender()
+    {
+        return $this->appender;
     }
 
 }

@@ -20,58 +20,84 @@ a {
 .header {
     width: 100%;
 }
-.header .logo{
-    width:200px;
-    padding:25px;
+
+.header .logo {
+    width: 200px;
+    padding: 25px;
     font-size: 26px;
 }
+
 .nav {
     width: 200px;
     display: inline-block;
-    padding:25px 25px 0 25px;
+    padding: 25px 25px 0 25px;
 }
-.nav ul{
+
+.nav ul {
     list-style: none;
 }
-.nav ul li{
-    padding:0 0 5px 0;
+
+.nav ul li {
+    padding: 0 0 5px 0;
 }
-.nav ul li.active{
+
+.nav ul li.active {
     font-weight: bold;
 }
+
 .main-content {
     display: inline-block;
 }
 
-.main-table th{
-    padding:5px;
+.main-table th {
+    padding: 5px;
 }
 
-.login-form{
-    width:300px;
-}
-.login-form fieldset{
-    padding:15px;
+.login-form {
+    width: 300px;
 }
 
-.login-form input, .login-form textarea, .login-form select{
-    padding:5px;
-    float:right;
+.login-form fieldset {
+    padding: 15px;
 }
 
-.login-form label{
-    float:left;
-    margin-top:6px;
+.login-form input, .login-form textarea, .login-form select {
+    padding: 5px;
+    float: right;
 }
-.login-form p{
-    width:100%;
-    height:35px;
+
+.login-form label {
+    float: left;
+    margin-top: 6px;
 }
-.submit-form{
-    width:100%;
-    padding-top:10px;
+
+.login-form p {
+    width: 100%;
+    height: 35px;
 }
-.submit-form button{
-    float:right;
-    padding:5px;
+
+.submit-form {
+    width: 100%;
+    padding-top: 10px;
+}
+
+.submit-form button {
+    float: right;
+    padding: 5px;
+}
+
+.messages .error {
+    color: red;
+}
+
+.messages .info {
+    color: blue;
+}
+
+.messages .success {
+    color: green;
+}
+
+.messages .warn {
+    color: yellow;
 }

@@ -20,7 +20,7 @@ class Dispatcher
      */
     public function dispatch($parameters = [])
     {
-        $this->results = $this->class->{$this->method}($parameters);
+        $this->results = $this->class->{$this->method}(...$parameters);
     }
 
     public function getResults()

@@ -16,7 +16,5 @@ try {
     (new Application())();
 
 } catch (Exception $e) {
-
-
-    var_dump($e);
+    throw $e;
 }

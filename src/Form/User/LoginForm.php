@@ -17,8 +17,8 @@ class LoginForm extends Form implements FormInterface
      */
     protected function build(FormBuilder $formBuilder)
     {
-        $formBuilder->addField('login', FieldTypes::INPUT, [
-            'label' => 'Login'
+        $formBuilder->addField('username', FieldTypes::INPUT, [
+            'label' => 'Username'
         ], [
             'type' => 'text'
         ])->addField('password', FieldTypes::INPUT, [

@@ -20,7 +20,14 @@
     <div class="nav">
     </div>
     <div class="main-content">
-        {% include 'form/form.html.twig' with {'form': form} %}
+        <div class="messages">
+            {% for type, message in messages.all %}
+                <p class="{{ type|lower }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        <div class="content">
+            {% include 'form/form.html.twig' with {'form': form} %}
+        </div>
     </div>
     <div class="footer">
 

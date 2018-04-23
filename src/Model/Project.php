@@ -2,11 +2,17 @@
 
 namespace Application\Model;
 
+use Application\Model\Traits\LifecycleTrait;
+use Application\Model\Traits\SoftDeleteTrait;
+
 /**
  * @Entity @Table(name="projects")
  */
 class Project
 {
+    use SoftDeleteTrait;
+    use LifecycleTrait;
+
     /**
      * @Id @GeneratedValue @Column(type="integer")
      * @var string
@@ -25,9 +31,9 @@ class Project
     protected $repository;
 
     /**
-     * @OneToMany(targetEntity="Build", mappedBy="project_builds")
+     * @OneToMany(targetEntity="Build", mappedBy="projectBuilds")
      */
-    protected $project_builds;
+    protected $projectBuilds;
 
     public function __construct()
     {

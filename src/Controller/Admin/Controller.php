@@ -5,6 +5,7 @@ namespace Application\Controller\Admin;
 
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
+use Application\Controller\ControllerException;
 use Application\Router\Router;
 use Application\Service\AuthService\AuthService;
 use Doctrine\ORM\EntityManager;
@@ -21,11 +22,12 @@ class Controller
     }
 
     /**
-     * @return EntityManager
+     * @return mixed
+     * @throws \Application\ServiceContainer\ServiceContainerException
      */
     public function getEntityManager()
     {
-        return $this->container->getEntityManager();
+        return $this->getService('entityManager');
     }
 
     public function addMessage($message, $level)
@@ -55,18 +57,19 @@ class Controller
         return $this->getService('request');
     }
 
-    public function redirect($controller, $parameters, $code = 301)
+    /**
+     * @param $controller
+     * @param array $parameters
+     * @param int $code
+     */
+    public function redirect($controller, $parameters = [], $code = 301)
     {
         $route = explode(':', $controller);
-
         $response = $this->container->getResponse();
         $response->setHeaders([
-            sprintf('Location: %s', $this->container
-                ->getContext()
-                ->getRouter()
-                ->getRouteByParameters($route[0], sprintf('%sAction', $route[1]), $parameters))
+            sprintf('Location: %s', $this->container->getContext()->getRouter()->getRouteByParameters($route[0], sprintf('%sAction', $route[1]), $parameters))
         ]);
 
-        return $response();
+        return $response(true);
     }
 }

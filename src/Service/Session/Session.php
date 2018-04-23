@@ -13,6 +13,7 @@ class Session implements ServiceInterface
         if(!session_id()){
             session_start();
         }
+
         $this->session = $_SESSION;
     }
 

@@ -2,23 +2,39 @@
 
 namespace Application\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Application\Model\Traits\LifecycleTrait;
+use Application\Model\Traits\SoftDeleteTrait;
 
 /**
  * @Entity @Table(name="users")
  */
 class User
 {
+    use SoftDeleteTrait;
+    use LifecycleTrait;
+
     /**
      * @Id @GeneratedValue @Column(type="integer")
      * @var string
      */
     protected $id;
+
     /**
      * @Column(type="string")
      * @var string
      */
-    protected $name;
+    protected $username;
+
+    /**
+     * @Column(type="string")
+     * @var string
+     */
+    protected $password;
+
+    /**
+     * @OneToMany(targetEntity="UserAuthToken", mappedBy="authTokens")
+     */
+    protected $authTokens = [];
 
     public function __construct()
     {
@@ -29,13 +45,22 @@ class User
         return $this->id;
     }
 
-    public function getName()
+    public function getUsername()
     {
-        return $this->name;
+        return $this->username;
     }
 
-    public function setName($name)
+    public function setUsername($username)
     {
-        $this->name = $name;
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
     }
 }

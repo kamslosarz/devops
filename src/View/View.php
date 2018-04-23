@@ -11,7 +11,6 @@ final class View
     private $session = [];
     private $results;
     private $twig;
-    private $messages;
     private $activeUri;
     private $container;
 
@@ -84,9 +83,7 @@ final class View
         try
         {
             ob_start();
-            echo $this->twig->render($template . '.html.twig', $this->vars + [
-                    'messages' => $this->messages
-                ]);
+            echo $this->twig->render($template . '.html.twig', $this->vars);
             $this->results = ob_get_contents();
             ob_end_clean();
         }
@@ -123,18 +120,6 @@ final class View
         $this->session = $session;
 
         return $this;
-    }
-
-    public function setMessages($messages)
-    {
-        $this->messages = $messages;
-
-        return $this;
-    }
-
-    public function getMessages()
-    {
-        return $this->messages;
     }
 
     public function setActiveUri($uri)

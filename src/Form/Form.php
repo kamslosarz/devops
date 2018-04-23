@@ -64,9 +64,13 @@ abstract class Form
         return $this;
     }
 
-    public function getData()
+    public function getData($key = null)
     {
-        return $this->data;
+        if(is_null($key))
+        {
+            return $this->data;
+        }
+        return $this->data[$key];
     }
 
     public function getName() { }

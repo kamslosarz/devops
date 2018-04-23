@@ -30,9 +30,9 @@ class Console
 
         $action = $this->consoleParameters->getAction();
 
-        if(!$command->isValid()){
+        if(!$command->isValid(...$this->consoleParameters->getParameters())){
 
-            throw new ConsoleException('Invalid arguments');
+            throw new ConsoleException(implode('\n', $command->getErrors()));
         }
 
         if(!method_exists($command, $action)){
@@ -41,7 +41,7 @@ class Console
         }
 
         $dispatcher = new Dispatcher($command, $action);
-        $dispatcher->dispatch(...$this->consoleParameters->getParameters());
+        $dispatcher->dispatch($this->consoleParameters->getParameters());
 
         return $dispatcher->getResults();
     }

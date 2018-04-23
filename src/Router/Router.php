@@ -68,7 +68,7 @@ final class Router
 
     public function getRouteByParameters($controller, $action, $parameters)
     {
-        $relativeUrl = '';
+        $relativeUrl = null;
         foreach($this->routes as $uri => $route)
         {
             if([$controller, $action] === $route)
@@ -80,6 +80,11 @@ final class Router
                     $relativeUrl = str_replace(sprintf('[%s]', $key), $value, $relativeUrl);
                 }
             }
+        }
+
+        if(!$relativeUrl)
+        {
+            throw new RouteException(sprintf('Route "%s" not found', $this->requestUri));
         }
 
         return $relativeUrl;
