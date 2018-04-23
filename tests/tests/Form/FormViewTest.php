@@ -2,15 +2,15 @@
 
 class FormViewTest extends \Test\TestCase\FormViewTestCase
 {
-    public function testFormView()
+    public function testFormViewHelper()
     {
         $loginForm = new \Application\Form\User\LoginForm();
-        $formView = $loginForm->view();
+        $formViewHelper = $loginForm->view();
 
-        $this->assertInstanceOf(\Application\Form\FormView::class, $formView);
-        $this->assertEquals($formView->getName(), 'login');
-        $this->assertEquals($formView->getMethod(), \Application\Form\Form::METHOD_POST);
-        $this->assertEquals($formView->getAction(), '/admin/login');
+        $this->assertInstanceOf(\Application\Form\FormViewHelper::class, $formViewHelper);
+        $this->assertEquals($formViewHelper->getName(), 'login');
+        $this->assertEquals($formViewHelper->getMethod(), \Application\Service\Request\RequestMethods::POST);
+        $this->assertEquals($formViewHelper->getAction(), '/admin/login');
     }
 
     /**
@@ -21,12 +21,12 @@ class FormViewTest extends \Test\TestCase\FormViewTestCase
     public function testFormRender()
     {
         $loginForm = new \Application\Form\User\LoginForm();
-        $formView = $loginForm->view();
+        $formViewHelper = $loginForm->view();
 
         $domDocument = new \DOMDocument();
         $domDocument->loadHTML($this->getTwig()
             ->render('form/form.html.twig', [
-            'form' => $formView
+            'form' => $formViewHelper
         ]));
 
         $inputs = $domDocument->getElementsByTagName('input');

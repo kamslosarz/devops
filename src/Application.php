@@ -15,29 +15,24 @@ final class Application
 {
     private $router;
     private $logger;
-    private $applicationParameters;
 
-
-    public function __construct(ApplicationParameters $applicationParameters)
+    public function __construct()
     {
         Config::load();
 
-        $this->applicationParameters = $applicationParameters;
         $this->logger = new Logger('ApplicationLogger');
     }
 
     /**
-     * @return mixed
      * @throws Context\ContextException
-     * @throws Router\RouteException
-     * @throws ViewException
+     * @throws ServiceContainer\ServiceContainerException
      * @throws \Doctrine\ORM\ORMException
      */
     public function __invoke()
     {
         $this->logger->log('Initializing Application', LoggerLevel::INFO);
 
-        $container = new Container($this->logger, $this->applicationParameters);
+        $container = new Container($this->logger);
         $container();
         $response = $container->getResponse();
 

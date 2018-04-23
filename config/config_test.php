@@ -17,6 +17,10 @@ return [
         '/admin/project/edit/[id]' => [
             'Admin\ProjectController',
             'projectAction',
+        ],
+        '/admin/test/[id]/[action]' => [
+            'Admin\IndexController',
+            'indexAction',
         ]
     ],
     'logger' => [

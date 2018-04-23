@@ -1,14 +1,18 @@
 <?php
 
-namespace Application\Session;
+namespace Application\Service\Session;
 
-class Session
+use Application\Service\ServiceInterface;
+
+class Session implements ServiceInterface
 {
     private $session;
 
     public function __construct()
     {
-        session_start();
+        if(!session_id()){
+            session_start();
+        }
         $this->session = $_SESSION;
     }
 
@@ -21,5 +25,4 @@ class Session
     {
         return $this->session[$key];
     }
-
 }

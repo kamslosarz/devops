@@ -6,6 +6,7 @@ use Application\Form\Form;
 use Application\Form\FormBuilder\Field\FieldTypes;
 use Application\Form\FormBuilder\FormBuilder;
 use Application\Form\FormInterface;
+use Application\Service\Request\RequestMethods;
 
 class LoginForm extends Form implements FormInterface
 {
@@ -45,7 +46,7 @@ class LoginForm extends Form implements FormInterface
 
     public function getMethod()
     {
-        return Form::METHOD_POST;
+        return RequestMethods::POST;
     }
 
     public function getTitle()

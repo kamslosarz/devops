@@ -5,7 +5,7 @@ namespace Application\Form;
 use Application\Form\FormBuilder\Field\Field;
 use Application\Form\FormBuilder\FormBuilder;
 
-class FormView
+class FormViewHelper
 {
     /** @var FormInterface $form */
     private $form;

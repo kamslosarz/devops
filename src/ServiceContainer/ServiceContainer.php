@@ -43,6 +43,7 @@ class ServiceContainer
         $parameters = [];
         $serviceParameters = new ServiceParameters($serviceMap[$serviceName]);
 
+
         foreach($serviceParameters->getParameters() as $parameter)
         {
             if(substr($parameter, 0, 1) === '@')

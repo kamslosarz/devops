@@ -2,17 +2,21 @@
 
 return [
     'routes' => [
+        '/admin/login' => [
+            'Admin\UserController',
+            'loginAction',
+        ],
         '/admin/index' => [
             'Admin\AdminController',
-            'IndexAction',
+            'indexAction',
         ],
-        '/admin/project/[id]' => [
-            'Admin\AdminController',
-            'ProjectAction',
+        '/admin/project/index' => [
+            'Admin\ProjectController',
+            'indexAction',
         ],
-        '/test/test' => [
-            'IndexController',
-            'IndexAction',
+        '/admin/project/edit/[id]' => [
+            'Admin\ProjectController',
+            'projectAction',
         ]
     ],
     'logger' => [
@@ -20,10 +24,17 @@ return [
             'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR
         ]
     ],
-    'database' => [
-        'host' => 'localhost',
-        'database' => 'devops',
-        'user' => 'devops',
-        'password' => 'aTRVxqw76nVqa'
-    ]
+    'doctrine' => [
+        'driver' => 'pdo_sqlite',
+        'path' => dirname(__DIR__) . '/data/database.db3',
+        'models' => dirname(__DIR__).'/src/Model'
+    ],
+    'twig'=>[
+        'loader'=>[
+            'templates'=>dirname(__DIR__).'/src/Resource',
+//            'cache' => dirname(__DIR__).'/cache/twig'
+            'cache' => false
+        ]
+    ],
+    'web_dir'=>dirname(__DIR__).'/www'
 ];

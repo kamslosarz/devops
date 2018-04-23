@@ -2,14 +2,30 @@
 
 namespace Application\Service\AuthService;
 
-use Application\Request\Request;
+use Application\Service\Request\Request;
 use Application\Service\ServiceInterface;
 
 class AuthService implements ServiceInterface
 {
-    public function checkAuthentication(Request $request)
+    private $request;
+    private $sessionToken;
+
+    public function __construct(Request $request)
     {
+        $this->request = $request;
+    }
+
+    public function isAuthenticated($data)
+    {
+        $session = $this->request->getSession();
 
 
+
+        return true;
+    }
+
+    public function getSessionToken()
+    {
+        return $this->sessionToken;
     }
 }

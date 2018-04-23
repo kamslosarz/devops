@@ -2,7 +2,6 @@
 
 namespace Application\Context;
 
-use Application\ApplicationParameters;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Controller\Controller;
@@ -22,55 +21,49 @@ final class Context
     private $container;
     private $route;
     private $appender;
+    private $router;
 
     /**
      * Context constructor.
-     * @param $container
+     * @param Container $container
+     * @throws \Application\ServiceContainer\ServiceContainerException
      */
     public function __construct(Container $container)
     {
         $this->logger = $container->getLogger();
         $this->container = $container;
-        $this->appender = new Appender($this->container->getSession());
+        $this->appender = new Appender($this->container->getServiceContainer()->getService('session'));
     }
 
     /**
-     * @param ApplicationParameters $applicationParameters
      * @return array|string
      * @throws ContextException
+     * @throws \Application\ServiceContainer\ServiceContainerException
      */
-    public function __invoke(ApplicationParameters $applicationParameters)
+    public function __invoke()
     {
         $this->logger->log('IniContext.phptializing Router', LoggerLevel::INFO);
         /** @var Route $route */
 
-        $this->route = (new Router($applicationParameters->requestUri()))();
+        $this->router = new Router($this->container->getServiceContainer()->getService('request')->requestUri());
+        $this->route = ($this->router)();
 
         $this->logger->log('Gathering controller', LoggerLevel::INFO);
-        $controller = $this->loadController($this->route->getController());
+        $controller = $this->getControllerFullName($this->route->getController());
         $action = $this->route->getAction();
 
         $this->logger->log('Validating controller', LoggerLevel::INFO);
         $this->validate($controller, $action);
 
         $this->logger->log('Dispatching controller', LoggerLevel::INFO);
-        $dispatcher = new Dispatcher(Factory::getInstance($controller, [$this->container, $this->appender]), $action);
+        $dispatcher = new Dispatcher(Factory::getInstance($controller, [$this->container, $this->appender, $this->router]), $action);
         $dispatcher->dispatch($this->route->getParameters());
 
         return $this->executeView($dispatcher->getResults(), $this->getViewName($route));
     }
 
-    private function loadController($controller)
+    private function getControllerFullName($controller)
     {
-//        $controllers = glob(dirname(__DIR__) . '/Controller/*Controller.php');
-//
-//        array_walk($controllers, function ($file) use ($controller) {
-//            if(str_replace(dirname(__DIR__) . '/Controller/', '', $file) === $controller && !loaded)
-//            {
-//                //include_once $file;
-//            }
-//        });
-
         return 'Application\\Controller\\' . $controller;
     }
 
@@ -144,6 +137,11 @@ final class Context
     public function getRoute()
     {
         return $this->route;
+    }
+
+    public function getRouter()
+    {
+        return $this->router;
     }
 
 }

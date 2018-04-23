@@ -4,7 +4,7 @@
     {% endif %}
     <select name="{{ form.name(field.name) }}"{{ field.attributesAsString|raw }}>
         {% for name, value in field.options %}
-            <option value="{{ name }}" {% if field.value == value %}selected="selected"{% endif %}>{{ value }}</option>
+            <option value="{{ name }}"{% if field.value == value %} value="{{ field.value }}"{% endif %}{% if field.value == value %}selected="selected"{% endif %}>{{ value }}</option>
         {% endfor %}
     </select>
 </p>

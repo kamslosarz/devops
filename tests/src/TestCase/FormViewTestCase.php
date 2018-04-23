@@ -3,8 +3,8 @@
 namespace Test\TestCase;
 
 use Application\Form\FormBuilder\Field\FieldInterface;
-use Application\Form\FormView;
-use Test\Decorator\FormViewDecorator;
+use Application\Form\FormViewHelper;
+use Test\Decorator\FormViewHelperDecorator;
 use Test\Fixture\TestForm;
 
 abstract class FormViewTestCase extends ViewTestCase
@@ -16,7 +16,7 @@ abstract class FormViewTestCase extends ViewTestCase
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function renderForm(FormView $form)
+    public function renderForm(FormViewHelper $form)
     {
         return $this->getTwig()->render('form/form.html.twig', [
             'form' => $form
@@ -40,7 +40,7 @@ abstract class FormViewTestCase extends ViewTestCase
 
     private function getFormDecorator(){
 
-        return new FormViewDecorator(new TestForm());
+        return new FormViewHelperDecorator(new TestForm());
     }
 
 }

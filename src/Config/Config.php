@@ -25,11 +25,11 @@ final class Config
 
     public static function load()
     {
-        self::loadFile('config' . self::$environment . '.php');
+        self::$config = self::loadFile('config' . self::$environment . '.php');
     }
 
     public static function loadFile($filename)
     {
-        return self::$config = include dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $filename;
+        return include dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $filename;
     }
 }

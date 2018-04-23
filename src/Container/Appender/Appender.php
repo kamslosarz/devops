@@ -2,7 +2,8 @@
 
 namespace Application\Container\Appender;
 
-use Application\Session\Session;
+
+use Application\Service\Session\Session;
 
 class Appender
 {

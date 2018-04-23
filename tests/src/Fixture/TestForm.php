@@ -6,6 +6,7 @@ use Application\Form\Form;
 use Application\Form\FormBuilder\Field\FieldTypes;
 use Application\Form\FormBuilder\FormBuilder;
 use Application\Form\FormInterface;
+use Application\Service\Request;
 
 class TestForm extends Form implements FormInterface
 {
@@ -57,6 +58,6 @@ class TestForm extends Form implements FormInterface
 
     public function getMethod()
     {
-        return Form::METHOD_POST;
+        return RequestMethods::POST;
     }
 }

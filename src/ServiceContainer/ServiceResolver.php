@@ -17,6 +17,7 @@ class ServiceResolver
 
     public function __invoke()
     {
-        return Factory::getInstance($this->serviceClass, [$this->serviceParameters]);
+
+        return Factory::getInstance($this->serviceClass, $this->serviceParameters);
     }
 }

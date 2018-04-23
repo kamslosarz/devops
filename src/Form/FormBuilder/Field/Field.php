@@ -11,6 +11,7 @@ abstract class Field
     protected $label;
     protected $attributes = [];
     protected $options;
+    protected $value;
 
     /**
      * @param $name
@@ -105,9 +106,15 @@ abstract class Field
         return $this->getOption('label');
     }
 
-    public function getValue()
+    public function setValue($value)
     {
-        return $this->getOption('value');
+        $this->value = $value;
+
+        return $this;
     }
 
+    public function getValue()
+    {
+        $this->value;
+    }
 }

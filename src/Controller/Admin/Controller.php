@@ -5,6 +5,7 @@ namespace Application\Controller\Admin;
 
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
+use Application\Router\Router;
 use Application\Service\AuthService\AuthService;
 use Doctrine\ORM\EntityManager;
 
@@ -47,5 +48,25 @@ class Controller
     public function getUser()
     {
         return $this->getService('authService')->getUser();
+    }
+
+    public function getRequest()
+    {
+        return $this->getService('request');
+    }
+
+    public function redirect($controller, $parameters, $code = 301)
+    {
+        $route = explode(':', $controller);
+
+        $response = $this->container->getResponse();
+        $response->setHeaders([
+            sprintf('Location: %s', $this->container
+                ->getContext()
+                ->getRouter()
+                ->getRouteByParameters($route[0], sprintf('%sAction', $route[1]), $parameters))
+        ]);
+
+        return $response();
     }
 }

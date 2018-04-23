@@ -13,7 +13,7 @@ try {
 
     include '../vendor/autoload.php';
 
-    (new Application(new ApplicationParameters()))();
+    (new Application())();
 
 } catch (Exception $e) {
 
