@@ -19,15 +19,18 @@ class Controller
     {
         $this->container = $container;
         $this->appender = $appender;
+
+
+        //check the logged user
     }
 
     /**
-     * @return mixed
-     * @throws \Application\ServiceContainer\ServiceContainerException
+     * @return EntityManager
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function getEntityManager()
     {
-        return $this->getService('entityManager');
+        return $this->getService('entityManager')->getEntityManager();
     }
 
     public function addMessage($message, $level)
@@ -40,7 +43,7 @@ class Controller
     /**
      * @param $serviceName
      * @return mixed
-     * @throws \Application\ServiceContainer\ServiceContainerException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function getService($serviceName)
     {
