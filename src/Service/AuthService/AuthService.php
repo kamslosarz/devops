@@ -7,7 +7,6 @@ use Application\Model\UserAuthToken;
 use Application\Service\Orm\Orm;
 use Application\Service\Request\Request;
 use Application\Service\ServiceInterface;
-use Doctrine\ORM\EntityManager;
 
 class AuthService implements ServiceInterface
 {
@@ -16,6 +15,7 @@ class AuthService implements ServiceInterface
     private $request;
     private $sessionToken;
     private $entityManager;
+    private $user;
 
     public function __construct(Request $request, Orm $entityManager)
     {
@@ -27,28 +27,27 @@ class AuthService implements ServiceInterface
     {
         $password = md5($password);
         $token = $this->createAuthToken($username, $password);
-        $user = $this->isAuthenticated($token);
 
-        if(!$user)
+        if(!$this->isAuthenticated($token))
         {
-            $user = $this->entityManager->getRepository(User::class)->findOneBy([
+            $this->user = $this->entityManager->getRepository(User::class)->findOneBy([
                 'username' => $username,
                 'password' => $password
             ]);
 
             $userAuthToken = new UserAuthToken();
-            $userAuthToken->setUser($user);
+            $userAuthToken->setUser($this->user);
             $userAuthToken->setToken($token);
             $this->entityManager->persist($userAuthToken);
             $this->entityManager->flush();
         }
 
-        return $user;
+        return $this->user;
     }
 
     public function isAuthenticated($token)
     {
-        $user = $this->entityManager->createQueryBuilder()
+        $this->user = $this->entityManager->createQueryBuilder()
             ->select('u.token, u.user_id')
             ->from('user_auth_tokens', 'u')
             ->where('u.token==:token')
@@ -59,7 +58,7 @@ class AuthService implements ServiceInterface
             ])
             ->getFirstResult();
 
-        return ($user instanceof User) ? $user : false;
+        return ($this->user instanceof User) ? $this->user : false;
     }
 
     public function createAuthToken($username, $password)
@@ -75,5 +74,10 @@ class AuthService implements ServiceInterface
     public function getSessionToken()
     {
         return $this->sessionToken;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
     }
 }

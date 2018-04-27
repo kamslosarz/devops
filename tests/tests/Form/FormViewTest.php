@@ -31,7 +31,7 @@ class FormViewTest extends \Test\TestCase\FormViewTestCase
 
         $inputs = $domDocument->getElementsByTagName('input');
 
-        $this->assertEquals($inputs->item(0)->getAttribute('name'), 'login[login]');
+        $this->assertEquals($inputs->item(0)->getAttribute('name'), 'login[username]');
         $this->assertEquals($inputs->item(1)->getAttribute('name'), 'login[password]');
         $this->assertEquals($domDocument->getElementsByTagName('button')->item(0)->getAttribute('type'), 'submit');
     }

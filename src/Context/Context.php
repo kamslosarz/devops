@@ -11,6 +11,7 @@ use Application\Response\ResponseTypes;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Route;
 use Application\Router\Router;
+use Application\Service\ServiceContainer\ServiceContainerException;
 use Application\View\View;
 use Application\View\ViewException;
 
@@ -25,7 +26,7 @@ final class Context
     /**
      * Context constructor.
      * @param Container $container
-     * @throws \Application\ServiceContainer\ServiceContainerException
+     * @throws ServiceContainerException
      */
     public function __construct(Container $container)
     {
@@ -37,7 +38,7 @@ final class Context
     /**
      * @return array|string
      * @throws ContextException
-     * @throws \Application\ServiceContainer\ServiceContainerException
+     * @throws ServiceContainerException
      */
     public function __invoke()
     {

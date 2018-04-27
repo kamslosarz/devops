@@ -4,13 +4,14 @@
 
 {% block content %}
 
+    {{ container.authService.user }}
     <table>
         <th>Name</th>
         <th>Repository</th>
         <th>Status</th>
         <th>actions</th>
         <tbody class="main-table">
-            {% for project in projects %}
+            {% for project in container.authService.user.projects %}
             <tr>
                 <td>
                     {{ project.name }}

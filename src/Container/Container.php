@@ -8,7 +8,7 @@ use Application\Context\Context;
 use Application\Logger\Logger;
 use Application\Logger\LoggerLevel;
 use Application\Response\Response;
-use Application\ServiceContainer\ServiceContainer;
+use Application\Service\ServiceContainer\ServiceContainer;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 

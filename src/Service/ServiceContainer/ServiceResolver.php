@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\ServiceContainer;
+namespace Application\Service\ServiceContainer;
 
 use Application\Factory\Factory;
 

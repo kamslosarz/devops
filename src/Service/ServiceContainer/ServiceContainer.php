@@ -1,11 +1,11 @@
 <?php
 
-namespace Application\ServiceContainer;
+namespace Application\Service\ServiceContainer;
 
 
 use Application\Config\Config;
 use Application\Service\ServiceParameters;
-use Application\ServiceContainer\ServiceResolver;
+use Application\Service\ServiceContainer\ServiceResolver;
 
 class ServiceContainer
 {
