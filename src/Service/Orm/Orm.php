@@ -15,7 +15,7 @@ class Orm implements ServiceInterface
     public function __construct()
     {
         $doctrineConfig = Config::get('doctrine');
-        $config = Setup::createAnnotationMetadataConfiguration(array($doctrineConfig['models']), true);
+        $config = Setup::createAnnotationMetadataConfiguration(array($doctrineConfig['models']), false);
         $this->entityManager = EntityManager::create($doctrineConfig, $config);
     }
 

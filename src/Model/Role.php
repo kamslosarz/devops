@@ -2,14 +2,24 @@
 
 namespace Application\Model;
 
+use Application\Model\Traits\LifecycleTrait;
+use Application\Model\Traits\SoftDeleteTrait;
+
 /**
- * @Entity @Table(name="roles")
+ * @Entity
+ * @Table(name="roles")
+ * @HasLifecycleCallbacks
+ * @SoftDeleteable(fieldName="deleted", timeAware=false)
  */
 class Role
 {
+    use SoftDeleteTrait;
+    use LifecycleTrait;
+
     /**
-     * @Id @GeneratedValue @Column(type="integer")
-     * @var string
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="AUTO")
      */
     protected $id;
     /**
@@ -19,27 +29,24 @@ class Role
     protected $name;
 
     /**
-     * @Column(type="string")
-     * @var string
+     * @OneToMany(targetEntity="Privilege", mappedBy="role")
      */
-    protected $repository;
-
-    public function __construct()
-    {
-    }
+    protected $privileges;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getName()
+    public function getPrivileges()
     {
-        return $this->name;
+        return $this->privileges;
     }
 
-    public function setName($name)
+    public function addPrivilege(Privilege $privilege)
     {
-        $this->name = $name;
+        $this->privileges[] = $privilege;
+
+        return $this;
     }
 }

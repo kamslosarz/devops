@@ -3,25 +3,26 @@
 namespace Application\Model;
 
 use Application\Model\Traits\LifecycleTrait;
-use Application\Model\Traits\SoftDeleteTrait;
 
 
 /**
- * @Entity @Table(name="user_auth_token")
+ * @Entity
+ * @Table(name="user_auth_token")
+ * @HasLifecycleCallbacks
  */
 class UserAuthToken
 {
-    use SoftDeleteTrait;
     use LifecycleTrait;
 
     /**
-     * @Id @GeneratedValue @Column(type="integer")
-     * @var string
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
-     * @manyToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User", inversedBy="userAuthTokens")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $user;
@@ -49,6 +50,11 @@ class UserAuthToken
         $this->token = $token;
 
         return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
 

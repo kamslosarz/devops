@@ -23,11 +23,6 @@ final class Application
         $this->logger = new Logger('ApplicationLogger');
     }
 
-    /**
-     * @throws Context\ContextException
-     * @throws ServiceContainer\ServiceContainerException
-     * @throws \Doctrine\ORM\ORMException
-     */
     public function __invoke()
     {
         $this->logger->log('Initializing Application', LoggerLevel::INFO);

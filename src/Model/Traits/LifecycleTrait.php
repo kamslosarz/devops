@@ -3,9 +3,6 @@
 namespace Application\Model\Traits;
 
 /**
- * Trait LifecycleTrait
- * @package Application\Model\Traits
- *
  * @HasLifecycleCallbacks
  */
 trait LifecycleTrait
@@ -26,8 +23,6 @@ trait LifecycleTrait
 
 
     /**
-     * Gets triggered only on insert
-
      * @PrePersist
      */
     public function onPrePersist()
@@ -36,8 +31,6 @@ trait LifecycleTrait
     }
 
     /**
-     * Gets triggered every time on update
-
      * @PreUpdate
      */
     public function onPreUpdate()

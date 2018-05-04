@@ -4,7 +4,7 @@ namespace Application\Router;
 
 use Application\Config\Config;
 
-final class Router
+class Router
 {
     private $requestUri;
     private $routes;
@@ -64,6 +64,11 @@ final class Router
         {
             $this->routes[$route] = $dest;
         }
+    }
+
+    public static function getCompactName($controller, $action)
+    {
+        return sprintf('%s:%s', $controller, str_replace('Action', '', $action));
     }
 
     public function getRouteByParameters($controller, $action, $parameters)

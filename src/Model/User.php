@@ -4,9 +4,13 @@ namespace Application\Model;
 
 use Application\Model\Traits\LifecycleTrait;
 use Application\Model\Traits\SoftDeleteTrait;
+use Doctrine\Common\Collections\Collection;
 
 /**
- * @Entity @Table(name="users")
+ * @Entity
+ * @Table(name="users")
+ * @HasLifecycleCallbacks
+ * @SoftDeleteable(fieldName="deleted", timeAware=false)
  */
 class User
 {
@@ -14,30 +18,48 @@ class User
     use LifecycleTrait;
 
     /**
-     * @Id @GeneratedValue @Column(type="integer")
-     * @var string
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @Column(type="string")
-     * @var string
      */
     protected $username;
 
     /**
      * @Column(type="string")
-     * @var string
      */
     protected $password;
 
-    /**
-     * @OneToMany(targetEntity="UserAuthToken", mappedBy="authTokens")
+     /**
+     * @var Collection
+     * @OneToMany(targetEntity="UserAuthToken", mappedBy="user")
      */
-    protected $authTokens = [];
+    protected $userAuthTokens = [];
+
+    /**
+     * @ManyToMany(targetEntity="Role")
+     * @JoinTable(name="users_phonenumbers",
+     *  joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+     *  inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id", unique=true)}
+     * )
+     */
+    protected $roles = [];
+
+    /**
+     * @OneToMany(targetEntity="Privilege", mappedBy="user")
+     */
+    protected $privileges = [];
+
 
     public function __construct()
     {
+        $this->userAuthTokens = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->privileges = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getId()
@@ -62,5 +84,30 @@ class User
         $this->password = $password;
 
         return $this;
+    }
+
+    public function addRole(Role $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    public function addPrivilege(Privilege $privilege)
+    {
+        $this->privileges[] = $privilege;
+        $privilege->setUser($this);
+
+        return $this;
+    }
+
+    public function getPrivileges()
+    {
+        return $this->privileges;
     }
 }

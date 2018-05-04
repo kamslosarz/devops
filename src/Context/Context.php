@@ -11,11 +11,12 @@ use Application\Response\ResponseTypes;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Route;
 use Application\Router\Router;
+use Application\Service\Request\Request;
 use Application\Service\ServiceContainer\ServiceContainerException;
 use Application\View\View;
 use Application\View\ViewException;
 
-final class Context
+class Context
 {
     /** @var Controller * */
     private $logger;
@@ -42,11 +43,13 @@ final class Context
      */
     public function __invoke()
     {
-        $this->logger->log('IniContext.phptializing Router', LoggerLevel::INFO);
-        /** @var Route $route */
-
+        $this->logger->log('Initializing Router', LoggerLevel::INFO);
         $this->router = new Router($this->container->getServiceContainer()->getService('request')->requestUri());
+        /** @var Route $route */
         $route = ($this->router)();
+        /** @var Request $request */
+        $request = $this->container->getServiceContainer()->getService('request');
+        $request->setRoute($route);
 
         $this->logger->log('Gathering controller', LoggerLevel::INFO);
         $controller = $this->getControllerFullName($route->getController());
@@ -106,6 +109,7 @@ final class Context
         }
         catch(ViewException $e)
         {
+            $this->logger->log(sprintf('View Error: %s', $e->getMessage()), LoggerLevel::INFO);
             if(!$this->isContextJson())
             {
                 $view = new View(['exception' => $e], $this->container);

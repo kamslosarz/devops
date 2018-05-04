@@ -2,6 +2,8 @@
 
 namespace Application\Service\Request;
 
+use Application\Router\Route;
+use Application\Router\Router;
 use Application\Service\ServiceInterface;
 use Application\Service\Session\Session;
 
@@ -11,6 +13,8 @@ class Request implements ServiceInterface
     private $post;
     private $server;
     private $session;
+    /** @var Route $route */
+    private $route;
 
     public function __construct(Session $session)
     {
@@ -40,8 +44,8 @@ class Request implements ServiceInterface
         return strtolower($_SERVER['REQUEST_METHOD']) === RequestMethods::POST;
     }
 
-    public function getSession(){
-
+    public function getSession()
+    {
         return $this->session;
     }
 
@@ -49,4 +53,18 @@ class Request implements ServiceInterface
     {
         return $this->server('REQUEST_URI');
     }
+
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    public function setRoute(Route $route)
+    {
+        $this->route = $route;
+
+        return $this;
+    }
 }
+
+

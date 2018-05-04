@@ -15,13 +15,23 @@ class Controller
     private $container;
     private $appender;
 
+    /**
+     * Controller constructor.
+     * @param Container $container
+     * @param Appender $appender
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
     public function __construct(Container $container, Appender $appender)
     {
         $this->container = $container;
         $this->appender = $appender;
 
+        $authService = $this->getService('authService');
 
-        //check the logged user
+        if(!$authService->hasAccess())
+        {
+            return $this->redirect('Admin\UserController:login');
+        }
     }
 
     /**
@@ -73,6 +83,7 @@ class Controller
             sprintf('Location: %s', $this->container->getContext()->getRouter()->getRouteByParameters($route[0], sprintf('%sAction', $route[1]), $parameters))
         ]);
 
+        $this->getRequest()->getSession()->save();
         return $response(true);
     }
 }

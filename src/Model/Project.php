@@ -6,7 +6,10 @@ use Application\Model\Traits\LifecycleTrait;
 use Application\Model\Traits\SoftDeleteTrait;
 
 /**
- * @Entity @Table(name="projects")
+ * @Entity
+ * @Table(name="projects")
+ * @HasLifecycleCallbacks
+ * @SoftDeleteable(fieldName="deleted", timeAware=false)
  */
 class Project
 {
@@ -14,8 +17,9 @@ class Project
     use LifecycleTrait;
 
     /**
-     * @Id @GeneratedValue @Column(type="integer")
-     * @var string
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="AUTO")
      */
     protected $id;
     /**
@@ -29,11 +33,6 @@ class Project
      * @var string
      */
     protected $repository;
-
-    /**
-     * @OneToMany(targetEntity="Build", mappedBy="projectBuilds")
-     */
-    protected $projectBuilds;
 
     public function __construct()
     {

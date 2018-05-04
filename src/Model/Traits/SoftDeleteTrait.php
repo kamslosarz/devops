@@ -3,10 +3,7 @@
 namespace Application\Model\Traits;
 
 /**
- * Trait SoftDeleteTrait
- * @package Application\Model\Traits
- *
- *  @SoftDeleteable(fieldName="deleted", timeAware=false)
+ * @SoftDeleteable(fieldName="deleted", timeAware=false)
  */
 trait SoftDeleteTrait
 {

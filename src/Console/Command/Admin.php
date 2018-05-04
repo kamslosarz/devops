@@ -4,7 +4,9 @@ namespace Application\Console\Command;
 
 use Application\Config\Config;
 use Application\Console\ConsoleException;
+use Application\Model\Privilege;
 use Application\Model\User;
+use Application\Router\Router;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
@@ -34,12 +36,19 @@ class Admin extends Command
 
     public function create($username, $password)
     {
-
+        $em = $this->getEntityManager();
         $user = new User();
         $user->setUsername($username)
             ->setPassword(md5($password));
 
-        $em = $this->getEntityManager();
+        foreach(Config::get('routes')as $route)
+        {
+            $privilege = new Privilege();
+            $privilege->setName(Router::getCompactName($route[0], $route[1]));
+            $user->addPrivilege($privilege);
+            $em->persist($privilege);
+        }
+
         $em->persist($user);
         $em->flush();
 

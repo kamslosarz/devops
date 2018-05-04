@@ -23,7 +23,7 @@ class UserController extends Controller
 
             if($authService->authenticate($form->getData('username'), $form->getData('password')))
             {
-                $this->addMessage('Successfully logged in', AppenderLevel::ERROR);
+                $this->addMessage('Successfully logged in', AppenderLevel::SUCCESS);
 
                 return $this->redirect('Admin\AdminController:index', []);
             }
@@ -40,7 +40,6 @@ class UserController extends Controller
     {
         /** @var AuthService $authService */
         $authService = $this->getService('authService');
-
         $authService->clearSession();
 
         return $this->redirect('Admin\UserController:login');
