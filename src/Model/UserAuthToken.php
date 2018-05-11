@@ -1,61 +1,18 @@
 <?php
 
-namespace Application\Model;
-
-use Application\Model\Traits\LifecycleTrait;
-
+use Base\UserAuthToken as BaseUserAuthToken;
 
 /**
- * @Entity
- * @Table(name="user_auth_token")
- * @HasLifecycleCallbacks
+ * Skeleton subclass for representing a row from the 'user_auth_token' table.
+ *
+ *
+ *
+ * You should add additional methods to this class to meet the
+ * application requirements.  This class will only be generated as
+ * long as it does not already exist in the output directory.
+ *
  */
-class UserAuthToken
+class UserAuthToken extends BaseUserAuthToken
 {
-    use LifecycleTrait;
-
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
-    /**
-     * @ManyToOne(targetEntity="User", inversedBy="userAuthTokens")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    protected $user;
-
-    /**
-     * @Column(type="string")
-     * @var string
-     */
-    protected $token;
-
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    public function setToken($token)
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
 
 }

@@ -1,80 +1,18 @@
 <?php
 
-namespace Application\Model;
-
-use Application\Model\Traits\LifecycleTrait;
-use Application\Model\Traits\SoftDeleteTrait;
+use Base\Privilege as BasePrivilege;
 
 /**
- * @Entity
- * @Table(name="privilege")
- * @HasLifecycleCallbacks
- * @SoftDeleteable(fieldName="deleted", timeAware=false)
+ * Skeleton subclass for representing a row from the 'privilege' table.
+ *
+ *
+ *
+ * You should add additional methods to this class to meet the
+ * application requirements.  This class will only be generated as
+ * long as it does not already exist in the output directory.
+ *
  */
-class Privilege
+class Privilege extends BasePrivilege
 {
-    use SoftDeleteTrait;
-    use LifecycleTrait;
 
-    /**
-     * @Id
-     * @GeneratedValue
-     * @Column(type="integer")
-     * @var string
-     */
-    protected $id;
-
-    /**
-     * @Column(type="string")
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @manyToOne(targetEntity="User", inversedBy="privileges")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    protected $user;
-
-    /**
-     * @manyToOne(targetEntity="Role", inversedBy="privileges")
-     * @JoinColumn(name="role_id", referencedColumnName="id")
-     */
-    protected $role;
-
-    public function setRole(Role $role)
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    public function setUser(User $user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 }

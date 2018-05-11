@@ -10,7 +10,8 @@ try {
         throw new Exception('Module "mod_rewrite" not enabled');
     }
 
-    include '../vendor/autoload.php';
+    require_once '../vendor/autoload.php';
+    require_once '../data/generated-conf/config.php';
 
     (new Application())();
 

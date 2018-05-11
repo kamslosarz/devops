@@ -32,11 +32,6 @@ return [
             'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR
         ]
     ],
-    'doctrine' => [
-        'driver' => 'pdo_sqlite',
-        'path' => dirname(__DIR__) . '/data/database.db3',
-        'models' => dirname(__DIR__).'/src/Model'
-    ],
     'twig'=>[
         'loader'=>[
             'templates'=>dirname(__DIR__).'/src/Resource',

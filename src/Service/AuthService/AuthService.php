@@ -19,7 +19,6 @@ class AuthService implements ServiceInterface
 
     private $request;
     private $sessionToken;
-    private $entityManager;
     /** @var User $user */
     private $user;
 
@@ -30,10 +29,9 @@ class AuthService implements ServiceInterface
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(Request $request, Orm $entityManager)
+    public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->entityManager = $entityManager->getEntityManager();
         $this->isAuthenticated();
     }
 
@@ -61,6 +59,7 @@ class AuthService implements ServiceInterface
      * @return bool
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function isAuthenticated()
     {
@@ -68,6 +67,20 @@ class AuthService implements ServiceInterface
         {
             return false;
         }
+
+
+
+        UserAuthToken::find()
+
+        $test = $this->entityManager->createQueryBuilder()
+            ->select('u')
+            ->from(UserAuthToken::class, 'u')
+            ->getQuery()
+            ->getResult();
+
+        var_dump($test);
+        exit;
+
 
         $userAuthToken = $this->entityManager->createQueryBuilder()
             ->select('u')

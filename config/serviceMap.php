@@ -16,15 +16,9 @@ return [
             '@session'
         ]
     ],
-    'entityManager' => [
-        \Application\Service\Orm\Orm::class, [
-
-        ]
-    ],
     'authService' => [
         \Application\Service\AuthService\AuthService::class, [
-            '@request',
-            '@entityManager'
+            '@request'
         ]
     ]
 ];

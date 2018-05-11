@@ -11,11 +11,14 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Application\\": "src/"}
+        "psr-4": {
+            "Application\\": "src/",
+            "Application\\Model\\": "data/generated-classes/"
+        }
     },
     "require": {
-        "doctrine/orm": "^2.5",
         "twig/twig": "^2.0",
-        "twig/extensions": "^1.5"
+        "twig/extensions": "^1.5",
+        "propel/propel": "~2.0@dev"
     }
 }

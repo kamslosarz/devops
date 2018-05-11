@@ -6,8 +6,6 @@ use Application\Config\Config;
 use Application\Model\Privilege;
 use Application\Model\User;
 use Application\Router\Router;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Setup;
 
 class Admin extends Command
 {
