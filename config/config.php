@@ -6,6 +6,10 @@ return [
             'Admin\UserController',
             'loginAction',
         ],
+        '/admin/logout' => [
+            'Admin\UserController',
+            'logoutAction',
+        ],
         '/admin/index' => [
             'Admin\AdminController',
             'indexAction',
@@ -17,6 +21,10 @@ return [
         '/admin/project/edit/[id]' => [
             'Admin\ProjectController',
             'projectAction',
+        ],
+        '/admin/test/[id]/[action]' => [
+            'Admin\IndexController',
+            'indexAction',
         ]
     ],
     'logger' => [

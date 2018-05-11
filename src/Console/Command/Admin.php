@@ -3,12 +3,10 @@
 namespace Application\Console\Command;
 
 use Application\Config\Config;
-use Application\Console\ConsoleException;
 use Application\Model\Privilege;
 use Application\Model\User;
 use Application\Router\Router;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
 
 class Admin extends Command
@@ -18,8 +16,14 @@ class Admin extends Command
      * @param $password
      * @return bool
      */
-    public function isValid($username, $password)
+    public function isValid($username = '', $password = '')
     {
+        if(!$username || !$password)
+        {
+            $this->setError(sprintf('Nie można utworzyć użytkownika "%s" "%s"', $username, $password));
+            return false;
+        }
+
         $user = $this->getEntityManager()->getRepository(User::class)->findOneBy([
             'username' => $username
         ]);
@@ -41,7 +45,7 @@ class Admin extends Command
         $user->setUsername($username)
             ->setPassword(md5($password));
 
-        foreach(Config::get('routes')as $route)
+        foreach(Config::get('routes') as $route)
         {
             $privilege = new Privilege();
             $privilege->setName(Router::getCompactName($route[0], $route[1]));

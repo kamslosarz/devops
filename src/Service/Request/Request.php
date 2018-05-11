@@ -26,7 +26,7 @@ class Request implements ServiceInterface
 
     public function server($key)
     {
-        return $this->server[$key];
+        return isset($this->server[$key])? $this->server[$key] : null;
     }
 
     public function get($key)

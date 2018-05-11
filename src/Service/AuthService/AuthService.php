@@ -82,7 +82,7 @@ class AuthService implements ServiceInterface
                 'created' => date("Y-m-d H:i:s", strtotime('-15 minutes'))
             ])
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
 
         if(!($userAuthToken instanceof UserAuthToken))
         {
