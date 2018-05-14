@@ -2,7 +2,6 @@
 
 namespace Application\Context;
 
-use Application\ApplicationParameters;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Controller\Controller;
@@ -12,65 +11,62 @@ use Application\Response\ResponseTypes;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Route;
 use Application\Router\Router;
+use Application\Service\Request\Request;
+use Application\Service\ServiceContainer\ServiceContainerException;
 use Application\View\View;
 use Application\View\ViewException;
 
-final class Context
+class Context
 {
     /** @var Controller * */
     private $logger;
     private $container;
-    private $route;
+    private $router;
     private $appender;
 
     /**
      * Context constructor.
-     * @param $container
+     * @param Container $container
+     * @throws ServiceContainerException
      */
     public function __construct(Container $container)
     {
         $this->logger = $container->getLogger();
         $this->container = $container;
-        $this->appender = new Appender($this->container->getSession());
+        $this->appender = new Appender($this->container->getServiceContainer()->getService('session'));
     }
 
     /**
-     * @param ApplicationParameters $applicationParameters
      * @return array|string
      * @throws ContextException
+     * @throws ServiceContainerException
      */
-    public function __invoke(ApplicationParameters $applicationParameters)
+    public function __invoke()
     {
-        $this->logger->log('IniContext.phptializing Router', LoggerLevel::INFO);
+        $this->logger->log('Initializing Router', LoggerLevel::INFO);
+        $this->router = new Router($this->container->getServiceContainer()->getService('request')->requestUri());
         /** @var Route $route */
-
-        $this->route = (new Router($applicationParameters->requestUri()))();
+        $route = ($this->router)();
+        /** @var Request $request */
+        $request = $this->container->getServiceContainer()->getService('request');
+        $request->setRoute($route);
 
         $this->logger->log('Gathering controller', LoggerLevel::INFO);
-        $controller = $this->loadController($this->route->getController());
-        $action = $this->route->getAction();
+        $controller = $this->getControllerFullName($route->getController());
+        $action = $route->getAction();
 
         $this->logger->log('Validating controller', LoggerLevel::INFO);
         $this->validate($controller, $action);
 
         $this->logger->log('Dispatching controller', LoggerLevel::INFO);
-        $dispatcher = new Dispatcher(Factory::getInstance($controller, [$this->container, $this->appender]), $action);
-        $dispatcher->dispatch($this->route->getParameters());
+        $dispatcher = new Dispatcher(Factory::getInstance($controller, [$this->container, $this->appender, $this->router]), $action);
+        $dispatcher->dispatch($route->getParameters());
 
         return $this->executeView($dispatcher->getResults(), $this->getViewName($route));
     }
 
-    private function loadController($controller)
+    private function getControllerFullName($controller)
     {
-//        $controllers = glob(dirname(__DIR__) . '/Controller/*Controller.php');
-//
-//        array_walk($controllers, function ($file) use ($controller) {
-//            if(str_replace(dirname(__DIR__) . '/Controller/', '', $file) === $controller && !loaded)
-//            {
-//                //include_once $file;
-//            }
-//        });
-
         return 'Application\\Controller\\' . $controller;
     }
 
@@ -102,7 +98,6 @@ final class Context
             {
                 $this->logger->log('Initializing View', LoggerLevel::INFO);
                 $view = new View($results, $this->container);
-                $view->setMessages($this->appender->flashMessages());
                 $this->logger->log(sprintf('Render View %s', $viewName), LoggerLevel::INFO);
                 $results = $view->render($viewName);
             }
@@ -114,10 +109,10 @@ final class Context
         }
         catch(ViewException $e)
         {
+            $this->logger->log(sprintf('View Error: %s', $e->getMessage()), LoggerLevel::INFO);
             if(!$this->isContextJson())
             {
                 $view = new View(['exception' => $e], $this->container);
-                $view->setMessages($this->appender->flashMessages());
                 $results = $view->render('error');
             }
             else
@@ -134,16 +129,21 @@ final class Context
         return $this->container->getResponse()->getType() === ResponseTypes::CONTEXT_JSON;
     }
 
-    private function getViewName()
+    private function getViewName($route)
     {
-        preg_match("/[a-z]+\\\+[a-z]+/", str_replace('controller', '', strtolower($this->route->getController())), $match);
-        $namespace = ltrim(str_replace('-action', '', strtolower(preg_replace("/([A-Z])/x", "-$1", $this->route->getAction()))), '-');
+        preg_match("/[a-z]+\\\+[a-z]+/", str_replace('controller', '', strtolower($route->getController())), $match);
+        $namespace = ltrim(str_replace('-action', '', strtolower(preg_replace("/([A-Z])/x", "-$1", $route->getAction()))), '-');
         return str_replace('\\', DIRECTORY_SEPARATOR, $match[0]) . DIRECTORY_SEPARATOR . $namespace;
     }
 
-    public function getRoute()
+    public function getRouter()
     {
-        return $this->route;
+        return $this->router;
+    }
+
+    public function getAppender()
+    {
+        return $this->appender;
     }
 
 }

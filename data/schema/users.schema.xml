@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database package="users" name="default" namespace="Model">
+    <table name="users" idMethod="native" phpName="User">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="username" phpName="Username" type="VARCHAR" size="255" required="true"/>
+        <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
+        <behavior name="timestampable"/>
+    </table>
+
+
+    <table name="users_auth_tokens" idMethod="native" phpName="UserAuthToken">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="user_id" phpName="UserId" type="INTEGER" defaultValue="NULL"/>
+        <column name="token" phpName="Token" type="VARCHAR" size="255" required="true"/>
+        <behavior name="timestampable"/>
+        <foreign-key foreignTable="users">
+            <reference local="user_id" foreign="id"/>
+        </foreign-key>
+        <index>
+            <index-column name="user_id"/>
+        </index>
+    </table>
+
+
+    <table name="users_roles" idMethod="native" phpName="UserRole">
+        <column name="user_id" type="INTEGER" primaryKey="true" required="true"/>
+        <column name="role_id" type="INTEGER" primaryKey="true" required="true"/>
+        <foreign-key foreignTable="users">
+            <reference local="user_id" foreign="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="roles">
+            <reference local="role_id" foreign="id"/>
+        </foreign-key>
+    </table>
+
+
+    <table name="users_privileges" idMethod="native" phpName="UserPrivilege">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="user_id" type="INTEGER"/>
+        <column name="name" type="VARCHAR" size="255" required="true"/>
+        <foreign-key foreignTable="users">
+            <reference local="user_id" foreign="id"/>
+        </foreign-key>
+    </table>
+</database>

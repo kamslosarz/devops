@@ -1,11 +1,11 @@
 <?php
 
-namespace Application\ServiceContainer;
+namespace Application\Service\ServiceContainer;
 
 
 use Application\Config\Config;
 use Application\Service\ServiceParameters;
-use Application\ServiceContainer\ServiceResolver;
+use Application\Service\ServiceContainer\ServiceResolver;
 
 class ServiceContainer
 {
@@ -42,6 +42,7 @@ class ServiceContainer
 
         $parameters = [];
         $serviceParameters = new ServiceParameters($serviceMap[$serviceName]);
+
 
         foreach($serviceParameters->getParameters() as $parameter)
         {

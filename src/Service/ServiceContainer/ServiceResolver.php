@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\ServiceContainer;
+namespace Application\Service\ServiceContainer;
 
 use Application\Factory\Factory;
 
@@ -17,6 +17,7 @@ class ServiceResolver
 
     public function __invoke()
     {
-        return Factory::getInstance($this->serviceClass, [$this->serviceParameters]);
+
+        return Factory::getInstance($this->serviceClass, $this->serviceParameters);
     }
 }

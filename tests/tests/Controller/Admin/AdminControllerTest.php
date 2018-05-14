@@ -1,9 +1,11 @@
 <?php
 
+use \Mockery as m;
+
 class AdminControllerTest extends \Test\TestCase\ControllerTestCase
 {
     /**
-     * @throws \Application\ServiceContainer\ServiceContainerException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function testIndexAction()
     {

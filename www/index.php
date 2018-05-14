@@ -4,19 +4,23 @@ namespace Application;
 
 use Exception;
 
-try {
-
-    if (!in_array('mod_rewrite', apache_get_modules())) {
+try
+{
+    if(!in_array('mod_rewrite', apache_get_modules()))
+    {
 
         throw new Exception('Module "mod_rewrite" not enabled');
     }
 
-    include '../vendor/autoload.php';
+    require_once '../vendor/autoload.php';
+    require_once '../data/generated-conf/config.php';
 
-    (new Application(new ApplicationParameters()))();
+    Application::setDevelopment();
+    (new Application())();
+}
+catch(Exception $e)
+{
+    echo $e->getMessage();
 
-} catch (Exception $e) {
-
-
-    var_dump($e);
+    throw $e;
 }

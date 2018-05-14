@@ -17,7 +17,6 @@ abstract class Controller
         $this->appender = $appender;
     }
 
-
     public function setContextJson()
     {
         $this->container->getResponse()->setType(ResponseTypes::CONTEXT_JSON);

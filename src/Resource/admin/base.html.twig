@@ -19,17 +19,28 @@
     </div>
     <div class="nav">
         <ul>
-            <li class="{% if menu.isUri('/admin') %}active{% endif %}">
-                {{ url('/admin', 'pe-7s-graph', 'Dashboard') }}
+            <li class="{% if menu.isUri('/admin/index') %}active{% endif %}">
+                {{ url('/admin/index', 'pe-7s-graph', 'Dashboard') }}
             </li>
             <li class="{% if menu.isUri('/admin/project/*') %}active{% endif %}">
                 {{ url('/admin/project/index', 'pe-7s-science', 'Projects') }}
             </li>
+            <li class="{% if menu.isUri('/admin/logout') %}active{% endif %}">
+                {{ url('/admin/logout', 'pe-7s-logout', 'Logout') }}
+            </li>
         </ul>
     </div>
     <div class="main-content">
-        {% block content %}
-        {% endblock %}
+        <div class="messages">
+            {% for type, message in messages.all %}
+                <p class="{{ type }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+        <div class="content">
+            {% block content %}
+
+            {% endblock %}
+        </div>
     </div>
     <div class="footer">
 

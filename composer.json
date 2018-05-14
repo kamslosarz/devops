@@ -2,7 +2,9 @@
     "name": "root/devops",
     "description": "Dev ops tool",
     "require-dev": {
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "^6.5",
+        "mockery/mockery": "^1.1",
+        "symfony/dom-crawler": "^3.4"
     },
     "authors": [
         {
@@ -11,11 +13,15 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Application\\": "src/"}
+        "psr-4": {
+            "Application\\": "src/",
+            "Model\\": "src/Model",
+            "Test\\": "tests/src"
+        }
     },
     "require": {
-        "doctrine/orm": "^2.5",
         "twig/twig": "^2.0",
-        "twig/extensions": "^1.5"
+        "twig/extensions": "^1.5",
+        "propel/propel": "~2.0@dev"
     }
 }

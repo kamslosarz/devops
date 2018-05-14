@@ -11,7 +11,6 @@ final class View
     private $session = [];
     private $results;
     private $twig;
-    private $messages;
     private $activeUri;
     private $container;
 
@@ -38,9 +37,10 @@ final class View
 
         foreach($directories as $dir)
         {
+            /** @var \SplFileInfo $fileInfo */
             foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
             {
-                if(is_file($fileInfo->getPathname()))
+                if($fileInfo->isFile())
                 {
                     $dest = str_replace(
                         Config::get('twig')['loader']['templates'],
@@ -83,12 +83,14 @@ final class View
     {
         try
         {
-            ob_start();
-            echo $this->twig->render($template . '.html.twig', $this->vars + [
-                    'messages' => $this->messages
-                ]);
-            $this->results = ob_get_contents();
-            ob_end_clean();
+            $filename = $template . '.html.twig';
+
+            if(is_file(sprintf('%s/%s', Config::get('twig')['loader']['templates'], $filename)))
+            {
+                return $this->twig->render($filename, $this->vars);
+            }
+
+            return null;
         }
         catch(\Twig_Error_Loader $e)
         {
@@ -123,18 +125,6 @@ final class View
         $this->session = $session;
 
         return $this;
-    }
-
-    public function setMessages($messages)
-    {
-        $this->messages = $messages;
-
-        return $this;
-    }
-
-    public function getMessages()
-    {
-        return $this->messages;
     }
 
     public function setActiveUri($uri)

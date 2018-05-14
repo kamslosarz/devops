@@ -1,11 +1,13 @@
 <?php
 
+use Application\Service\ServiceContainer\ServiceContainer;
+
 class ServiceContainerTest extends \PHPUnit\Framework\TestCase
 {
     public function testShouldCreateInstance()
     {
-        $serviceContainer = new \Application\ServiceContainer\ServiceContainer();
+        $serviceContainer = new ServiceContainer();
 
-        $this->assertInstanceOf(\Application\ServiceContainer\ServiceContainer::class, $serviceContainer);
+        $this->assertInstanceOf(ServiceContainer::class, $serviceContainer);
     }
 }

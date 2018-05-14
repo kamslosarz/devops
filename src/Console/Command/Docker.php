@@ -6,6 +6,11 @@ class Docker extends Command
 {
     const DOCKER_CONTAINER_NAME = 'devops_www_1';
 
+    public function isValid()
+    {
+        return true;
+    }
+
     public function restart()
     {
         $this->stop();
@@ -17,7 +22,8 @@ class Docker extends Command
         passthru('sudo docker-compose up --build -d');
     }
 
-    public function build(){
+    public function build()
+    {
         passthru('sudo docker-compose up --build -d --force-recreate');
     }
 

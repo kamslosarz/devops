@@ -43,7 +43,7 @@ class Response
         return $this->type;
     }
 
-    public function __invoke()
+    public function __invoke($force = false)
     {
         foreach($this->headers as $header)
         {
@@ -53,6 +53,10 @@ class Response
         header("X-PHP-Response-Code: {$this->code}", true, $this->code);
 
         echo $this->results;
+        if($force)
+        {
+            exit();
+        }
     }
 
 }

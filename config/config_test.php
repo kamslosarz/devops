@@ -5,6 +5,11 @@ return [
         '/admin/login' => [
             'Admin\UserController',
             'loginAction',
+            \Application\Router\Route::ACCESS_PUBLIC
+        ],
+        '/admin/logout' => [
+            'Admin\UserController',
+            'logoutAction',
         ],
         '/admin/index' => [
             'Admin\AdminController',
@@ -17,24 +22,24 @@ return [
         '/admin/project/edit/[id]' => [
             'Admin\ProjectController',
             'projectAction',
+        ],
+        '/admin/test/[id]/[action]' => [
+            'Admin\IndexController',
+            'indexAction',
         ]
     ],
+    'defaultAction' => 'Admin\AdminController:index',
     'logger' => [
         'ApplicationLogger' => [
             'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR
         ]
     ],
-    'doctrine' => [
-        'driver' => 'pdo_sqlite',
-        'path' => dirname(__DIR__) . '/data/database.db3',
-        'models' => dirname(__DIR__).'/src/Model'
-    ],
-    'twig'=>[
-        'loader'=>[
-            'templates'=>dirname(__DIR__).'/src/Resource',
+    'twig' => [
+        'loader' => [
+            'templates' => dirname(__DIR__) . '/src/Resource',
 //            'cache' => dirname(__DIR__).'/cache/twig'
             'cache' => false
         ]
     ],
-    'web_dir'=>dirname(__DIR__).'/www'
+    'web_dir' => dirname(__DIR__) . '/www'
 ];
