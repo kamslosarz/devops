@@ -23,7 +23,7 @@ final class Application
         $this->logger = new Logger('ApplicationLogger');
     }
 
-    public function __invoke($return)
+    public function __invoke()
     {
         $this->logger->log('Initializing Application', LoggerLevel::INFO);
 
@@ -32,6 +32,5 @@ final class Application
         $response = $container->getResponse();
 
         return $response();
-
     }
 }

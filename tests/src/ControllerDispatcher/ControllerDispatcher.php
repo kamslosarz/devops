@@ -29,8 +29,13 @@ class ControllerDispatcher
         $_SERVER = $this->request->getServer();
         $_POST = $this->request->getPost();
         $_GET = $this->request->getQuery();
+        $content = '';
+        ob_start();
+        (new \Application\Application())();
+        $content = ob_get_clean();
+        ob_clean();
 
-        return (new \Application\Application())();
+        return $content;
     }
 
 }

@@ -7,6 +7,7 @@ use Application\Container\Container;
 use Application\Service\Session\Session;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DomCrawler\Crawler;
 use Test\ControllerDispatcher\ControllerDispatcher;
 
 abstract class ControllerTestCase extends TestCase
@@ -88,6 +89,11 @@ abstract class ControllerTestCase extends TestCase
     public function getDispatcher()
     {
         return new ControllerDispatcher();
+    }
+
+    public function getCrawler($html)
+    {
+        return new Crawler($html);
     }
 
 }
