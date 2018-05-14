@@ -3,7 +3,6 @@
 namespace Application\Logger;
 
 use Application\Config\Config;
-use function Couchbase\fastlzCompress;
 
 final class Logger
 {
@@ -21,27 +20,39 @@ final class Logger
         $this->logName = $loggerName;
     }
 
+    /**
+     * @param $message
+     * @param $level
+     * @throws LoggerException
+     */
     public function log($message, $level)
     {
         $date = date('Y-m-d');
         $filename = $this->logDirectory . $date . self::LOGGER_FILE_SUFFIX;
 
-        if (!file_exists($filename)) {
+        if(!file_exists($filename))
+        {
             touch($filename);
         }
 
-        file_put_contents($filename, sprintf(
-            "[%s] %s: %s %s"
-            , $date, $level, $message, PHP_EOL), FILE_APPEND);
+        if(!is_writable($filename))
+        {
+            throw new LoggerException(sprintf('Directory "%s" is not writable', $filename));
+        }
+
+        file_put_contents($filename, sprintf("[%s] %s: %s %s", $date, $level, $message, PHP_EOL), FILE_APPEND);
     }
 
 
     private function getConfig($loggerName)
     {
-        if (isset($this->loggers[$loggerName])) {
+        if(isset($this->loggers[$loggerName]))
+        {
 
             return $this->loggers[$loggerName];
-        } else {
+        }
+        else
+        {
             $this->loggers[$loggerName] = Config::get('logger')[$loggerName];
 
             return $this->getConfig($loggerName);
