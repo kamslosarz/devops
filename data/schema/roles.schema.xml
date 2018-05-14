@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database package="roles" name="default" namespace="Model">
+    <table name="roles" idMethod="native" phpName="Role">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
+    </table>
+</database>

@@ -27,6 +27,7 @@ return [
             'indexAction',
         ]
     ],
+    'defaultAction' => 'Admin\AdminController:index',
     'logger' => [
         'ApplicationLogger' => [
             'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR

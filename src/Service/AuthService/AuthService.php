@@ -2,14 +2,16 @@
 
 namespace Application\Service\AuthService;
 
-use Application\Model\Privilege;
-use Application\Model\Role;
-use Application\Model\User;
-use Application\Model\UserAuthToken;
+use Application\Config\Config;
 use Application\Router\Router;
-use Application\Service\Orm\Orm;
 use Application\Service\Request\Request;
 use Application\Service\ServiceInterface;
+use Model\Base\Role;
+use Model\UserAuthTokenQuery;
+use Model\UserPrivilege;
+use Model\UserQuery;
+use Model\Privilege;
+use Model\UserRole;
 
 class AuthService implements ServiceInterface
 {
@@ -19,15 +21,14 @@ class AuthService implements ServiceInterface
 
     private $request;
     private $sessionToken;
-    /** @var User $user */
+
+    /** @var \Model\User $user */
     private $user;
 
     /**
      * AuthService constructor.
      * @param Request $request
-     * @param Orm $entityManager
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function __construct(Request $request)
     {
@@ -35,31 +36,40 @@ class AuthService implements ServiceInterface
         $this->isAuthenticated();
     }
 
+    /**
+     * @param $username
+     * @param $password
+     * @return mixed|\Model\User
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
     public function authenticate($username, $password)
     {
         $password = md5($password);
         $token = $this->createAuthToken($username, $password);
 
-        $this->user = $this->entityManager->getRepository(User::class)->findOneBy([
+        /** @var \Model\User user */
+        $this->user = UserQuery::create()->findOneByArray([
             'username' => $username,
             'password' => $password
         ]);
 
-        $userAuthToken = new UserAuthToken();
-        $userAuthToken->setUser($this->user);
+        if(!$this->user)
+        {
+            return false;
+        }
+
+        $userAuthToken = new \Model\UserAuthToken();
         $userAuthToken->setToken($token);
+        $this->user->addUserAuthToken($userAuthToken);
+        $this->user->save();
         $this->request->getSession()->set(self::AUTH_KEY_NAME, $token);
-        $this->entityManager->persist($userAuthToken);
-        $this->entityManager->flush();
 
         return $this->user;
     }
 
     /**
      * @return bool
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function isAuthenticated()
     {
@@ -68,46 +78,23 @@ class AuthService implements ServiceInterface
             return false;
         }
 
+        $userAuthToken = UserAuthTokenQuery::create()
+            ->where('UserAuthToken.token = ?', $this->request->getSession()->get(self::AUTH_KEY_NAME))
+            ->orderByCreatedAt(UserAuthTokenQuery::DESC)
+            ->findOne();
 
-
-        UserAuthToken::find()
-
-        $test = $this->entityManager->createQueryBuilder()
-            ->select('u')
-            ->from(UserAuthToken::class, 'u')
-            ->getQuery()
-            ->getResult();
-
-        var_dump($test);
-        exit;
-
-
-        $userAuthToken = $this->entityManager->createQueryBuilder()
-            ->select('u')
-            ->from(UserAuthToken::class, 'u')
-            ->where('u.token = :token')
-            ->andWhere('u.created >= :created')
-            ->orderBy('u.created', 'DESC')
-            ->setFirstResult(0)
-            ->setMaxResults(1)
-            ->setParameters([
-                'token' => $this->request->getSession()->get(self::AUTH_KEY_NAME),
-                'created' => date("Y-m-d H:i:s", strtotime('-15 minutes'))
-            ])
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        if(!($userAuthToken instanceof UserAuthToken))
+        if(($userAuthToken instanceof \Model\UserAuthToken))
         {
-            return false;
+            $this->user = $userAuthToken->getUser();
+            return ($this->user instanceof \Model\User);
         }
-        $this->user = $userAuthToken->getUser();
 
-        return ($this->user instanceof User) ? true : false;
+        return false;
     }
 
     /**
      * @return bool
+     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function hasAccess()
     {
@@ -123,21 +110,21 @@ class AuthService implements ServiceInterface
             return false;
         }
 
-        $userPrivileges = $this->user->getPrivileges();
-        $userRoles = $this->user->getRoles();
+        $userPrivileges = $this->user->getUserPrivileges();
+        $userRoles = $this->user->getUserRoles();
 
-        foreach($userPrivileges as $privilege)
+        foreach($userPrivileges as  $userPrivilege)
         {
-            if($this->checkPrivilege($privilege))
+            if($this->checkPrivilege($userPrivilege))
             {
                 return true;
             }
         }
 
-        /** @var Role $role */
-        foreach($userRoles as $role)
+        /** @var UserRole $userRole */
+        foreach($userRoles as $userRole)
         {
-            foreach($role->getPrivileges() as $privilege)
+            foreach($userRole->getRole()->getPrivileges() as $privilege)
             {
                 if($this->checkPrivilege($privilege))
                 {
@@ -146,10 +133,10 @@ class AuthService implements ServiceInterface
             }
         }
 
-        return false;
+        return Router::getCompactName($route->getController(), $route->getAction()) === Config::get('defaultAction');
     }
 
-    private function checkPrivilege(Privilege $privilege)
+    private function checkPrivilege(UserPrivilege $privilege)
     {
         $route = $this->request->getRoute();
 

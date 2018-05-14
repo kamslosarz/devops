@@ -9,8 +9,6 @@ class AdminControllerTest extends \Test\TestCase\ControllerTestCase
      */
     public function testIndexAction()
     {
-
-
         $adminController = new \Application\Controller\Admin\AdminController($this->getContainerMock(), $this->getAppenderMock());
         $response = $adminController->indexAction();
 

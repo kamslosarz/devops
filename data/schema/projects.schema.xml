@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database package="projects" name="default" namespace="Model">
+    <table name="projects" idMethod="native" phpName="Project">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
+        <column name="repository" phpName="Repository" type="VARCHAR" size="255" required="true"/>
+        <behavior name="timestampable"/>
+    </table>
+</database>

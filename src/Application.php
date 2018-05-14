@@ -23,7 +23,7 @@ final class Application
         $this->logger = new Logger('ApplicationLogger');
     }
 
-    public function __invoke()
+    public function __invoke($return)
     {
         $this->logger->log('Initializing Application', LoggerLevel::INFO);
 

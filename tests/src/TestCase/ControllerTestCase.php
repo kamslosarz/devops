@@ -5,8 +5,9 @@ namespace Test\TestCase;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Service\Session\Session;
-use \Mockery as m;
+use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Test\ControllerDispatcher\ControllerDispatcher;
 
 abstract class ControllerTestCase extends TestCase
 {
@@ -27,6 +28,10 @@ abstract class ControllerTestCase extends TestCase
             ->getMock()
             ->shouldReceive('getSession')
             ->andReturns($sessionMock)
+            ->getMock()
+            ->shouldReceive('isAuthenticated')
+            ->once()
+            ->andReturns(true)
             ->getMock();
 
         $serviceContainerMock = m::mock(\Application\Service\ServiceContainer\ServiceContainer::class);
@@ -78,6 +83,11 @@ abstract class ControllerTestCase extends TestCase
     public function getAppenderMock()
     {
         return m::mock(Appender::class);
+    }
+
+    public function getDispatcher()
+    {
+        return new ControllerDispatcher();
     }
 
 }

@@ -3,15 +3,16 @@
 namespace Application\Console\Command;
 
 use Application\Config\Config;
-use Application\Model\Privilege;
-use Application\Model\User;
 use Application\Router\Router;
+use Model\User as user;
+use Model\UserPrivilege;
+use Model\UserQuery;
 
 class Admin extends Command
 {
     /**
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      * @return bool
      */
     public function isValid($username = '', $password = '')
@@ -22,9 +23,7 @@ class Admin extends Command
             return false;
         }
 
-        $user = $this->getEntityManager()->getRepository(User::class)->findOneBy([
-            'username' => $username
-        ]);
+        $user = UserQuery::create()->findOneByUsername($username);
 
         if($user instanceof User)
         {
@@ -36,32 +35,26 @@ class Admin extends Command
         return true;
     }
 
+    /**
+     * @param $username
+     * @param $password
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
     public function create($username, $password)
     {
-        $em = $this->getEntityManager();
         $user = new User();
         $user->setUsername($username)
             ->setPassword(md5($password));
 
         foreach(Config::get('routes') as $route)
         {
-            $privilege = new Privilege();
-            $privilege->setName(Router::getCompactName($route[0], $route[1]));
-            $user->addPrivilege($privilege);
-            $em->persist($privilege);
+            $userPrivilege = new UserPrivilege();
+            $userPrivilege->setName(Router::getCompactName($route[0], $route[1]));
+            $user->addUserPrivilege($userPrivilege);
         }
 
-        $em->persist($user);
-        $em->flush();
+        $user->save();
 
         echo 'Admin created';
-    }
-
-
-    private function getEntityManager()
-    {
-        $doctrineConfig = Config::get('doctrine');
-        $config = Setup::createAnnotationMetadataConfiguration(array($doctrineConfig['models']), true);
-        return EntityManager::create($doctrineConfig, $config);
     }
 }

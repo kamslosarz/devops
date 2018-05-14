@@ -1,9 +1,11 @@
 <?php
 
-use Base\UserAuthToken as BaseUserAuthToken;
+namespace Model;
+
+use Model\Base\UserAuthToken as BaseUserAuthToken;
 
 /**
- * Skeleton subclass for representing a row from the 'user_auth_token' table.
+ * Skeleton subclass for representing a row from the 'users_auth_tokens' table.
  *
  *
  *

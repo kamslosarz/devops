@@ -1,7 +1,7 @@
 <?php
 
-set_include_path(dirname(__DIR__));
-include "vendor/autoload.php";
+include "../vendor/autoload.php";
+require_once '../data/generated-conf/config.php';
 
 use Application\Console\Console;
 use Application\Console\ConsoleParameters;

@@ -3,12 +3,9 @@
 namespace Application\Controller\Admin;
 
 
+use Application\Config\Config;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
-use Application\Controller\ControllerException;
-use Application\Router\Router;
-use Application\Service\AuthService\AuthService;
-use Doctrine\ORM\EntityManager;
 
 class Controller
 {
@@ -28,9 +25,14 @@ class Controller
 
         $authService = $this->getService('authService');
 
-        if(!$authService->hasAccess())
+        if(!$authService->isAuthenticated() && !$authService->hasAccess())
         {
             return $this->redirect('Admin\UserController:login');
+        }
+
+        if(!$authService->hasAccess())
+        {
+            return $this->redirect(Config::get('defaultAction'));
         }
     }
 
@@ -71,7 +73,7 @@ class Controller
     }
 
     /**
-     * @param $controller
+     * @param string $controller
      * @param array $parameters
      * @param int $code
      */

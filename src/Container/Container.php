@@ -3,14 +3,11 @@
 namespace Application\Container;
 
 
-use Application\Config\Config;
 use Application\Context\Context;
 use Application\Logger\Logger;
 use Application\Logger\LoggerLevel;
 use Application\Response\Response;
 use Application\Service\ServiceContainer\ServiceContainer;
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
 
 class Container
 {
@@ -38,7 +35,6 @@ class Container
 
     /**
      * @return Response
-     * @throws \Doctrine\ORM\ORMException
      */
     public function __invoke()
     {
