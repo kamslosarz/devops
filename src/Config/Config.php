@@ -2,11 +2,11 @@
 
 namespace Application\Config;
 
+use Application\Application;
+
 final class Config
 {
     private static $config;
-
-    private static $environment = '_test';
 
     public static function get($key)
     {
@@ -25,7 +25,7 @@ final class Config
 
     public static function load()
     {
-        self::$config = self::loadFile('config' . self::$environment . '.php');
+        self::$config = self::loadFile('config' . Application::getEnvironment() . '.php');
     }
 
     public static function loadFile($filename)

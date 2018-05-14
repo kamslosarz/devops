@@ -49,7 +49,7 @@ class Admin extends Command
         foreach(Config::get('routes') as $route)
         {
             $userPrivilege = new UserPrivilege();
-            $userPrivilege->setName(Router::getCompactName($route[0], $route[1]));
+            $userPrivilege->setName(Router::getCompactRouteName($route[0], $route[1]));
             $user->addUserPrivilege($userPrivilege);
         }
 

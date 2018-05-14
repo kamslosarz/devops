@@ -4,6 +4,7 @@ namespace Test\TestCase;
 
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
+use Application\Router\Route;
 use Application\Service\Session\Session;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +23,10 @@ abstract class ControllerTestCase extends TestCase
             ->once()
             ->getMock();
 
+        $routeMock = m::mock(Route::class);
+        $routeMock->shouldReceive('getAccess')
+            ->andReturns(Route::ACCESS_PUBLIC);
+
         $authServiceMock = m::mock(\Application\Service\AuthService\AuthService::class);
         $authServiceMock->shouldReceive('hasAccess')
             ->once()
@@ -33,6 +38,9 @@ abstract class ControllerTestCase extends TestCase
             ->shouldReceive('isAuthenticated')
             ->once()
             ->andReturns(true)
+            ->shouldReceive('getRoute')
+            ->once()
+            ->andReturns($routeMock)
             ->getMock();
 
         $serviceContainerMock = m::mock(\Application\Service\ServiceContainer\ServiceContainer::class);

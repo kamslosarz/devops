@@ -133,14 +133,14 @@ class AuthService implements ServiceInterface
             }
         }
 
-        return Router::getCompactName($route->getController(), $route->getAction()) === Config::get('defaultAction');
+        return Router::getCompactRouteName($route->getController(), $route->getAction()) === Config::get('defaultAction');
     }
 
     private function checkPrivilege(UserPrivilege $privilege)
     {
         $route = $this->request->getRoute();
 
-        return $privilege->getName() === Router::getCompactName($route->getController(), $route->getAction());
+        return $privilege->getName() === Router::getCompactRouteName($route->getController(), $route->getAction());
     }
 
     public function createAuthToken($username, $password)

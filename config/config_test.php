@@ -5,6 +5,7 @@ return [
         '/admin/login' => [
             'Admin\UserController',
             'loginAction',
+            \Application\Router\Route::ACCESS_PUBLIC
         ],
         '/admin/logout' => [
             'Admin\UserController',
@@ -33,12 +34,12 @@ return [
             'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR
         ]
     ],
-    'twig'=>[
-        'loader'=>[
-            'templates'=>dirname(__DIR__).'/src/Resource',
+    'twig' => [
+        'loader' => [
+            'templates' => dirname(__DIR__) . '/src/Resource',
 //            'cache' => dirname(__DIR__).'/cache/twig'
             'cache' => false
         ]
     ],
-    'web_dir'=>dirname(__DIR__).'/www'
+    'web_dir' => dirname(__DIR__) . '/www'
 ];

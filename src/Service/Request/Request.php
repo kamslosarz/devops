@@ -41,7 +41,7 @@ class Request implements ServiceInterface
 
     public function isPost()
     {
-        return strtolower($this->server('REQUEST_URI')) === RequestMethods::POST;
+        return strtolower($this->server('REQUEST_METHOD')) === RequestMethods::POST;
     }
 
     public function getSession()

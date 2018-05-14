@@ -66,7 +66,7 @@ class Router
         }
     }
 
-    public static function getCompactName($controller, $action)
+    public static function getCompactRouteName($controller, $action)
     {
         return sprintf('%s:%s', $controller, str_replace('Action', '', $action));
     }
@@ -76,6 +76,11 @@ class Router
         $relativeUrl = null;
         foreach($this->routes as $uri => $route)
         {
+            if(isset($route[2]))
+            {
+                unset($route[2]);
+            }
+
             if([$controller, $action] === $route)
             {
                 $relativeUrl = $uri;
@@ -89,7 +94,7 @@ class Router
 
         if(!$relativeUrl)
         {
-            throw new RouteException(sprintf('Route "%s" not found', $this->requestUri));
+            throw new RouteException(sprintf('Route "%s" not found by parameters', $this->requestUri));
         }
 
         return $relativeUrl;

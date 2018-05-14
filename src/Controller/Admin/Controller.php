@@ -6,8 +6,10 @@ namespace Application\Controller\Admin;
 use Application\Config\Config;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
+use Application\Router\Route;
+use Application\Service\Request\Request;
 
-class Controller
+abstract class Controller
 {
     private $container;
     private $appender;
@@ -25,12 +27,12 @@ class Controller
 
         $authService = $this->getService('authService');
 
-        if(!$authService->isAuthenticated() && !$authService->hasAccess())
+        if(!$authService->isAuthenticated() && ($this->getRequest()->getRoute()->getAccess() !== Route::ACCESS_PUBLIC))
         {
             return $this->redirect('Admin\UserController:login');
         }
 
-        if(!$authService->hasAccess())
+        if(!$authService->hasAccess() && ($this->getRequest()->getRoute()->getAccess() !== Route::ACCESS_PUBLIC))
         {
             return $this->redirect(Config::get('defaultAction'));
         }
@@ -67,15 +69,20 @@ class Controller
         return $this->getService('authService')->getUser();
     }
 
+    /**
+     * @return Request
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
     public function getRequest()
     {
         return $this->getService('request');
     }
 
     /**
-     * @param string $controller
+     * @param $controller
      * @param array $parameters
      * @param int $code
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function redirect($controller, $parameters = [], $code = 301)
     {

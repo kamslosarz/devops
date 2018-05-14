@@ -4,7 +4,6 @@ namespace Application\Controller\Admin;
 
 use Application\Container\Appender\AppenderLevel;
 use Application\Form\User\LoginForm;
-use Application\Model\User;
 use Application\Service\AuthService\AuthService;
 
 class UserController extends Controller
@@ -16,6 +15,11 @@ class UserController extends Controller
 
         /** @var AuthService $authService */
         $authService = $this->getService('authService');
+
+        if($authService->isAuthenticated())
+        {
+            return $this->redirect('Admin\AdminController:index', []);
+        }
 
         if($request->isPost())
         {
@@ -41,6 +45,7 @@ class UserController extends Controller
         /** @var AuthService $authService */
         $authService = $this->getService('authService');
         $authService->clearSession();
+        $this->addMessage('Successfully logged out', AppenderLevel::SUCCESS);
 
         return $this->redirect('Admin\UserController:login');
     }

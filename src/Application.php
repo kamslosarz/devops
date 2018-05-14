@@ -6,14 +6,10 @@ use Application\Config\Config;
 use Application\Container\Container;
 use Application\Logger\Logger;
 use Application\Logger\LoggerLevel;
-use Application\Response\Response;
-use Application\Response\ResponseCodes;
-use Application\View\View;
-use Application\View\ViewException;
 
 final class Application
 {
-    private $router;
+    private static $environment = '_dev';
     private $logger;
 
     public function __construct()
@@ -32,5 +28,23 @@ final class Application
         $response = $container->getResponse();
 
         return $response();
+    }
+
+    public static function getEnvironment()
+    {
+        return self::$environment;
+    }
+
+    public static function setDevelopment()
+    {
+        self::$environment = '_dev';
+    }
+    public static function setTesting()
+    {
+        self::$environment = '_test';
+    }
+    public static function setProduction()
+    {
+        self::$environment = null;
     }
 }
