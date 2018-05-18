@@ -35,14 +35,6 @@ final class Application
         return self::$environment;
     }
 
-    public static function setDevelopment()
-    {
-        self::$environment = '_dev';
-    }
-    public static function setTesting()
-    {
-        self::$environment = '_test';
-    }
     public static function setProduction()
     {
         self::$environment = null;

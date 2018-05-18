@@ -13,9 +13,8 @@ try
     }
 
     require_once '../vendor/autoload.php';
-    require_once '../data/generated-conf/config.php';
+    require_once '../config/propel/config.php';
 
-    Application::setDevelopment();
     (new Application())();
 }
 catch(Exception $e)

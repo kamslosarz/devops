@@ -32,4 +32,20 @@ final class Config
     {
         return include dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $filename;
     }
+
+    /**
+     * @param $filename
+     * @return mixed
+     * @throws ConfigException
+     */
+    public static function loadFlatFile($filename)
+    {
+        if(file_exists($filename))
+        {
+            return include $filename;
+        }
+
+        throw new ConfigException(sprintf('File "%s" not exists', $filename));
+    }
+
 }

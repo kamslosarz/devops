@@ -2,17 +2,43 @@
 
 namespace Test\TestCase;
 
+use Application\Config\Config;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Router\Route;
 use Application\Service\Session\Session;
 use Mockery as m;
+use PHPUnit\DbUnit\TestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Test\ControllerDispatcher\ControllerDispatcher;
 
 abstract class ControllerTestCase extends TestCase
 {
+    use TestCaseTrait;
+
+    // only instantiate pdo once for test clean-up/fixture load
+    static private $pdo = null;
+
+    // only instantiate PHPUnit_Extensions_Database_DB_IDatabaseConnection once per test
+    private $conn = null;
+
+    final public function getConnection()
+    {
+        if($this->conn === null)
+        {
+            if(self::$pdo == null)
+            {
+                self::$pdo = new \PDO(sprintf('sqlite::memory:', dirname(dirname(__DIR__))));
+                self::$pdo->exec(file_get_contents(sprintf('%s/default.sql', FIXTURE_DIR)));
+            }
+
+            $this->conn = $this->createDefaultDBConnection(self::$pdo, ':memory:');
+        }
+
+        return $this->conn;
+    }
+
     /**
      * @return m\MockInterface
      */
@@ -103,5 +129,4 @@ abstract class ControllerTestCase extends TestCase
     {
         return new Crawler($html);
     }
-
 }

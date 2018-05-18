@@ -14,4 +14,9 @@ class AdminControllerTest extends \Test\TestCase\ControllerTestCase
 
         $this->assertEquals([], $response);
     }
+
+    public function getDataSet()
+    {
+        return $this->createArrayDataSet([]);
+    }
 }

@@ -7,24 +7,38 @@ use Application\Factory\Factory;
 
 abstract class Command
 {
-    const COMMANDS = [
-        'docker' => Docker::class,
-        'cache' => Cache::class,
-        'admin' => Admin::class
-    ];
-
     private $errors;
 
+    const COMMAND_NAMESPACE = 'Application\Console\Command';
+
+    /**\
+     * @param $command
+     * @return Command|null
+     */
     public static function getInstance($command)
     {
-        if(!isset(self::COMMANDS[$command]))
+        if(!self::exists($command))
         {
-            return false;
+            return null;
         }
 
-        $command = self::COMMANDS[$command];
+        $command = self::getCommandNamespace($command);
 
         return Factory::getInstance($command);
+    }
+
+    /**
+     * @param $command
+     * @return bool
+     */
+    private static function exists($command)
+    {
+        return class_exists(self::getCommandNamespace($command));
+    }
+
+    private static function getCommandNamespace($command)
+    {
+        return sprintf('%s\%s', self::COMMAND_NAMESPACE, $command);
     }
 
     public function setError($error)

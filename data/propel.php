@@ -1,6 +1,16 @@
 <?php
 return [
     'propel' => [
+        'paths' => [
+//            'projectDir' => '',
+//            'schemaDir' => '',
+//            'outputDir' => '',
+            'phpDir' => '../src',
+            'phpConfDir' => '../config/propel',
+            'sqlDir' => '../tests/fixture',
+            'migrationDir' => 'migrations',
+//            'composerDir' => ''
+        ],
         'database' => [
             'connections' => [
                 'default' => [
@@ -16,3 +26,5 @@ return [
         ]
     ]
 ];
+
+

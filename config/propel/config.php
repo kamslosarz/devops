@@ -4,7 +4,7 @@ $serviceContainer->checkVersion('2.0.0-dev');
 $serviceContainer->setAdapterClass('default', 'sqlite');
 $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
 $manager->setConfiguration(array (
-  'dsn' => 'sqlite:/mnt/b4517e53-fc73-47a8-a901-625aa901c804/devops/data/devops.db3',
+  'dsn' => 'sqlite:../data/devops.db3',
   'user' => 'root',
   'password' => '',
   'settings' =>
