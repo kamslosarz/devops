@@ -2,7 +2,6 @@
 
 namespace Test\TestCase;
 
-use Application\Config\Config;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Router\Route;
@@ -23,19 +22,44 @@ abstract class ControllerTestCase extends TestCase
     // only instantiate PHPUnit_Extensions_Database_DB_IDatabaseConnection once per test
     private $conn = null;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        self::$pdo = new \PDO(sprintf('sqlite:%s/test_devops.db3', FIXTURE_DIR));
+        self::$pdo->exec(file_get_contents(sprintf('%s/default.sql', FIXTURE_DIR)));
+
+        $this->conn = $this->createDefaultDBConnection(self::$pdo, 'test');
+
+        $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
+        $serviceContainer->checkVersion('2.0.0-dev');
+        $serviceContainer->setAdapterClass('default', 'sqlite');
+        $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
+        $manager->setConfiguration(array(
+            'dsn' => sprintf('sqlite:%s/test_devops.db3', FIXTURE_DIR),
+            'user' => '',
+            'password' => '',
+            'settings' =>
+                array(
+                    'charset' => 'utf8',
+                    'queries' =>
+                        array(),
+                ),
+            'classname' => '\\Propel\\Runtime\\Connection\\ConnectionWrapper',
+            'model_paths' =>
+                array(
+                    0 => 'src',
+                    1 => 'vendor',
+                ),
+        ));
+        $manager->setName('default');
+        $serviceContainer->setConnectionManager('default', $manager);
+        $serviceContainer->setDefaultDatasource('default');
+
+    }
+
     final public function getConnection()
     {
-        if($this->conn === null)
-        {
-            if(self::$pdo == null)
-            {
-                self::$pdo = new \PDO(sprintf('sqlite::memory:', dirname(dirname(__DIR__))));
-                self::$pdo->exec(file_get_contents(sprintf('%s/default.sql', FIXTURE_DIR)));
-            }
-
-            $this->conn = $this->createDefaultDBConnection(self::$pdo, ':memory:');
-        }
-
         return $this->conn;
     }
 

@@ -35,6 +35,7 @@ class Container
 
     /**
      * @return Response
+     * @throws \Application\Logger\LoggerException
      */
     public function __invoke()
     {

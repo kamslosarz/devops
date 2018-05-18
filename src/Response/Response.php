@@ -45,12 +45,15 @@ class Response
 
     public function __invoke($force = false)
     {
-        foreach($this->headers as $header)
+        if(!headers_sent())
         {
-            header($header);
-        }
+            foreach($this->headers as $header)
+            {
+                header($header);
+            }
 
-        header("X-PHP-Response-Code: {$this->code}", true, $this->code);
+            header("X-PHP-Response-Code: {$this->code}", true, $this->code);
+        }
 
         echo $this->results;
         if($force)

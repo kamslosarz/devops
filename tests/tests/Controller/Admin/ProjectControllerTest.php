@@ -5,16 +5,9 @@ class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
 
     public function testIndexAction()
     {
-        $projects = $this->getConnection()->getConnection()->exec('select * from projects');
-        var_dump($projects);
-
         $projects = \Model\ProjectQuery::create()->find();
-        var_dump($projects);
 
-        exit;
-
-
-        $this->assertEquals(1, sizeof($projects->fetchAll()));
+        $this->assertEquals(1, sizeof($projects->count()));
     }
 
     public function getDataSet()
