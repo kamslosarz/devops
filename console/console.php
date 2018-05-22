@@ -2,13 +2,14 @@
 
 set_include_path(dirname(__DIR__));
 
-if(!file_exists('vendor/autoload.php') || !file_exists('data/generated-conf/config.php'))
+if(!file_exists('vendor/autoload.php') || !file_exists('config/propel/config.php'))
 {
     echo 'ERROR: Run this file from project directory';
+    exit(PHP_EOL);
 }
 
 include "vendor/autoload.php";
-include 'data/generated-conf/config.php';
+include 'config/propel/config.php';
 
 use Application\Console\Console;
 use Application\Console\ConsoleParameters;

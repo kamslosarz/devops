@@ -17,7 +17,7 @@ class TestForm extends Form implements FormInterface
      */
     protected function build(FormBuilder $formBuilder)
     {
-        $formBuilder->addField('login', FieldTypes::INPUT, [
+        $formBuilder->addField('username', FieldTypes::INPUT, [
             'label' => 'Input'
         ], [
             'type' => 'text'

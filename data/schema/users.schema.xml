@@ -22,7 +22,7 @@
     </table>
 
 
-    <table name="users_roles" idMethod="native" phpName="UserRole">
+    <table name="users_roles" idMethod="native" phpName="UserRole" isCrossRef="true">
         <column name="user_id" type="INTEGER" primaryKey="true" required="true"/>
         <column name="role_id" type="INTEGER" primaryKey="true" required="true"/>
         <foreign-key foreignTable="users">
@@ -34,7 +34,7 @@
     </table>
 
 
-    <table name="users_privileges" idMethod="native" phpName="UserPrivilege">
+    <table name="users_privileges" idMethod="native" phpName="UserPrivilege" isCrossRef="true">
         <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
         <column name="user_id" type="INTEGER"/>
         <column name="name" type="VARCHAR" size="255" required="true"/>

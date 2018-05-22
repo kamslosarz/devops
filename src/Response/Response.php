@@ -55,7 +55,7 @@ class Response
             header("X-PHP-Response-Code: {$this->code}", true, $this->code);
         }
 
-        echo $this->results;
+        return $this->results;
         if($force)
         {
             exit();

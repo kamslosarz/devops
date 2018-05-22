@@ -22,7 +22,6 @@ final class Application
     public function __invoke()
     {
         $this->logger->log('Initializing Application', LoggerLevel::INFO);
-
         $container = new Container($this->logger);
         $container();
         $response = $container->getResponse();

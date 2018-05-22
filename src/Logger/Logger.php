@@ -48,7 +48,6 @@ final class Logger
     {
         if(isset($this->loggers[$loggerName]))
         {
-
             return $this->loggers[$loggerName];
         }
         else

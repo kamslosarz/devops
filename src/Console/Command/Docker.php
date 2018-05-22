@@ -17,6 +17,11 @@ class Docker extends Command
         $this->run();
     }
 
+    public function up()
+    {
+        passthru('sudo docker-compose up -d');
+    }
+
     public function run()
     {
         passthru('sudo docker-compose up --build -d');

@@ -5,8 +5,11 @@ namespace Test\TestCase;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Router\Route;
+use Application\Service\AuthService\AuthService;
 use Application\Service\Session\Session;
 use Mockery as m;
+use Model\User;
+use Model\UserAuthToken;
 use PHPUnit\DbUnit\TestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -16,50 +19,56 @@ abstract class ControllerTestCase extends TestCase
 {
     use TestCaseTrait;
 
-    // only instantiate pdo once for test clean-up/fixture load
     static private $pdo = null;
 
-    // only instantiate PHPUnit_Extensions_Database_DB_IDatabaseConnection once per test
     private $conn = null;
 
-    public function setUp()
-    {
-        parent::setUp();
-
-        self::$pdo = new \PDO(sprintf('sqlite:%s/test_devops.db3', FIXTURE_DIR));
-        self::$pdo->exec(file_get_contents(sprintf('%s/default.sql', FIXTURE_DIR)));
-
-        $this->conn = $this->createDefaultDBConnection(self::$pdo, 'test');
-
-        $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
-        $serviceContainer->checkVersion('2.0.0-dev');
-        $serviceContainer->setAdapterClass('default', 'sqlite');
-        $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
-        $manager->setConfiguration(array(
-            'dsn' => sprintf('sqlite:%s/test_devops.db3', FIXTURE_DIR),
-            'user' => '',
-            'password' => '',
-            'settings' =>
-                array(
-                    'charset' => 'utf8',
-                    'queries' =>
-                        array(),
-                ),
-            'classname' => '\\Propel\\Runtime\\Connection\\ConnectionWrapper',
-            'model_paths' =>
-                array(
-                    0 => 'src',
-                    1 => 'vendor',
-                ),
-        ));
-        $manager->setName('default');
-        $serviceContainer->setConnectionManager('default', $manager);
-        $serviceContainer->setDefaultDatasource('default');
-
-    }
+    private $user;
 
     final public function getConnection()
     {
+        if($this->conn === null)
+        {
+            if(self::$pdo == null)
+            {
+                self::$pdo = new \PDO(
+                    sprintf('sqlite:%s/test_devops.db3', FIXTURE_DIR)
+                );
+                self::$pdo->exec(
+                    file_get_contents(
+                        sprintf('%s/default.sql', FIXTURE_DIR)
+                    )
+                );
+            }
+
+            $this->conn = $this->createDefaultDBConnection(self::$pdo);
+
+            $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
+            $serviceContainer->checkVersion('2.0.0-dev');
+            $serviceContainer->setAdapterClass('default', 'sqlite');
+            $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
+            $manager->setConfiguration(array(
+                'dsn' => sprintf('sqlite:%s/test_devops.db3', FIXTURE_DIR),
+                'user' => '',
+                'password' => '',
+                'settings' =>
+                    array(
+                        'charset' => 'utf8',
+                        'queries' =>
+                            array(),
+                    ),
+                'classname' => '\\Propel\\Runtime\\Connection\\ConnectionWrapper',
+                'model_paths' =>
+                    array(
+                        0 => 'src',
+                        1 => 'vendor',
+                    ),
+            ));
+            $manager->setName('default');
+            $serviceContainer->setConnectionManager('default', $manager);
+            $serviceContainer->setDefaultDatasource('default');
+        }
+
         return $this->conn;
     }
 
@@ -144,13 +153,40 @@ abstract class ControllerTestCase extends TestCase
         return m::mock(Appender::class);
     }
 
-    public function getDispatcher()
+    public function getDispatcher($logged = true)
     {
-        return new ControllerDispatcher();
+        $controllerDispatcher = new ControllerDispatcher();
+
+        if($logged)
+        {
+            $controllerDispatcher->getRequest()->setCookie(AuthService::AUTH_KEY_NAME, $this->getAdminUser()->getUserAuthTokens()->getFirst()->getToken());
+        }
+
+        return $controllerDispatcher;
     }
 
     public function getCrawler($html)
     {
         return new Crawler($html);
+    }
+
+    /**
+     * @return User
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
+    public function getAdminUser()
+    {
+        if(!$this->user)
+        {
+            $this->user = new User();
+            $this->user->setUsername('Admin');
+            $this->user->setPassword(md5('aslknd08qh'));
+            $this->user->save();
+            $userAuthToken = new UserAuthToken();
+            $userAuthToken->setToken(md5($this->user->getUsername(). $this->user->getPassword()));
+            $this->user->addUserAuthToken($userAuthToken);
+        }
+
+        return $this->user;
     }
 }

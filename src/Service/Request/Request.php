@@ -9,12 +9,12 @@ use Application\Service\Session\Session;
 
 class Request implements ServiceInterface
 {
-    private $get;
-    private $post;
-    private $server;
-    private $session;
+    protected $get;
+    protected $post;
+    protected $server;
+    protected $session;
     /** @var Route $route */
-    private $route;
+    protected $route;
 
     public function __construct(Session $session)
     {

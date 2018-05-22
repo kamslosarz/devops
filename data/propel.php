@@ -3,7 +3,7 @@ return [
     'propel' => [
         'paths' => [
 //            'projectDir' => '',
-//            'schemaDir' => '',
+            'schemaDir' => 'schema',
 //            'outputDir' => '',
             'phpDir' => '../src',
             'phpConfDir' => '../config/propel',

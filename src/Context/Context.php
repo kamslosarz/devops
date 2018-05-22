@@ -40,6 +40,7 @@ class Context
      * @return array|string
      * @throws ContextException
      * @throws ServiceContainerException
+     * @throws \Application\Logger\LoggerException
      */
     public function __invoke()
     {
