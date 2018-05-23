@@ -22,7 +22,6 @@ final class Application
     public function __invoke()
     {
         $this->logger->log('Initializing Application', LoggerLevel::INFO);
-
         $container = new Container($this->logger);
         $container();
         $response = $container->getResponse();
@@ -35,14 +34,6 @@ final class Application
         return self::$environment;
     }
 
-    public static function setDevelopment()
-    {
-        self::$environment = '_dev';
-    }
-    public static function setTesting()
-    {
-        self::$environment = '_test';
-    }
     public static function setProduction()
     {
         self::$environment = null;

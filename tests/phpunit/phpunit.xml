@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit
-        backupStaticAttributes="false"
+<phpunit backupStaticAttributes="false"
         colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        processIsolation="true"
         stopOnFailure="false"
-        syntaxCheck="false"
-
-        bootstrap="bootstrap.php">
+        backupGlobals = "false"
+        bootstrap="bootstrap.php"
+>
     <testsuite name="Application Test Suite">
         <directory>../tests</directory>
     </testsuite>

@@ -5,14 +5,62 @@ namespace Test\TestCase;
 use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Router\Route;
+use Application\Service\AuthService\AuthService;
 use Application\Service\Session\Session;
 use Mockery as m;
+use Model\User;
+use Model\UserAuthToken;
+use PHPUnit\DbUnit\TestCaseTrait;
 use PHPUnit\Framework\TestCase;
+use Propel\Runtime\Connection\PdoConnection;
 use Symfony\Component\DomCrawler\Crawler;
 use Test\ControllerDispatcher\ControllerDispatcher;
 
 abstract class ControllerTestCase extends TestCase
 {
+    use TestCaseTrait;
+
+    static private $pdo = null;
+
+    private $conn = null;
+
+    private $user;
+
+    /**
+     * @return null|\PHPUnit\DbUnit\Database\DefaultConnection
+     */
+    final public function getConnection()
+    {
+        if($this->conn === null)
+        {
+            if(self::$pdo == null)
+            {
+                self::$pdo = new PdoConnection(
+                    sprintf('sqlite::memory:', FIXTURE_DIR)
+                );
+                self::$pdo->exec(
+                    file_get_contents(
+                        sprintf('%s/default.sql', FIXTURE_DIR)
+                    )
+                );
+            }
+
+            $this->conn = $this->createDefaultDBConnection(self::$pdo);
+
+            $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
+            $manager->setConnection($this->conn->getConnection());
+            $manager->setName('default');
+
+            $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
+            $serviceContainer->checkVersion('2.0.0-dev');
+            $serviceContainer->setAdapterClass('default', 'sqlite');
+            $serviceContainer->setConnectionManager('default', $manager);
+            $serviceContainer->setDefaultDatasource('default');
+        }
+
+        return $this->conn;
+    }
+
     /**
      * @return m\MockInterface
      */
@@ -94,9 +142,16 @@ abstract class ControllerTestCase extends TestCase
         return m::mock(Appender::class);
     }
 
-    public function getDispatcher()
+    public function getDispatcher($logged = true)
     {
-        return new ControllerDispatcher();
+        $controllerDispatcher = new ControllerDispatcher();
+
+        if($logged)
+        {
+            $controllerDispatcher->getRequest()->setCookie(AuthService::AUTH_KEY_NAME, $this->getAdminUser()->getUserAuthTokens()->getFirst()->getToken());
+        }
+
+        return $controllerDispatcher;
     }
 
     public function getCrawler($html)
@@ -104,4 +159,23 @@ abstract class ControllerTestCase extends TestCase
         return new Crawler($html);
     }
 
+    /**
+     * @return User
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
+    public function getAdminUser()
+    {
+        if(!$this->user)
+        {
+            $this->user = new User();
+            $this->user->setUsername('Admin');
+            $this->user->setPassword(md5('aslknd08qh'));
+            $this->user->save();
+            $userAuthToken = new UserAuthToken();
+            $userAuthToken->setToken(md5($this->user->getUsername(). $this->user->getPassword()));
+            $this->user->addUserAuthToken($userAuthToken);
+        }
+
+        return $this->user;
+    }
 }

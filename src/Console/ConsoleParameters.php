@@ -5,13 +5,16 @@ namespace Application\Console;
 
 class ConsoleParameters
 {
+    const COMMAND_PATTERN_REGEX = '/^[A-Za-z]+:[A-Za-z]+$/';
+
     private $parameters;
     private $command;
     private $action;
 
     public function __construct($parameters)
     {
-        if (isset($parameters[1]) && preg_match('/^[a-z]+:[a-z]+$/', $parameters[1])) {
+        if(isset($parameters[1]) && preg_match(self::COMMAND_PATTERN_REGEX, $parameters[1]))
+        {
             $tmp = explode(':', $parameters[1]);
 
             $this->command = $tmp[0];

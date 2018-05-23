@@ -2,13 +2,19 @@
 
 namespace Test\ControllerDispatcher;
 
+use Application\Service\Session\Session;
+use Mockery as m;
+use Test\Decorator\RequestDecorator;
+
+
 class ControllerDispatcher
 {
-    private $request;
+    protected $request;
 
     public function __construct()
     {
-        $this->request = new RequestMock();
+        $sessionMock = m::mock(Session::class);
+        $this->request = new RequestDecorator($sessionMock);
     }
 
     public function getRequest()
@@ -25,17 +31,13 @@ class ControllerDispatcher
 
     public function dispatch($route)
     {
-        $this->getRequest()->setServer('REQUEST_URI', $route);
+        $this->request->setServer('REQUEST_URI', $route);
         $_SERVER = $this->request->getServer();
         $_POST = $this->request->getPost();
         $_GET = $this->request->getQuery();
-        $content = '';
-        ob_start();
-        (new \Application\Application())();
-        $content = ob_get_clean();
-        ob_clean();
+        $_COOKIE = $this->request->getCookie();
 
-        return $content;
+        return (new \Application\Application())();
     }
 
 }

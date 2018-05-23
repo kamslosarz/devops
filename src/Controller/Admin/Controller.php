@@ -8,6 +8,7 @@ use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Router\Route;
 use Application\Service\Request\Request;
+use Application\Service\ServiceInterface;
 
 abstract class Controller
 {
@@ -56,7 +57,7 @@ abstract class Controller
 
     /**
      * @param $serviceName
-     * @return mixed
+     * @return ServiceInterface
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function getService($serviceName)

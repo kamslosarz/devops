@@ -2,4 +2,5 @@
 
 include_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
 
-\Application\Application::setTesting();
+define('FIXTURE_DIR', dirname(__DIR__).'/fixture');
+

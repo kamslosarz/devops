@@ -24,7 +24,7 @@ class Console
         /** @var Command $command */
         $command = Command::getInstance($this->consoleParameters->getCommand());
 
-        if(!$command)
+        if(!($command instanceof Command))
         {
             throw new ConsoleException('Command not found');
         }

@@ -10,9 +10,7 @@ class Session implements ServiceInterface
 
     public function __construct()
     {
-        session_start();
-
-        global $_SESSION;
+        $this->init();
         $this->session = $_SESSION;
     }
 
@@ -25,12 +23,11 @@ class Session implements ServiceInterface
 
     public function get($key)
     {
-        return isset($this->session[$key])? $this->session[$key] : null;
+        return isset($this->session[$key]) ? $this->session[$key] : null;
     }
 
     public function save()
     {
-        global $_SESSION;
         $_SESSION = $this->session;
 
         return $this;
@@ -38,9 +35,16 @@ class Session implements ServiceInterface
 
     public function clear()
     {
-        global $_SESSION;
         $_SESSION = null;
         $this->session = null;
         session_destroy();
+    }
+
+    private function init()
+    {
+        if(!session_id())
+        {
+            @session_start();
+        }
     }
 }
