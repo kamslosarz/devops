@@ -18,6 +18,7 @@ class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
         ]);
     }
 
+
     public function getDataSet()
     {
         return $this->createFlatXMLDataSet($this->getSeed('projects.xml'));

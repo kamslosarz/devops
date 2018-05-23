@@ -15,7 +15,7 @@ return [
             'Admin\AdminController',
             'indexAction',
         ],
-        '/admin/project/index' => [
+        '/admin/project' => [
             'Admin\ProjectController',
             'indexAction',
         ],

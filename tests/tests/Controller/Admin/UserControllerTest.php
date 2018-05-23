@@ -14,7 +14,7 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
 
     public function testLoginActionPost()
     {
-        $dispatcher = $this->getDispatcher();
+        $dispatcher = $this->getDispatcher(false);
         $dispatcher->getRequest()->setRequestMethod(\Application\Service\Request\RequestMethods::POST);
         $dispatcher->getRequest()->setPost('login', [
             'username' => 'testAdmin',
@@ -25,7 +25,16 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         $crawler = $this->getCrawler($results);
 
         $this->assertEquals('Successfully logged in', $crawler->filterXPath('//div[@class="main-content"]/div[@class="messages"]/p[@class="success"]')->text());
-        $this->assertEquals($this->getAdminUser()->getUserAuthTokens()->getFirst()->getToken(), $dispatcher->getRequest()->getCookie(\Application\Service\AuthService\AuthService::AUTH_KEY_NAME));
+        $this->assertEquals($this->getUser()->getUserAuthTokens()->getFirst()->getToken(), $dispatcher->getRequest()->getCookie(\Application\Service\AuthService\AuthService::AUTH_KEY_NAME));
+    }
+
+    public function testLogoutAction()
+    {
+        $results = $this->getDispatcher()->dispatch('/admin/logout');
+
+        var_dump($results);
+
+
     }
 
     public function getDataSet()
@@ -40,4 +49,5 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
             ]
         ]);
     }
+
 }

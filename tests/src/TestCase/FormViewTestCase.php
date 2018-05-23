@@ -38,9 +38,8 @@ abstract class FormViewTestCase extends ViewTestCase
         ]);
     }
 
-    private function getFormDecorator(){
-
+    private function getFormDecorator()
+    {
         return new FormViewHelperDecorator(new TestForm());
     }
-
 }

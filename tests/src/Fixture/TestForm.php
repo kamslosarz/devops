@@ -58,6 +58,6 @@ class TestForm extends Form implements FormInterface
 
     public function getMethod()
     {
-        return RequestMethods::POST;
+        return Request\RequestMethods::POST;
     }
 }
