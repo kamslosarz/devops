@@ -14,17 +14,18 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
 
     public function testLoginActionPost()
     {
-//        $dispatcher = $this->getDispatcher();
-//        $dispatcher->getRequest()->setRequestMethod(\Application\Service\Request\RequestMethods::POST);
-//        $dispatcher->getRequest()->setPost('login', [
-//            'username' => 'testAdmin',
-//            'password' => 'testPassword'
-//        ]);
-//
-//        $results = $dispatcher->dispatch('/admin/login');
-//        $crawler = $this->getCrawler($results);
-//
-//        $this->assertEquals('','');
+        $dispatcher = $this->getDispatcher();
+        $dispatcher->getRequest()->setRequestMethod(\Application\Service\Request\RequestMethods::POST);
+        $dispatcher->getRequest()->setPost('login', [
+            'username' => 'testAdmin',
+            'password' => 'testPassword'
+        ]);
+
+        $results = $dispatcher->dispatch('/admin/login');
+        $crawler = $this->getCrawler($results);
+
+        $this->assertEquals('Successfully logged in', $crawler->filterXPath('//div[@class="main-content"]/div[@class="messages"]/p[@class="success"]')->text());
+        $this->assertEquals($this->getAdminUser()->getUserAuthTokens()->getFirst()->getToken(), $dispatcher->getRequest()->getCookie(\Application\Service\AuthService\AuthService::AUTH_KEY_NAME));
     }
 
     public function getDataSet()

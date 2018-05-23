@@ -60,8 +60,8 @@ class AuthService implements ServiceInterface
 
         $userAuthToken = new \Model\UserAuthToken();
         $userAuthToken->setToken($token);
-        $this->user->addUserAuthToken($userAuthToken);
-        $this->user->save();
+        $userAuthToken->setUser($this->user);
+        $userAuthToken->save();
         $this->request->getSession()->set(self::AUTH_KEY_NAME, $token);
 
         return $this->user;

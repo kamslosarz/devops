@@ -46,11 +46,9 @@ abstract class ControllerTestCase extends TestCase
             }
 
             $this->conn = $this->createDefaultDBConnection(self::$pdo);
-
             $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
             $manager->setConnection($this->conn->getConnection());
             $manager->setName('default');
-
             $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
             $serviceContainer->checkVersion('2.0.0-dev');
             $serviceContainer->setAdapterClass('default', 'sqlite');
@@ -172,10 +170,16 @@ abstract class ControllerTestCase extends TestCase
             $this->user->setPassword(md5('aslknd08qh'));
             $this->user->save();
             $userAuthToken = new UserAuthToken();
-            $userAuthToken->setToken(md5($this->user->getUsername(). $this->user->getPassword()));
+            $userAuthToken->setToken(md5($this->user->getUsername() . $this->user->getPassword()));
             $this->user->addUserAuthToken($userAuthToken);
         }
 
         return $this->user;
     }
+
+    public function getSeed($file)
+    {
+        return sprintf('%s/seed/%s', FIXTURE_DIR, $file);
+    }
+
 }

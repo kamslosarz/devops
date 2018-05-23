@@ -6,23 +6,20 @@ class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
     {
         $results = $this->getDispatcher()->dispatch('/admin/project');
         $crawler = $this->getCrawler($results);
+        $table = $crawler->filterXPath('//table[@id="projects-list"]');
 
-
-
-        var_dump($crawler->text());
-
+        $this->assertCount(10, $table->filterXPath('//tr'));
+        $this->assertEquals([
+            'test project name',
+            'repository source'
+        ], [
+            trim($table->filterXPath('//tr[1]')->filterXPath('//td[1]')->text()),
+            trim($table->filterXPath('//tr[1]')->filterXPath('//td[2]')->text())
+        ]);
     }
 
     public function getDataSet()
     {
-        return $this->createArrayDataSet([
-            'projects' => [
-                [
-                    'id' => 1,
-                    'name' => 'repository name',
-                    'repository' => 'repository source'
-                ]
-            ]
-        ]);
+        return $this->createFlatXMLDataSet($this->getSeed('projects.xml'));
     }
 }

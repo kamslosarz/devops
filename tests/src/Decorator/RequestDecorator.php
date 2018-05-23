@@ -16,8 +16,13 @@ class RequestDecorator extends Request
     protected $route;
     protected $cookie;
 
-    public function getCookie()
+    public function getCookie($name = null)
     {
+        if(!is_null($name))
+        {
+            return isset($this->cookie[$name]) ? $this->cookie[$name] : null;
+        }
+
         return $this->cookie;
     }
 
