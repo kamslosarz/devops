@@ -12,6 +12,7 @@ use Model\User;
 use Model\UserAuthToken;
 use PHPUnit\DbUnit\TestCaseTrait;
 use PHPUnit\Framework\TestCase;
+use Propel\Runtime\Connection\PdoConnection;
 use Symfony\Component\DomCrawler\Crawler;
 use Test\ControllerDispatcher\ControllerDispatcher;
 
@@ -25,14 +26,17 @@ abstract class ControllerTestCase extends TestCase
 
     private $user;
 
+    /**
+     * @return null|\PHPUnit\DbUnit\Database\DefaultConnection
+     */
     final public function getConnection()
     {
         if($this->conn === null)
         {
             if(self::$pdo == null)
             {
-                self::$pdo = new \PDO(
-                    sprintf('sqlite:%s/test_devops.db3', FIXTURE_DIR)
+                self::$pdo = new PdoConnection(
+                    sprintf('sqlite::memory:', FIXTURE_DIR)
                 );
                 self::$pdo->exec(
                     file_get_contents(
@@ -43,28 +47,13 @@ abstract class ControllerTestCase extends TestCase
 
             $this->conn = $this->createDefaultDBConnection(self::$pdo);
 
+            $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
+            $manager->setConnection($this->conn->getConnection());
+            $manager->setName('default');
+
             $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
             $serviceContainer->checkVersion('2.0.0-dev');
             $serviceContainer->setAdapterClass('default', 'sqlite');
-            $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
-            $manager->setConfiguration(array(
-                'dsn' => sprintf('sqlite:%s/test_devops.db3', FIXTURE_DIR),
-                'user' => '',
-                'password' => '',
-                'settings' =>
-                    array(
-                        'charset' => 'utf8',
-                        'queries' =>
-                            array(),
-                    ),
-                'classname' => '\\Propel\\Runtime\\Connection\\ConnectionWrapper',
-                'model_paths' =>
-                    array(
-                        0 => 'src',
-                        1 => 'vendor',
-                    ),
-            ));
-            $manager->setName('default');
             $serviceContainer->setConnectionManager('default', $manager);
             $serviceContainer->setDefaultDatasource('default');
         }
