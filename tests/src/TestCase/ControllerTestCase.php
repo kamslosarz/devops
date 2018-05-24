@@ -8,6 +8,7 @@ use Application\Router\Route;
 use Application\Service\AuthService\AuthService;
 use Application\Service\Session\Session;
 use Mockery as m;
+use PHPUnit\DbUnit\DataSet\ArrayDataSet;
 use PHPUnit\DbUnit\TestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -47,6 +48,29 @@ abstract class ControllerTestCase extends TestCase
     public function getSeed($file)
     {
         return sprintf('%s/seed/%s', FIXTURE_DIR, $file);
+    }
+
+    /**
+     * @return ArrayDataSet
+     */
+    public function getUserDataSet()
+    {
+        return new ArrayDataSet( [
+            'users' => [
+                [
+                    'id' => 1,
+                    'username' => 'testAdmin',
+                    'password' => md5('testPassword')
+                ]
+            ],
+            'users_auth_tokens' => [
+                [
+                    'id' => 1,
+                    'user_id' => 1,
+                    'token' => 'edc3d8b693144e3d62a3ac774c4da98c'
+                ]
+            ]
+        ]);
     }
 
     /**

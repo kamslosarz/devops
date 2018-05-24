@@ -26,7 +26,7 @@ final class Application
         $container();
         $response = $container->getResponse();
 
-        return $response();
+        return $response;
     }
 
     public static function getEnvironment()

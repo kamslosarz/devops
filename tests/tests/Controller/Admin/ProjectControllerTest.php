@@ -7,7 +7,6 @@ class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
         $results = $this->getDispatcher()->dispatch('/admin/project');
         $crawler = $this->getCrawler($results);
         $table = $crawler->filterXPath('//table[@id="projects-list"]');
-
         $this->assertCount(10, $table->filterXPath('//tr'));
         $this->assertEquals([
             'test project name',
@@ -18,9 +17,14 @@ class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
         ]);
     }
 
-
-    public function getDataSet()
+    protected function getDataSet()
     {
-        return $this->createFlatXMLDataSet($this->getSeed('projects.xml'));
+        $dataSet = new \Test\Fixture\CompositeDataSet();
+        $dataSet->addDataSet(parent::getUserDataSet());
+        $dataSet->addDataSet($this->createFlatXMLDataSet($this->getSeed('projects.xml')));
+
+        return $dataSet;
     }
+
 }
+

@@ -25,29 +25,27 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         $crawler = $this->getCrawler($results);
 
         $this->assertEquals('Successfully logged in', $crawler->filterXPath('//div[@class="main-content"]/div[@class="messages"]/p[@class="success"]')->text());
-        $this->assertEquals($this->getUser()->getUserAuthTokens()->getFirst()->getToken(), $dispatcher->getRequest()->getCookie(\Application\Service\AuthService\AuthService::AUTH_KEY_NAME));
+        $this->assertEquals(
+            $_SESSION[\Application\Service\AuthService\AuthService::AUTH_KEY_NAME],
+            $this->getUser()->getUserAuthTokens(
+                \Model\UserAuthTokenQuery::create()->limit(1)->orderByCreatedAt(\Propel\Runtime\ActiveQuery\ModelCriteria::DESC)
+            )->getFirst()->getToken()
+        );
     }
 
     public function testLogoutAction()
     {
-        $results = $this->getDispatcher()->dispatch('/admin/logout');
+        $dispatcher = $this->getDispatcher();
+        $results = $dispatcher->dispatch('/admin/logout');
 
-        var_dump($results);
-
-
+        $this->assertNull($results);
+        $this->assertEquals('Location: /admin/login', $dispatcher->getResponse()->getHeaders()[0]);
+        $this->assertEquals('Successfully logged out', $_SESSION['messages']['SUCCESS']);
     }
 
     public function getDataSet()
     {
-        return $this->createArrayDataSet([
-            'users' => [
-                [
-                    'id' => 1,
-                    'username' => 'testAdmin',
-                    'password' => md5('testPassword')
-                ]
-            ]
-        ]);
+        return parent::getUserDataSet();
     }
 
 }

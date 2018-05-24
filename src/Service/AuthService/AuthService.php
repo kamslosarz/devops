@@ -45,7 +45,6 @@ class AuthService implements ServiceInterface
     public function authenticate($username, $password)
     {
         $password = md5($password);
-        $token = $this->createAuthToken($username, $password);
 
         /** @var \Model\User user */
         $this->user = UserQuery::create()->findOneByArray([
@@ -58,10 +57,14 @@ class AuthService implements ServiceInterface
             return false;
         }
 
+        $token = $this->createAuthToken($username, $password);
+
         $userAuthToken = new \Model\UserAuthToken();
         $userAuthToken->setToken($token);
         $userAuthToken->setUser($this->user);
         $userAuthToken->save();
+        $this->user->addUserAuthToken($userAuthToken);
+        $this->user->save();
         $this->request->getSession()->set(self::AUTH_KEY_NAME, $token);
 
         return $this->user;
@@ -86,6 +89,7 @@ class AuthService implements ServiceInterface
         if(($userAuthToken instanceof \Model\UserAuthToken))
         {
             $this->user = $userAuthToken->getUser();
+
             return ($this->user instanceof \Model\User);
         }
 
@@ -98,6 +102,8 @@ class AuthService implements ServiceInterface
      */
     public function hasAccess()
     {
+
+        // OSOBNY SERVIS
         $route = $this->request->getRoute();
 
         if(!$this->user && ($route->getController() === self::LOGIN_CONTROLLER && $route->getAction() === self::LOGIN_ACTION))

@@ -4,12 +4,15 @@ namespace Test\TestCase\Traits;
 
 use Model\User;
 use Model\UserAuthToken;
+use Model\UserQuery;
 use Propel\Runtime\Connection\PdoConnection;
 
 trait DatabaseTestCaseTrait
 {
     static private $pdo = null;
     private $conn = null;
+
+    /** @var User */
     private $user;
 
     /**
@@ -45,26 +48,15 @@ trait DatabaseTestCaseTrait
         return $this->conn;
     }
 
-
     /**
      * @return User
      * @throws \Propel\Runtime\Exception\PropelException
      */
     public function getUser()
     {
-        if(!$this->user)
-        {
-            $this->user = new User();
-            $this->user->setUsername('Admin');
-            $this->user->setPassword(md5('aslknd08qh'));
-            $this->user->save();
-            $userAuthToken = new UserAuthToken();
-            $userAuthToken->setToken(md5($this->user->getUsername() . $this->user->getPassword()));
-            $userAuthToken->setUser($this->user);
-            $userAuthToken->save();
-        }
+        $this->user = UserQuery::create()->findOneById(1);
 
-        return $this->user;
+        return $this->user ;
     }
 
 }

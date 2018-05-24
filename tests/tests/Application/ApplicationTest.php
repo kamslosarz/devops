@@ -16,8 +16,7 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
 
     public function getDataSet()
     {
-        return $this->createArrayDataSet([]);
+        return parent::getUserDataSet();
     }
-
 
 }

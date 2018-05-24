@@ -37,13 +37,17 @@ class Response
         return $this;
     }
 
-
     public function getType()
     {
         return $this->type;
     }
 
-    public function __invoke($force = false)
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    public function __invoke()
     {
         if(!headers_sent())
         {
@@ -56,10 +60,5 @@ class Response
         }
 
         return $this->results;
-        if($force)
-        {
-            exit();
-        }
     }
-
 }

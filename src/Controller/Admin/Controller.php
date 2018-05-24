@@ -94,6 +94,8 @@ abstract class Controller
         ]);
 
         $this->getRequest()->getSession()->save();
-        return $response(true);
+        $this->getRequest()->getCookie()->save();
+
+        return $response();
     }
 }

@@ -16,7 +16,7 @@ try
     require_once '../vendor/autoload.php';
     require_once '../config/propel/config.php';
 
-    echo (new Application())();
+    echo ((new \Application\Application())())();
 }
 catch(Exception $e)
 {

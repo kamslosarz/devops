@@ -3,7 +3,7 @@
 namespace Application\Service\Request;
 
 use Application\Router\Route;
-use Application\Router\Router;
+use Application\Service\Cookie\Cookie;
 use Application\Service\ServiceInterface;
 use Application\Service\Session\Session;
 
@@ -15,18 +15,20 @@ class Request implements ServiceInterface
     protected $session;
     /** @var Route $route */
     protected $route;
+    protected $cookie;
 
-    public function __construct(Session $session)
+    public function __construct(Session $session, Cookie $cookie)
     {
         $this->get = $_GET;
         $this->post = $_POST;
         $this->server = $_SERVER;
         $this->session = $session;
+        $this->cookie = $cookie;
     }
 
     public function server($key)
     {
-        return isset($this->server[$key])? $this->server[$key] : null;
+        return isset($this->server[$key]) ? $this->server[$key] : null;
     }
 
     public function get($key)
@@ -47,6 +49,11 @@ class Request implements ServiceInterface
     public function getSession()
     {
         return $this->session;
+    }
+
+    public function getCookie()
+    {
+        return $this->cookie;
     }
 
     public function requestUri()

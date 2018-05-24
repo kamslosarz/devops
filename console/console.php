@@ -1,15 +1,18 @@
 <?php
 
-set_include_path(dirname(__DIR__));
+set_include_path(__DIR__);
 
-if(!file_exists('vendor/autoload.php') || !file_exists('config/propel/config.php'))
+const PROPEL_CONFIG='config/propel/config.php';
+const AUTOLOAD_FILE='vendor/autoload.php';
+
+if(!file_exists(AUTOLOAD_FILE) || !file_exists(PROPEL_CONFIG))
 {
     echo 'ERROR: Run this file from project directory';
     exit(PHP_EOL);
 }
 
-include "vendor/autoload.php";
-include 'config/propel/config.php';
+require AUTOLOAD_FILE;
+require PROPEL_CONFIG;
 
 use Application\Console\Console;
 use Application\Console\ConsoleParameters;
@@ -25,7 +28,7 @@ catch(\Application\Console\ConsoleException $consoleException)
 }
 catch(\Exception $e)
 {
-    echo 'ERROR: ' . $e->getMessage();
+    echo sprintf('ERROR: %s in %s', $e->getMessage(), $e->getTraceAsString());
 }
 
 echo PHP_EOL;
