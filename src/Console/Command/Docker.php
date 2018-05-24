@@ -19,27 +19,27 @@ class Docker extends Command
 
     public function up()
     {
-        passthru('sudo docker-compose up -d');
+        passthru('docker-compose up -d');
     }
 
     public function run()
     {
-        passthru('sudo docker-compose up --build -d');
+        passthru('docker-compose up --build -d');
     }
 
     public function build()
     {
-        passthru('sudo docker-compose up --build -d --force-recreate');
+        passthru('docker-compose up --build -d --force-recreate');
     }
 
     public function stop()
     {
-        passthru('sudo docker-compose down');
+        passthru('docker-compose down');
     }
 
     public function root($dockerName = null)
     {
         $dockerName = $dockerName ? $dockerName : self::DOCKER_CONTAINER_NAME;
-        passthru(sprintf('sudo docker exec -it --user root %s /bin/bash', $dockerName));
+        passthru(sprintf('docker exec -it --user root %s /bin/bash', $dockerName));
     }
 }
