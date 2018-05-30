@@ -16,7 +16,7 @@ class Appender
 
     public function append($message, $level)
     {
-        $this->session->set('messages', (array)$this->session->get('messages') + [$level => $message]);
+        $this->session->set('messages', array_merge_recursive([$level => $message], (array)$this->session->get('messages')));
 
         return $this;
     }
@@ -24,7 +24,7 @@ class Appender
     public function flashMessages()
     {
         $messages = $this->session->get('messages');
-        $this->session->set('messages', []);
+        $this->session->set('messages', null);
         return $messages;
     }
 

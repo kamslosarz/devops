@@ -4,7 +4,7 @@ namespace Application\Logger;
 
 use Application\Config\Config;
 
-final class Logger
+class Logger
 {
     const LOGGER_FILE_SUFFIX = '-logs.log';
 
@@ -36,7 +36,7 @@ final class Logger
 
         if(!is_writable($filename))
         {
-            throw new LoggerException(sprintf('Directory "%s" is not writable', $filename));
+            throw new LoggerException(sprintf('Directory \'%s\' is not writable', $filename));
         }
 
         file_put_contents($filename, sprintf("[%s] %s: %s %s", date('Y-m-d-H-i-s') , $level, $message, PHP_EOL), FILE_APPEND);

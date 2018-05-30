@@ -22,7 +22,7 @@ abstract class Command
     {
         if(!self::exists($command))
         {
-            throw new \Application\Console\Command\CommandException(sprintf('Command \'%s\' not found', $command));
+            return null;
         }
 
         $command = self::getCommandNamespace($command);

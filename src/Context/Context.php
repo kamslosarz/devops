@@ -81,13 +81,13 @@ class Context
         if(!class_exists($controller))
         {
 
-            throw new ContextException(sprintf('Controller "%s" not exists', $controller));
+            throw new ContextException(sprintf('Controller \'%s\' not exists', $controller));
         }
 
         if(!method_exists($controller, $action))
         {
 
-            throw new ContextException(sprintf('Action "%s" not exists in %s', $action, $controller));
+            throw new ContextException(sprintf('Action \'%s\' not exists in %s', $action, $controller));
         }
     }
 

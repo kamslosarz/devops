@@ -1,7 +1,5 @@
 <?php
 
-namespace tests\Console\Command\Command;
-
 use Application\Console\Command\Command;
 use Model\User;
 use Model\UserQuery;
@@ -28,7 +26,7 @@ class AdminTest extends ConsoleTestCase
         $command = Command::getInstance('Admin');
 
         $this->assertFalse($command->isValid('Admin', ''));
-        $this->assertEquals($command->getErrors(), ['Invalid user data "Admin" ""']);
+        $this->assertEquals($command->getErrors(), ['Invalid user data \'Admin\' \'\'']);
     }
 
     /**

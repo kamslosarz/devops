@@ -47,6 +47,11 @@ class Response
         return $this->headers;
     }
 
+    public function getResults()
+    {
+        return $this->results;
+    }
+
     public function __invoke()
     {
         if(!headers_sent())

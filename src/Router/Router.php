@@ -31,7 +31,7 @@ class Router
             }
         }
 
-        throw new RouteException(sprintf('Route "%s" not found', $this->requestUri));
+        throw new RouteException(sprintf('Route \'%s\' not found', $this->requestUri));
     }
 
     private function match($route, $uri)
@@ -94,7 +94,7 @@ class Router
 
         if(!$relativeUrl)
         {
-            throw new RouteException(sprintf('Route "%s" not found by parameters', $this->requestUri));
+            throw new RouteException(sprintf('Route \'%s\' not found by parameters', $this->requestUri));
         }
 
         return $relativeUrl;

@@ -20,7 +20,7 @@ class Admin extends Command
     {
         if(!$username || !$password)
         {
-            $this->setError(sprintf('Invalid user data "%s" "%s"', $username, $password));
+            $this->setError(sprintf('Invalid user data \'%s\' \'%s\'', $username, $password));
             return false;
         }
 

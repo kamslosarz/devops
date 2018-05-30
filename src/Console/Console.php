@@ -52,6 +52,6 @@ class Console
         $dispatcher = new Dispatcher($command, $action);
         $dispatcher->dispatch($this->consoleParameters->getParameters());
 
-        echo $dispatcher->getResults();
+        return $dispatcher->getResults();
     }
 }

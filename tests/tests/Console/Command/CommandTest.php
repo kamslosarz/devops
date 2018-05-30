@@ -1,7 +1,5 @@
 <?php
 
-namespace src\Console\Command;
-
 use Application\Console\Command\Command;
 use Application\Console\Command\CommandException;
 use Test\TestCase\ConsoleTestCase;
@@ -41,11 +39,10 @@ class CommandTest extends ConsoleTestCase
     /**
      * @throws CommandException
      */
-    public function testShouldReturnCommandException()
+    public function testShouldReturnNull()
     {
-        $this->expectException(CommandException::class);
-        $this->expectExceptionMessage('Command \'notExistingCommand\' not found');
+        $command = Command::getInstance('notExistingCommand');
 
-        Command::getInstance('notExistingCommand');
+        $this->assertNull($command);
     }
 }
