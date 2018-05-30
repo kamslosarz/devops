@@ -39,9 +39,9 @@ class Docker extends ConsoleExecutable
         $this->execute('docker-compose down');
     }
 
-    public function root($dockerName = null)
+    public function ssh($dockerName = null)
     {
         $dockerName = $dockerName ? $dockerName : self::DOCKER_CONTAINER_NAME;
-        $this->execute('docker exec -it --user root %s /bin/bash', [$dockerName]);
+        $this->execute('docker exec -it -u devops %s /bin/bash', [$dockerName]);
     }
 }
