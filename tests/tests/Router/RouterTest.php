@@ -3,7 +3,7 @@
 class RouterTest extends \PHPUnit\Framework\TestCase
 {
 
-    public function testMatch()
+    public function testShouldMatchRoute()
     {
         $router = new \Application\Router\Router('/admin/test/1/test');
 
@@ -16,7 +16,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    public function testGetRouteByParameters()
+    public function testShouldGetRouteByParameters()
     {
         $router = new \Application\Router\Router();
 

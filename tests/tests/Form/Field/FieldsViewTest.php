@@ -15,7 +15,7 @@ class FieldsViewTest extends \Test\TestCase\FormViewTestCase
      * @throws Twig_Error_Syntax
      * @throws \Application\Form\FormBuilder\Field\FieldException
      */
-    public function testInputView()
+    public function testShouldRenderInputView()
     {
         /** @var Input $input */
         $input = Field::instance('test_input', FieldTypes::INPUT, [
@@ -40,7 +40,7 @@ class FieldsViewTest extends \Test\TestCase\FormViewTestCase
      * @throws Twig_Error_Syntax
      * @throws \Application\Form\FormBuilder\Field\FieldException
      */
-    public function testSelectView()
+    public function testShouldRenderSelectView()
     {
         /** @var Select $select */
         $select = Field::instance('test_select', FieldTypes::SELECT, [
@@ -68,7 +68,7 @@ class FieldsViewTest extends \Test\TestCase\FormViewTestCase
      * @throws Twig_Error_Syntax
      * @throws \Application\Form\FormBuilder\Field\FieldException
      */
-    public function testButtonView()
+    public function testShouldRenderButtonView()
     {
         /** @var Button $button */
         $button = Field::instance('test_button', FieldTypes::BUTTON, [
@@ -90,7 +90,7 @@ class FieldsViewTest extends \Test\TestCase\FormViewTestCase
      * @throws Twig_Error_Syntax
      * @throws \Application\Form\FormBuilder\Field\FieldException
      */
-    public function testTextareaView()
+    public function testShouldRenderTextareaView()
     {
         /** @var Textarea $textarea */
         $textarea = Field::instance('test_textarea', FieldTypes::TEXTAREA, [

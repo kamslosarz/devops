@@ -3,6 +3,7 @@
 namespace Application\Console\Command\Command;
 
 use Application\Config\Config;
+use Application\Console\Command\Command;
 use Application\Router\Router;
 use Model\User as user;
 use Model\UserPrivilege;
@@ -38,23 +39,27 @@ class Admin extends Command
     /**
      * @param $username
      * @param $password
+     * @return string
      * @throws \Propel\Runtime\Exception\PropelException
      */
     public function create($username, $password)
     {
         $user = new User();
         $user->setUsername($username)
-            ->setPassword(md5($password));
+            ->setPassword(md5($password))
+            ->save();
 
         foreach(Config::get('routes') as $route)
         {
             $userPrivilege = new UserPrivilege();
             $userPrivilege->setName(Router::getCompactRouteName($route[0], $route[1]));
+            $userPrivilege->setUser($user);
+            $userPrivilege->save();
             $user->addUserPrivilege($userPrivilege);
         }
 
         $user->save();
 
-        echo 'Admin created';
+        return 'Admin created';
     }
 }

@@ -2,7 +2,7 @@
 
 class UserControllerTest extends \Test\TestCase\ControllerTestCase
 {
-    public function testLoginAction()
+    public function testShouldRenderLoginAction()
     {
         $results = $this->getDispatcher(false)->dispatch('/admin/login');
         $crawler = $this->getCrawler($results);
@@ -12,7 +12,7 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         );
     }
 
-    public function testLoginActionPost()
+    public function testShouldExecuteLoginActionPost()
     {
         $dispatcher = $this->getDispatcher(false);
         $dispatcher->getRequest()->setRequestMethod(\Application\Service\Request\RequestMethods::POST);
@@ -33,7 +33,7 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         );
     }
 
-    public function testLogoutAction()
+    public function testShouldRenderLogoutAction()
     {
         $dispatcher = $this->getDispatcher();
         $results = $dispatcher->dispatch('/admin/logout');

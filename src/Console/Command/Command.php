@@ -2,7 +2,7 @@
 
 namespace Application\Console\Command;
 
-
+use Application\Console\CommandException;
 use Application\Factory\Factory;
 use Application\Logger\Logger;
 
@@ -13,15 +13,16 @@ abstract class Command
 
     const COMMAND_NAMESPACE = 'Application\Console\Command\Command';
 
-    /**\
+    /**
      * @param $command
-     * @return Command|null
+     * @return mixed
+     * @throws \Application\Console\Command\CommandException
      */
     public static function getInstance($command)
     {
         if(!self::exists($command))
         {
-            return null;
+            throw new \Application\Console\Command\CommandException(sprintf('Command \'%s\' not found', $command));
         }
 
         $command = self::getCommandNamespace($command);
@@ -62,4 +63,6 @@ abstract class Command
 
         return $this->logger;
     }
+
+    abstract public function isValid();
 }

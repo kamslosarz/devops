@@ -2,7 +2,7 @@
 
 class ApplicationTest extends \Test\TestCase\ControllerTestCase
 {
-    public function testApplication()
+    public function testShouldInvokeApplicationInstance()
     {
         $dispatcher = $this->getDispatcher();
         $results = $dispatcher->dispatch('/admin/login');

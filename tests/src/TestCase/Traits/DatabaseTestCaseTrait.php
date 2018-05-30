@@ -3,7 +3,6 @@
 namespace Test\TestCase\Traits;
 
 use Model\User;
-use Model\UserAuthToken;
 use Model\UserQuery;
 use Propel\Runtime\Connection\PdoConnection;
 
@@ -56,7 +55,7 @@ trait DatabaseTestCaseTrait
     {
         $this->user = UserQuery::create()->findOneById(1);
 
-        return $this->user ;
+        return $this->user;
     }
 
 }

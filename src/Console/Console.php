@@ -3,7 +3,9 @@
 namespace Application\Console;
 
 
+
 use Application\Console\Command\Command;
+use Application\Console\Command\CommandException;
 use Application\Router\Dispatcher\Dispatcher;
 
 class Console
@@ -16,6 +18,7 @@ class Console
     }
 
     /**
+     * @throws CommandException
      * @throws ConsoleException
      * @throws \ReflectionException
      */
@@ -49,6 +52,6 @@ class Console
         $dispatcher = new Dispatcher($command, $action);
         $dispatcher->dispatch($this->consoleParameters->getParameters());
 
-        return $dispatcher->getResults();
+        echo $dispatcher->getResults();
     }
 }
