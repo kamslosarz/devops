@@ -22,7 +22,6 @@ class FieldsTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($input->getTagname(), 'input');
         $this->assertEquals($input->getAttributesAsString(), ' type="text" class="test123"');
-
     }
 
     public function testShouldCreateSelect()

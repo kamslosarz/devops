@@ -31,6 +31,7 @@ class FormViewHelper
         {
             return $this->form->getName();
         }
+
         return sprintf('%s[%s]', $this->form->getName(), $name);
     }
 
