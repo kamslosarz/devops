@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\ControllerDispatcher;
+namespace Test\ApplicationContainer;
 
 use Application\Response\Response;
 use Application\Service\Cookie\Cookie;
@@ -9,7 +9,7 @@ use Mockery as m;
 use Test\Decorator\RequestDecorator;
 
 
-class ControllerDispatcher
+class ApplicationContainer
 {
     protected $request;
     private $response;

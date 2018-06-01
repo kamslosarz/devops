@@ -12,7 +12,7 @@ use PHPUnit\DbUnit\DataSet\ArrayDataSet;
 use PHPUnit\DbUnit\TestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
-use Test\ControllerDispatcher\ControllerDispatcher;
+use Test\ApplicationContainer\ApplicationContainer;
 use Test\TestCase\Traits\DatabaseTestCaseTrait;
 
 abstract class ControllerTestCase extends TestCase
@@ -20,6 +20,7 @@ abstract class ControllerTestCase extends TestCase
     use TestCaseTrait;
     use DatabaseTestCaseTrait;
 
+    /**
     /**
      * @return m\MockInterface
      */
@@ -30,14 +31,14 @@ abstract class ControllerTestCase extends TestCase
 
     public function getDispatcher($logged = true)
     {
-        $controllerDispatcher = new ControllerDispatcher();
+        $app = new ApplicationContainer();
 
         if($logged)
         {
-            $controllerDispatcher->getRequest()->setCookie(AuthService::AUTH_KEY_NAME, $this->getUser()->getUserAuthTokens()->getFirst()->getToken());
+            $app->getRequest()->setCookie(AuthService::AUTH_KEY_NAME, $this->getUser()->getUserAuthTokens()->getFirst()->getToken());
         }
 
-        return $controllerDispatcher;
+        return $app;
     }
 
     public function getCrawler($html)
