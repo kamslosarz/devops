@@ -24,11 +24,7 @@ class ConsoleTest extends ConsoleTestCase
         $consoleParametersMock = m::mock(ConsoleParameters::class)
             ->shouldReceive('getCommand')
             ->once()
-            ->andReturns('Admin')
-            ->getMock()
-            ->shouldReceive('getAction')
-            ->once()
-            ->andReturns('create')
+            ->andReturns('Admin\Create')
             ->getMock()
             ->shouldReceive('getParameters')
             ->once()
@@ -46,7 +42,7 @@ class ConsoleTest extends ConsoleTestCase
     /**
      * @dataProvider shouldThrowConsoleException
      */
-    public function testShouldThrowConsoleException($exceptionMessage, $command, $action, $parameters)
+    public function testShouldThrowConsoleException($exceptionMessage, $command, $parameters)
     {
         $this->expectException(ConsoleException::class);
         $this->expectExceptionMessage($exceptionMessage);
@@ -55,10 +51,6 @@ class ConsoleTest extends ConsoleTestCase
             ->shouldReceive('getCommand')
             ->once()
             ->andReturns($command)
-            ->getMock()
-            ->shouldReceive('getAction')
-            ->once()
-            ->andReturns($action)
             ->getMock()
             ->shouldReceive('getParameters')
             ->once()
@@ -75,20 +67,12 @@ class ConsoleTest extends ConsoleTestCase
         return [
             'invalid command' => [
                 'Command not found',
-                'invalidCommand',
-                'invalidAction',
-                []
-            ],
-            'invalid action' => [
-                'Invalid action',
-                'Docker',
-                'invalidAction',
+                'InvalidCommand\InvalidAction',
                 []
             ],
             'Invalid Number of parameters' => [
                 'Invalid number of parameters',
-                'Admin',
-                'Create',
+                'Admin\create',
                 []
             ],
         ];

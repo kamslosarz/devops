@@ -6,7 +6,7 @@ use Application\Logger\LoggerLevel;
 
 abstract class ConsoleExecutable extends Command
 {
-    protected function execute($command, $parameters = [])
+    protected function executeInShell($command, $parameters = [])
     {
         $this->log(sprintf('Running ' . $command, ...$parameters), LoggerLevel::INFO);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Console\Command\Command;
+namespace Application\Console\Command\Command\Admin;
 
 use Application\Config\Config;
 use Application\Console\Command\Command;
@@ -9,7 +9,7 @@ use Model\User as user;
 use Model\UserPrivilege;
 use Model\UserQuery;
 
-class Admin extends Command
+class Create extends Command
 {
     /**
      * @param string $username
@@ -42,7 +42,7 @@ class Admin extends Command
      * @return string
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function create($username, $password)
+    public function execute($username, $password)
     {
         $user = new User();
         $user->setUsername($username)

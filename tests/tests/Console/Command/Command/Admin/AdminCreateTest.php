@@ -5,7 +5,7 @@ use Model\User;
 use Model\UserQuery;
 use Test\TestCase\ConsoleTestCase;
 
-class AdminTest extends ConsoleTestCase
+class AdminCreateTest extends ConsoleTestCase
 {
     /**
      * @dataProvider shouldValidateCommand
@@ -13,7 +13,10 @@ class AdminTest extends ConsoleTestCase
      */
     public function testShouldValidateCommand($username, $password)
     {
-        $command = Command::getInstance('Admin');
+        $command = Command::getInstance((new \Application\Console\ConsoleParameters([
+            '',
+            'admin:create'
+        ]))->getCommand());
 
         $this->assertTrue($command->isValid($username, $password));
     }
@@ -23,7 +26,10 @@ class AdminTest extends ConsoleTestCase
      */
     public function testShouldReturnInvalidUserDataError()
     {
-        $command = Command::getInstance('Admin');
+        $command = Command::getInstance((new \Application\Console\ConsoleParameters([
+            '',
+            'admin:create'
+        ]))->getCommand());
 
         $this->assertFalse($command->isValid('Admin', ''));
         $this->assertEquals($command->getErrors(), ['Invalid user data \'Admin\' \'\'']);
@@ -34,7 +40,10 @@ class AdminTest extends ConsoleTestCase
      */
     public function testShouldReturnUserAlreadyExists()
     {
-        $command = Command::getInstance('Admin');
+        $command = Command::getInstance((new \Application\Console\ConsoleParameters([
+            '',
+            'admin:create'
+        ]))->getCommand());
 
         $this->assertFalse($command->isValid('testAdmin', 'password'));
         $this->assertEquals($command->getErrors(), ['User already exists']);
@@ -46,8 +55,12 @@ class AdminTest extends ConsoleTestCase
     public function testShouldCreateAdmin()
     {
         $username = 'TestUsername';
-        $command = Command::getInstance('Admin');
-        $return = $command->create($username, 'test admin password');
+        $command = Command::getInstance((new \Application\Console\ConsoleParameters([
+            '',
+            'admin:create'
+        ]))->getCommand());
+
+        $return = $command->execute($username, 'test admin password');
 
         $this->assertEquals('Admin created', $return);
         $this->assertInstanceOf(User::class, UserQuery::create()->findOneByUsername($username));

@@ -13,7 +13,9 @@ class CommandTest extends ConsoleTestCase
      */
     public function testShouldReturnInstance($class, $commandName)
     {
-        $command = Command::getInstance($commandName);
+        $command = Command::getInstance((new \Application\Console\ConsoleParameters(['',
+            $commandName
+        ]))->getCommand());
 
         $this->assertInstanceOf($class, $command);
     }
@@ -22,16 +24,24 @@ class CommandTest extends ConsoleTestCase
     {
         return [
             'DataSet Admin command' => [
-                Command\Admin::class,
-                'Admin'
+                Command\Admin\Create::class,
+                'admin:create'
             ],
-            'DataSet Docker command' => [
-                Command\Docker::class,
-                'Docker'
+            'DataSet Clear cache command' => [
+                Command\Cache\Clear::class,
+                'cache:clear'
             ],
-            'DataSet Cache command' => [
-                Command\Cache::class,
-                'Cache'
+            'DataSet ssh command' => [
+                Command\Docker\Ssh::class,
+                'docker:ssh'
+            ],
+            'DataSet start command' => [
+                Command\Docker\Start::class,
+                'docker:start'
+            ],
+            'DataSet stop command' => [
+                Command\Docker\Stop::class,
+                'docker:stop'
             ]
         ];
     }
@@ -41,7 +51,9 @@ class CommandTest extends ConsoleTestCase
      */
     public function testShouldReturnNull()
     {
-        $command = Command::getInstance('notExistingCommand');
+        $command = Command::getInstance((new \Application\Console\ConsoleParameters(['',
+            'notExistingCommand'
+        ]))->getCommand());
 
         $this->assertNull($command);
     }

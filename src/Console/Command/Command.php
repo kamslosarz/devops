@@ -2,21 +2,19 @@
 
 namespace Application\Console\Command;
 
-use Application\Console\CommandException;
 use Application\Factory\Factory;
 use Application\Logger\Logger;
 
 abstract class Command
 {
-    private $errors;
     private $logger;
+    private $errors;
 
     const COMMAND_NAMESPACE = 'Application\Console\Command\Command';
 
     /**
      * @param $command
-     * @return mixed
-     * @throws \Application\Console\Command\CommandException
+     * @return mixed|null
      */
     public static function getInstance($command)
     {

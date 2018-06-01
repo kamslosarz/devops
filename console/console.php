@@ -24,7 +24,7 @@ try
 }
 catch(\Application\Console\ConsoleException $consoleException)
 {
-    echo 'ERROR: ' . $consoleException->getMessage();
+    echo 'ERROR: ' . $consoleException->getMessage(). $consoleException->getTraceAsString();
 }
 catch(\Exception $e)
 {
