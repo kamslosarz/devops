@@ -8,57 +8,70 @@ use Application\Router\Route;
 use Application\Service\AuthService\AuthService;
 use Application\Service\Session\Session;
 use Mockery as m;
-use Model\User;
-use Model\UserAuthToken;
+use PHPUnit\DbUnit\DataSet\ArrayDataSet;
 use PHPUnit\DbUnit\TestCaseTrait;
 use PHPUnit\Framework\TestCase;
-use Propel\Runtime\Connection\PdoConnection;
 use Symfony\Component\DomCrawler\Crawler;
-use Test\ControllerDispatcher\ControllerDispatcher;
+use Test\ApplicationContainer\ApplicationContainer;
+use Test\TestCase\Traits\DatabaseTestCaseTrait;
 
 abstract class ControllerTestCase extends TestCase
 {
     use TestCaseTrait;
-
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $user;
+    use DatabaseTestCaseTrait;
 
     /**
-     * @return null|\PHPUnit\DbUnit\Database\DefaultConnection
+    /**
+     * @return m\MockInterface
      */
-    final public function getConnection()
+    public function getAppenderMock()
     {
-        if($this->conn === null)
+        return m::mock(Appender::class);
+    }
+
+    public function getDispatcher($logged = true)
+    {
+        $app = new ApplicationContainer();
+
+        if($logged)
         {
-            if(self::$pdo == null)
-            {
-                self::$pdo = new PdoConnection(
-                    sprintf('sqlite::memory:', FIXTURE_DIR)
-                );
-                self::$pdo->exec(
-                    file_get_contents(
-                        sprintf('%s/default.sql', FIXTURE_DIR)
-                    )
-                );
-            }
-
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-
-            $manager = new \Propel\Runtime\Connection\ConnectionManagerSingle();
-            $manager->setConnection($this->conn->getConnection());
-            $manager->setName('default');
-
-            $serviceContainer = \Propel\Runtime\Propel::getServiceContainer();
-            $serviceContainer->checkVersion('2.0.0-dev');
-            $serviceContainer->setAdapterClass('default', 'sqlite');
-            $serviceContainer->setConnectionManager('default', $manager);
-            $serviceContainer->setDefaultDatasource('default');
+            $app->getRequest()->setCookie(AuthService::AUTH_KEY_NAME, $this->getUser()->getUserAuthTokens()->getFirst()->getToken());
         }
 
-        return $this->conn;
+        return $app;
+    }
+
+    public function getCrawler($html)
+    {
+        return new Crawler($html);
+    }
+
+    public function getSeed($file)
+    {
+        return sprintf('%s/seed/%s', FIXTURE_DIR, $file);
+    }
+
+    /**
+     * @return ArrayDataSet
+     */
+    public function getUserDataSet()
+    {
+        return new ArrayDataSet( [
+            'users' => [
+                [
+                    'id' => 1,
+                    'username' => 'testAdmin',
+                    'password' => md5('testPassword')
+                ]
+            ],
+            'users_auth_tokens' => [
+                [
+                    'id' => 1,
+                    'user_id' => 1,
+                    'token' => 'edc3d8b693144e3d62a3ac774c4da98c'
+                ]
+            ]
+        ]);
     }
 
     /**
@@ -132,50 +145,5 @@ abstract class ControllerTestCase extends TestCase
             ->once()
             ->andReturns($contextMock)
             ->getMock();
-    }
-
-    /**
-     * @return m\MockInterface
-     */
-    public function getAppenderMock()
-    {
-        return m::mock(Appender::class);
-    }
-
-    public function getDispatcher($logged = true)
-    {
-        $controllerDispatcher = new ControllerDispatcher();
-
-        if($logged)
-        {
-            $controllerDispatcher->getRequest()->setCookie(AuthService::AUTH_KEY_NAME, $this->getAdminUser()->getUserAuthTokens()->getFirst()->getToken());
-        }
-
-        return $controllerDispatcher;
-    }
-
-    public function getCrawler($html)
-    {
-        return new Crawler($html);
-    }
-
-    /**
-     * @return User
-     * @throws \Propel\Runtime\Exception\PropelException
-     */
-    public function getAdminUser()
-    {
-        if(!$this->user)
-        {
-            $this->user = new User();
-            $this->user->setUsername('Admin');
-            $this->user->setPassword(md5('aslknd08qh'));
-            $this->user->save();
-            $userAuthToken = new UserAuthToken();
-            $userAuthToken->setToken(md5($this->user->getUsername(). $this->user->getPassword()));
-            $this->user->addUserAuthToken($userAuthToken);
-        }
-
-        return $this->user;
     }
 }

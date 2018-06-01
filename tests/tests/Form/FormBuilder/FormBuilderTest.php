@@ -7,7 +7,7 @@ class FormBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * @throws \Application\Form\FormBuilder\Field\FieldException
      */
-    public function testBuildForm()
+    public function testShouldBuildForm()
     {
         $formBuilder = new \Application\Form\FormBuilder\FormBuilder();
 

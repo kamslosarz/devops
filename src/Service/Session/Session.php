@@ -37,7 +37,7 @@ class Session implements ServiceInterface
     {
         $_SESSION = null;
         $this->session = null;
-        session_destroy();
+        @session_destroy();
     }
 
     private function init()

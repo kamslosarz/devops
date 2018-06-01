@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\ControllerDispatcher;
+namespace Test\ApplicationContainer;
 
 class RequestMock
 {

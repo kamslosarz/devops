@@ -2,10 +2,10 @@
 
 class FormViewTest extends \Test\TestCase\FormViewTestCase
 {
-    public function testFormViewHelper()
+    public function testShouldRenderFormViewHelper()
     {
         $loginForm = new \Application\Form\User\LoginForm();
-        $formViewHelper = $loginForm->view();
+        $formViewHelper = $loginForm->renderView();
 
         $this->assertInstanceOf(\Application\Form\FormViewHelper::class, $formViewHelper);
         $this->assertEquals($formViewHelper->getName(), 'login');
@@ -18,10 +18,10 @@ class FormViewTest extends \Test\TestCase\FormViewTestCase
      * @throws Twig_Error_Runtime
      * @throws Twig_Error_Syntax
      */
-    public function testFormRender()
+    public function testShouldRenderForm()
     {
         $loginForm = new \Application\Form\User\LoginForm();
-        $formViewHelper = $loginForm->view();
+        $formViewHelper = $loginForm->renderView();
 
         $domDocument = new \DOMDocument();
         $domDocument->loadHTML($this->getTwig()

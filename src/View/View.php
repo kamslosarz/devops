@@ -28,6 +28,9 @@ final class View
         $this->cacheAssets();
     }
 
+    /**
+     * @throws ViewException
+     */
     private function cacheAssets()
     {
         $directories = [
@@ -49,12 +52,31 @@ final class View
                     );
                     if(!is_file($dest))
                     {
-                        if(!is_dir(dirname($dest)))
+                        $destDirectory = dirname($dest);
+                        if(!is_dir($destDirectory))
                         {
-                            mkdir(dirname($dest), 0777, true);
+                            $status = mkdir($destDirectory, 0777, true);
+
+                            if(!$status)
+                            {
+                                throw new ViewException(sprintf('Cannot create \'%s\' dir \'%s\'', $destDirectory, $status));
+                            }
                         }
+
+                        if(!is_writable($destDirectory))
+                        {
+                            throw new ViewException(sprintf('Directory \'%s\' must be writeable', $destDirectory));
+                        }
+
                         touch($dest);
+                        chmod($dest, 0777);
                     }
+
+                    if(!is_writable($dest))
+                    {
+                        throw new ViewException(sprintf('Cannot write to file \'%s\'', $dest));
+                    }
+
                     copy($fileInfo->getPathname(), $dest);
                 }
             }

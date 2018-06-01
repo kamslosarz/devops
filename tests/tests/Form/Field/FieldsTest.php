@@ -12,7 +12,7 @@ class FieldsTest extends \PHPUnit\Framework\TestCase
     /**
      * @throws \Application\Form\FormBuilder\Field\FieldException
      */
-    public function testField()
+    public function testShouldCreateField()
     {
         $input = Field::instance('input', FieldTypes::INPUT, [
         ], [
@@ -22,10 +22,9 @@ class FieldsTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($input->getTagname(), 'input');
         $this->assertEquals($input->getAttributesAsString(), ' type="text" class="test123"');
-
     }
 
-    public function testSelect()
+    public function testShouldCreateSelect()
     {
         $select = new Select([
             'options' => [
@@ -38,7 +37,7 @@ class FieldsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($select->getOptions(), ['test' => 'test123']);
     }
 
-    public function testInput()
+    public function testShouldCreateInput()
     {
         $input = new Input([
             'type' => 'text'
@@ -48,7 +47,7 @@ class FieldsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($input->getTagname(), 'input');
     }
 
-    public function testButton()
+    public function testtestShouldCreateButton()
     {
         $button = new Button([
             'type' => 'submit'
@@ -58,7 +57,7 @@ class FieldsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($button->getTagname(), 'button');
     }
 
-    public function testTextarea()
+    public function testShouldCreateTextarea()
     {
         $textarea = new Textarea();
 

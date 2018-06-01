@@ -4,7 +4,6 @@ namespace Test\TestCase;
 
 use Application\Form\FormBuilder\Field\FieldInterface;
 use Application\Form\FormViewHelper;
-use Test\Decorator\FormViewHelperDecorator;
 use Test\Fixture\TestForm;
 
 abstract class FormViewTestCase extends ViewTestCase
@@ -34,13 +33,12 @@ abstract class FormViewTestCase extends ViewTestCase
     {
         return $this->getTwig()->render(sprintf('form/fields/%s.html.twig', $field->getTagname()), [
             'field' => $field,
-            'form' => $this->getFormDecorator()
+            'form' => $this->getForm()->renderView()
         ]);
     }
 
-    private function getFormDecorator(){
-
-        return new FormViewHelperDecorator(new TestForm());
+    private function getForm()
+    {
+        return new TestForm();
     }
-
 }

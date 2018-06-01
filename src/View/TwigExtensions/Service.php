@@ -7,7 +7,7 @@ class Service extends Extension implements \Twig_Extension_GlobalsInterface
     public function getGlobals()
     {
         return [
-            'container' => $this
+            'services' => $this
         ];
     }
 

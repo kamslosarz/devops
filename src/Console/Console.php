@@ -4,6 +4,7 @@ namespace Application\Console;
 
 
 use Application\Console\Command\Command;
+use Application\Console\Command\CommandException;
 use Application\Router\Dispatcher\Dispatcher;
 
 class Console
@@ -16,6 +17,7 @@ class Console
     }
 
     /**
+     * @throws CommandException
      * @throws ConsoleException
      * @throws \ReflectionException
      */
@@ -29,14 +31,7 @@ class Console
             throw new ConsoleException('Command not found');
         }
 
-        $action = $this->consoleParameters->getAction();
-
-        if(!method_exists($command, $action))
-        {
-            throw new ConsoleException('Invalid action');
-        }
-
-        if(count($this->consoleParameters->getParameters()) < (new \ReflectionMethod($command, $action))->getNumberOfRequiredParameters())
+        if(count($this->consoleParameters->getParameters()) < (new \ReflectionMethod($command, 'execute'))->getNumberOfRequiredParameters())
         {
             throw new ConsoleException('Invalid number of parameters');
         }
@@ -46,7 +41,7 @@ class Console
             throw new ConsoleException(implode(PHP_EOL, $command->getErrors()));
         }
 
-        $dispatcher = new Dispatcher($command, $action);
+        $dispatcher = new Dispatcher($command, 'execute');
         $dispatcher->dispatch($this->consoleParameters->getParameters());
 
         return $dispatcher->getResults();

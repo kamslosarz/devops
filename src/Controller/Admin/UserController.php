@@ -36,7 +36,7 @@ class UserController extends Controller
         }
 
         return [
-            'form' => $form->view()
+            'form' => $form->renderView()
         ];
     }
 

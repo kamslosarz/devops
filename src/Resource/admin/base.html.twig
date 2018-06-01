@@ -23,7 +23,7 @@
                 {{ url('/admin/index', 'pe-7s-graph', 'Dashboard') }}
             </li>
             <li class="{% if menu.isUri('/admin/project/*') %}active{% endif %}">
-                {{ url('/admin/project/index', 'pe-7s-science', 'Projects') }}
+                {{ url('/admin/project', 'pe-7s-science', 'Projects') }}
             </li>
             <li class="{% if menu.isUri('/admin/logout') %}active{% endif %}">
                 {{ url('/admin/logout', 'pe-7s-logout', 'Logout') }}

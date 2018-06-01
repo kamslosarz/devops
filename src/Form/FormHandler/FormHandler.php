@@ -14,7 +14,6 @@ class FormHandler
         if($form->getMethod() === RequestMethods::POST)
         {
             $form->setData($request->post($form->getName()));
-
         }
         elseif($form->getMethod() === RequestMethods::GET)
         {
@@ -24,7 +23,6 @@ class FormHandler
         {
             return false;
         }
-
 
         if($form->hasEntity())
         {
@@ -40,6 +38,5 @@ class FormHandler
         }
 
         return true;
-
     }
 }

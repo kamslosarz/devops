@@ -2,7 +2,7 @@
 
 class ApplicationTest extends \Test\TestCase\ControllerTestCase
 {
-    public function testApplication()
+    public function testShouldInvokeApplicationInstance()
     {
         $dispatcher = $this->getDispatcher();
         $results = $dispatcher->dispatch('/admin/login');
@@ -16,8 +16,7 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
 
     public function getDataSet()
     {
-        return $this->createArrayDataSet([]);
+        return parent::getUserDataSet();
     }
-
 
 }

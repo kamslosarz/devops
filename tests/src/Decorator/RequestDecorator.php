@@ -2,29 +2,36 @@
 
 namespace Test\Decorator;
 
-use Application\Router\Route;
+use Application\Service\Cookie\Cookie;
 use Application\Service\Request\Request;
 use Application\Service\Request\RequestMethods;
+use Application\Service\Session\Session;
+
 
 class RequestDecorator extends Request
 {
-    protected $get;
-    protected $post;
-    protected $server;
-    protected $session;
-    /** @var Route $route */
-    protected $route;
-    protected $cookie;
+    protected $get = null;
+    protected $post = null;
+    protected $server = null;
+    protected $session = null;
+    protected $cookie = null;
 
-    public function getCookie()
+    public function __construct(Session $session, Cookie $cookie)
     {
-        return $this->cookie;
+        parent::__construct($session, $cookie);
+
+        $this->cookie = [];
+        $this->session = [];
     }
 
-    public function setCookie($key, $value)
+    public function getCookie($name = null)
     {
-        $this->cookie[$key] = $value;
-        return $this;
+        if(!is_null($name))
+        {
+            return isset($this->cookie[$name]) ? $this->cookie[$name] : null;
+        }
+
+        return $this->cookie;
     }
 
     public function getServer()
@@ -49,6 +56,11 @@ class RequestDecorator extends Request
         return $this;
     }
 
+    public function getSession()
+    {
+        return $this->session;
+    }
+
     public function setPost($key, $value)
     {
         $this->post[$key] = $value;
@@ -56,26 +68,16 @@ class RequestDecorator extends Request
         return $this;
     }
 
+    public function setCookie($key, $value)
+    {
+        $this->cookie[$key] = $value;
+
+        return $this;
+    }
+
     public function isPost()
     {
         return strtolower($this->server('REQUEST_METHOD')) === RequestMethods::POST;
-    }
-
-    public function getSession()
-    {
-        return $this->session;
-    }
-
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-    public function setRoute(Route $route)
-    {
-        $this->route = $route;
-
-        return $this;
     }
 
     public function setRequestMethod($requestMethod)

@@ -37,7 +37,7 @@ class ServiceContainer
 
         if(!isset($serviceMap[$serviceName]))
         {
-            throw new ServiceContainerException(sprintf('Service "%s" not found', $serviceName));
+            throw new ServiceContainerException(sprintf('Service \'%s\' not found', $serviceName));
         }
 
         $parameters = [];

@@ -15,7 +15,7 @@ return [
             'Admin\AdminController',
             'indexAction',
         ],
-        '/admin/project/index' => [
+        '/admin/project' => [
             'Admin\ProjectController',
             'indexAction',
         ],
@@ -31,7 +31,12 @@ return [
     'defaultAction' => 'Admin\AdminController:index',
     'logger' => [
         'ApplicationLogger' => [
-            'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR
+            'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR,
+            'name' => 'app'
+        ],
+        'ConsoleLogger' => [
+            'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR,
+            'name' => 'console'
         ]
     ],
     'twig' => [

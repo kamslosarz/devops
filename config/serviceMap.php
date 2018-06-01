@@ -13,7 +13,8 @@ return [
     ],
     'request' => [
         \Application\Service\Request\Request::class, [
-            '@session'
+            '@session',
+            '@cookie'
         ]
     ],
     'authService' => [

@@ -7,6 +7,7 @@ use Application\Application;
 final class Config
 {
     private static $config;
+    private static $configs = [];
 
     public static function get($key)
     {
@@ -30,7 +31,12 @@ final class Config
 
     public static function loadFile($filename)
     {
-        return include dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $filename;
+        if(!isset(self::$configs[$filename]))
+        {
+            self::$configs[$filename] = include dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $filename;
+        }
+
+        return self::$configs[$filename];
     }
 
     /**
@@ -45,7 +51,7 @@ final class Config
             return include $filename;
         }
 
-        throw new ConfigException(sprintf('File "%s" not exists', $filename));
+        throw new ConfigException(sprintf('File \'%s\' not exists', $filename));
     }
 
 }

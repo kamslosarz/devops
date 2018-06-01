@@ -2,18 +2,19 @@
 
 namespace Application\Console\Command;
 
-
 use Application\Factory\Factory;
+use Application\Logger\Logger;
 
 abstract class Command
 {
+    private $logger;
     private $errors;
 
-    const COMMAND_NAMESPACE = 'Application\Console\Command';
+    const COMMAND_NAMESPACE = 'Application\Console\Command\Command';
 
-    /**\
+    /**
      * @param $command
-     * @return Command|null
+     * @return mixed|null
      */
     public static function getInstance($command)
     {
@@ -51,4 +52,15 @@ abstract class Command
         return $this->errors;
     }
 
+    public function getLogger()
+    {
+        if(!($this->logger instanceof Logger))
+        {
+            $this->logger = new Logger('ConsoleLogger');
+        }
+
+        return $this->logger;
+    }
+
+    abstract public function isValid();
 }

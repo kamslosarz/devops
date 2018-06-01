@@ -3,6 +3,7 @@
 namespace Test\TestCase;
 
 use Application\Config\Config;
+use Application\View\View;
 use PHPUnit\Framework\TestCase;
 
 abstract class ViewTestCase extends TestCase

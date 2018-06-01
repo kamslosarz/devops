@@ -2,27 +2,29 @@
 
 class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
 {
-    public function testIndexAction()
+    public function testShouldRenderIndexAction()
     {
         $results = $this->getDispatcher()->dispatch('/admin/project');
         $crawler = $this->getCrawler($results);
-
-
-
-        var_dump($crawler->text());
-
-    }
-
-    public function getDataSet()
-    {
-        return $this->createArrayDataSet([
-            'projects' => [
-                [
-                    'id' => 1,
-                    'name' => 'repository name',
-                    'repository' => 'repository source'
-                ]
-            ]
+        $table = $crawler->filterXPath('//table[@id="projects-list"]');
+        $this->assertCount(10, $table->filterXPath('//tr'));
+        $this->assertEquals([
+            'test project name',
+            'repository source'
+        ], [
+            trim($table->filterXPath('//tr[1]')->filterXPath('//td[1]')->text()),
+            trim($table->filterXPath('//tr[1]')->filterXPath('//td[2]')->text())
         ]);
     }
+
+    protected function getDataSet()
+    {
+        $dataSet = new \Test\Fixture\CompositeDataSet();
+        $dataSet->addDataSet(parent::getUserDataSet());
+        $dataSet->addDataSet($this->createFlatXMLDataSet($this->getSeed('projects.xml')));
+
+        return $dataSet;
+    }
+
 }
+
