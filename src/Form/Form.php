@@ -33,7 +33,7 @@ abstract class Form
         }
     }
 
-    public function view()
+    public function renderView()
     {
         return new FormViewHelper($this);
     }
