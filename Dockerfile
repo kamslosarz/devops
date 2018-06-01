@@ -14,7 +14,8 @@ ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 ADD . /var/www/devops
 
 RUN chmod 777 -R /var/www/devops/www/assets && \
-    chmod 777 -R /var/www/devops/logs
+    chmod 777 -R /var/www/devops/logs && \
+    chmod 777 /var/www/devops/data
 
 CMD /usr/sbin/apache2ctl -D FOREGROUND
 
