@@ -54,14 +54,13 @@ class Response
 
     public function __invoke()
     {
+
         if(!headers_sent())
         {
             foreach($this->headers as $header)
             {
-                header($header);
+                header($header, $this->code);
             }
-
-            header("X-PHP-Response-Code: {$this->code}", true, $this->code);
         }
 
         return $this->results;

@@ -90,7 +90,10 @@ abstract class Controller
         $route = explode(':', $controller);
         $response = $this->container->getResponse();
         $response->setHeaders([
-            sprintf('Location: %s', $this->container->getContext()->getRouter()->getRouteByParameters($route[0], sprintf('%sAction', $route[1]), $parameters))
+            sprintf('Location: %s', $this->container
+                ->getContext()
+                ->getRouter()
+                ->getRouteByParameters($route[0], sprintf('%sAction', $route[1]), $parameters))
         ]);
 
         $this->getRequest()->getSession()->save();

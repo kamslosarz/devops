@@ -17,7 +17,6 @@ class Container
     private $context;
     /** @var ServiceContainer */
     private $serviceContainer;
-    private $logger;
 
     public function __construct(Logger $logger = null)
     {

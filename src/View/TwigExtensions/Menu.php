@@ -3,12 +3,10 @@
 namespace Application\View\TwigExtensions;
 
 
-use Application\Container\Container;
-
 class Menu extends Extension implements \Twig_Extension_GlobalsInterface
 {
     const ANY_PATTERN = '*';
-    const ANY_REGEX = '[0-9a-zA-Z]+';
+    const ANY_REGEX = '[0-9a-zA-Z\/]{0,}';
 
     public function getGlobals()
     {
@@ -32,10 +30,14 @@ class Menu extends Extension implements \Twig_Extension_GlobalsInterface
 
     public function isUri($uri)
     {
-        if (!preg_match('/[\*]+/', $uri)) {
+        if(!preg_match('/[\*]+/', $uri))
+        {
             return $this->container->getServiceContainer()->getService('request')->requestUri() === $uri;
         }
 
-        return preg_match(str_replace(self::ANY_PATTERN, self::ANY_REGEX, '/' . str_replace('/', '\/', $uri) . '/'), $this->container->getServiceContainer()->getService('request')->requestUri());
+        return preg_match(
+            str_replace(self::ANY_PATTERN, self::ANY_REGEX, '/' . str_replace('/', '\/', $uri) . '/'),
+            $this->container->getServiceContainer()->getService('request')->requestUri()
+        );
     }
 }
