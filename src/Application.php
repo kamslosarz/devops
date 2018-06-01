@@ -24,9 +24,8 @@ final class Application
         $this->logger->log('Initializing Application', LoggerLevel::INFO);
         $container = new Container($this->logger);
         $container();
-        $response = $container->getResponse();
 
-        return $response;
+        return $container->getResponse();
     }
 
     public static function getEnvironment()

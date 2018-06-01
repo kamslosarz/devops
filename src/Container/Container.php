@@ -17,10 +17,10 @@ class Container
     private $context;
     /** @var ServiceContainer */
     private $serviceContainer;
+    private $logger;
 
     public function __construct(Logger $logger = null)
     {
-        /** TODO Move To services logger ?*/
         $this->logger = $logger;
 
         $this->logger->log('Initializing ServiceContainer', LoggerLevel::INFO);
@@ -29,7 +29,6 @@ class Container
         $this->logger->log('Initializing context', LoggerLevel::INFO);
         $this->context = new Context($this);
 
-        /** TODO Move To services logger */
         $this->response = new Response();
     }
 

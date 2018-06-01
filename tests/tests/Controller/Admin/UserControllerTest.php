@@ -4,7 +4,7 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
 {
     public function testShouldRenderLoginAction()
     {
-        $results = $this->getDispatcher(false)->dispatch('/admin/login');
+        $results = $this->getApplicationContainer(false)->dispatch('/admin/login');
         $crawler = $this->getCrawler($results);
 
         $this->assertEquals('login-form',
@@ -14,7 +14,7 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
 
     public function testShouldExecuteLoginActionPost()
     {
-        $dispatcher = $this->getDispatcher(false);
+        $dispatcher = $this->getApplicationContainer(false);
         $dispatcher->getRequest()->setRequestMethod(\Application\Service\Request\RequestMethods::POST);
         $dispatcher->getRequest()->setPost('login', [
             'username' => 'testAdmin',
@@ -35,7 +35,7 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
 
     public function testShouldRenderLogoutAction()
     {
-        $dispatcher = $this->getDispatcher();
+        $dispatcher = $this->getApplicationContainer();
         $results = $dispatcher->dispatch('/admin/logout');
 
         $this->assertNull($results);

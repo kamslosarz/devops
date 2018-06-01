@@ -2,9 +2,18 @@
 
 class ApplicationTest extends \Test\TestCase\ControllerTestCase
 {
+    public function testShouldThrowApplicationException()
+    {
+        $this->expectExceptionMessage('Route \'/asdasdas\' not found');
+        $this->expectException(\Application\Router\RouteException::class);
+
+        $dispatcher = $this->getApplicationContainer();
+        $dispatcher->dispatch('/asdasdas');
+    }
+
     public function testShouldInvokeApplicationInstance()
     {
-        $dispatcher = $this->getDispatcher();
+        $dispatcher = $this->getApplicationContainer();
         $results = $dispatcher->dispatch('/admin/login');
 
         $crawler = $this->getCrawler($results);

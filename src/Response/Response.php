@@ -4,7 +4,7 @@ namespace Application\Response;
 
 class Response
 {
-    private $code;
+    private $code = 200;
     private $headers = [];
     private $type = ResponseTypes::CONTEXT_HTML;
     private $results;

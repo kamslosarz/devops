@@ -27,8 +27,8 @@ class ContainerTest extends TestCase
             ->andReturns(true);
 
         $container = new Container($logger);
-        $results = $container();
+        $response = $container();
 
-        $this->assertTrue(strlen($results->getResults()) > 1000);
+        $this->assertTrue(strlen($response->getResults()) > 1000);
     }
 }

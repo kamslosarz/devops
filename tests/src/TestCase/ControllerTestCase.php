@@ -29,7 +29,7 @@ abstract class ControllerTestCase extends TestCase
         return m::mock(Appender::class);
     }
 
-    public function getDispatcher($logged = true)
+    public function getApplicationContainer($logged = true)
     {
         $app = new ApplicationContainer();
 

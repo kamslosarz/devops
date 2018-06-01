@@ -4,7 +4,7 @@ class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
 {
     public function testShouldRenderIndexAction()
     {
-        $results = $this->getDispatcher()->dispatch('/admin/project');
+        $results = $this->getApplicationContainer()->dispatch('/admin/project');
         $crawler = $this->getCrawler($results);
         $table = $crawler->filterXPath('//table[@id="projects-list"]');
         $this->assertCount(10, $table->filterXPath('//tr'));
