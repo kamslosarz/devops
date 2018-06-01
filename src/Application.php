@@ -4,28 +4,26 @@ namespace Application;
 
 use Application\Config\Config;
 use Application\Container\Container;
-use Application\Logger\Logger;
-use Application\Logger\LoggerLevel;
 
 final class Application
 {
     private static $environment = '_dev';
-    private $logger;
+    private $response;
 
     public function __construct()
     {
         Config::load();
-
-        $this->logger = new Logger('ApplicationLogger');
     }
 
     public function __invoke()
     {
-        $this->logger->log('Initializing Application', LoggerLevel::INFO);
-        $container = new Container($this->logger);
-        $container();
+        $container = new Container();
+        $this->response = $container();
+    }
 
-        return $container->getResponse();
+    public function getResponse()
+    {
+        return $this->response;
     }
 
     public static function getEnvironment()

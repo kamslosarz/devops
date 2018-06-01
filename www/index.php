@@ -18,7 +18,11 @@ try
     require_once '../vendor/autoload.php';
     require_once '../config/propel/config.php';
 
-    echo ((new \Application\Application())())();
+    $application = new \Application\Application();
+    $application();
+
+    //TODO cache the responses
+    echo ($application->getResponse())();
 }
 catch(\Exception $e)
 {

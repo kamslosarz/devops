@@ -3,12 +3,12 @@
 namespace Application\Console\Command;
 
 use Application\Factory\Factory;
-use Application\Logger\Logger;
+use Application\Service\ServiceContainer\ServiceContainer;
 
 abstract class Command
 {
-    private $logger;
     private $errors;
+    private $serviceContainer;
 
     const COMMAND_NAMESPACE = 'Application\Console\Command\Command';
 
@@ -26,6 +26,11 @@ abstract class Command
         $command = self::getCommandNamespace($command);
 
         return Factory::getInstance($command);
+    }
+
+    public function __construct()
+    {
+        $this->serviceContainer = new ServiceContainer();
     }
 
     /**
@@ -54,12 +59,7 @@ abstract class Command
 
     public function getLogger()
     {
-        if(!($this->logger instanceof Logger))
-        {
-            $this->logger = new Logger('ConsoleLogger');
-        }
-
-        return $this->logger;
+        return $this->serviceContainer->getService('logger');
     }
 
     abstract public function isValid();

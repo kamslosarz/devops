@@ -8,11 +8,12 @@ use Application\Container\Appender\Appender;
 use Application\Container\Container;
 use Application\Router\Route;
 use Application\Service\Request\Request;
+use Application\Service\ServiceContainer\ServiceContainer;
 use Application\Service\ServiceInterface;
 
 abstract class Controller
 {
-    private $container;
+    private $serviceContainer;
     private $appender;
 
     /**
@@ -21,9 +22,9 @@ abstract class Controller
      * @param Appender $appender
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
-    public function __construct(Container $container, Appender $appender)
+    public function __construct(ServiceContainer $serviceContainer, Appender $appender)
     {
-        $this->container = $container;
+        $this->serviceContainer = $serviceContainer;
         $this->appender = $appender;
 
         $authService = $this->getService('authService');
@@ -62,12 +63,12 @@ abstract class Controller
      */
     public function getService($serviceName)
     {
-        return $this->container->getServiceContainer()->getService($serviceName);
+        return $this->serviceContainer->getService($serviceName);
     }
 
     public function getUser()
     {
-        return $this->getService('authService')->getUser();
+        return $this->sergetService('authService')->getUser();
     }
 
     /**

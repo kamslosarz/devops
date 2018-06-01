@@ -13,10 +13,11 @@ final class View
     private $twig;
     private $activeUri;
     private $container;
+    private $serviceContainer;
 
-    public function __construct($vars = [], $container)
+    public function __construct($vars = [], $serviceContainer)
     {
-        $this->container = $container;
+        $this->serviceContainer = $serviceContainer;
         $this->vars = (array)$vars;
         $config = Config::get('twig');
         $loader = new \Twig_Loader_Filesystem($config['loader']['templates']);
@@ -87,7 +88,7 @@ final class View
     {
         foreach(TwigExtensionsMap::EXTENSIONS as $extension)
         {
-            $this->twig->addExtension(Factory::getInstance($extension, [$this->container]));
+            $this->twig->addExtension(Factory::getInstance($extension, [$this->serviceContainer]));
         }
     }
 

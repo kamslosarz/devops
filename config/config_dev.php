@@ -29,16 +29,6 @@ return [
         ]
     ],
     'defaultAction' => 'Admin\AdminController:index',
-    'logger' => [
-        'ApplicationLogger' => [
-            'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR,
-            'name' => 'app'
-        ],
-        'ConsoleLogger' => [
-            'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR,
-            'name' => 'console'
-        ]
-    ],
     'twig' => [
         'loader' => [
             'templates' => dirname(__DIR__) . '/src/Resource',

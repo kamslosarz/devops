@@ -2,7 +2,7 @@
 
 namespace Application\Console\Command;
 
-use Application\Logger\LoggerLevel;
+use Application\Service\Logger\LoggerLevel;
 
 abstract class ConsoleExecutable extends Command
 {
@@ -20,6 +20,6 @@ abstract class ConsoleExecutable extends Command
 
     private function log($message, $level)
     {
-        $this->getLogger()->log($message, $level);
+        $this->getLogger()->log('ConsoleLogger', $message, $level);
     }
 }

@@ -1,5 +1,6 @@
 <?php
-namespace Application\Logger;
+
+namespace Application\Service\Logger;
 
 abstract class LoggerLevel
 {

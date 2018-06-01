@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Logger;
+namespace Application\Service\Logger;
 
 
 class LoggerException extends \Exception

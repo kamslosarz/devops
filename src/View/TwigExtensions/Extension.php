@@ -1,15 +1,20 @@
 <?php
+
 namespace Application\View\TwigExtensions;
 
-use Application\Container\Container;
+use Application\Service\ServiceContainer\ServiceContainer;
 
 class Extension extends \Twig_Extension
 {
-    protected $container;
+    protected $serviceContainer;
 
-    public function __construct(Container $container)
+    public function __construct(ServiceContainer $serviceContainer)
     {
-        $this->container = $container;
+        $this->serviceContainer = $serviceContainer;
     }
 
+    public function getService($serviceName)
+    {
+        return $this->serviceContainer->getService($serviceName);
+    }
 }

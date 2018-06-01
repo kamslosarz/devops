@@ -20,6 +20,6 @@ class Messages extends Extension implements \Twig_Extension_GlobalsInterface
 
     public function all()
     {
-        return $this->container->getContext()->getAppender()->flashMessages();
+        //return $this->serviceContainer->getAppender()->flashMessages();
     }
 }

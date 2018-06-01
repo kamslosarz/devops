@@ -6,14 +6,17 @@ namespace Application\Console;
 use Application\Console\Command\Command;
 use Application\Console\Command\CommandException;
 use Application\Router\Dispatcher\Dispatcher;
+use Application\Service\ServiceContainer\ServiceContainer;
 
 class Console
 {
     private $consoleParameters;
+    private $serviceContainer;
 
     public function __construct(ConsoleParameters $consoleParameters)
     {
         $this->consoleParameters = $consoleParameters;
+        $this->serviceContainer = new ServiceContainer();
     }
 
     /**
@@ -24,6 +27,7 @@ class Console
     public function run()
     {
         /** @var Command $command */
+        
         $command = Command::getInstance($this->consoleParameters->getCommand());
 
         if(!($command instanceof Command))

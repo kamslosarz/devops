@@ -4,44 +4,45 @@ namespace Application\Container;
 
 
 use Application\Context\Context;
-use Application\Logger\Logger;
-use Application\Logger\LoggerLevel;
 use Application\Response\Response;
+use Application\Service\Logger\LoggerLevel;
 use Application\Service\ServiceContainer\ServiceContainer;
+use ErrorHandler\ErrorHandler;
 
 class Container
 {
-    private $response;
     private $entityManager;
     /** @var Context */
     private $context;
     /** @var ServiceContainer */
     private $serviceContainer;
+    private $response;
 
-    public function __construct(Logger $logger = null)
+    public function __construct()
     {
-        $this->logger = $logger;
-
-        $this->logger->log('Initializing ServiceContainer', LoggerLevel::INFO);
         $this->serviceContainer = new ServiceContainer();
-
-        $this->logger->log('Initializing context', LoggerLevel::INFO);
-        $this->context = new Context($this);
-
-        $this->response = new Response();
+        $this->context = new Context($this->serviceContainer);
     }
 
     /**
      * @return Response
-     * @throws \Application\Logger\LoggerException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function __invoke()
     {
-        $this->logger->log('Executing Context', LoggerLevel::INFO);
-        $results = ($this->context)();
+        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Executing Context', LoggerLevel::INFO);
+        $results = null;
 
-        $this->logger->log('Sending Response, Application is shutting down' . PHP_EOL, LoggerLevel::INFO);
-        $this->response->setResults($results);
+        try
+        {
+            $this->response = ($this->context)();
+        }
+        catch(\Exception $e)
+        {
+            $this->response = (new ErrorHandler($e))();
+        }
+
+        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Sending Response, Application is shutting down' . PHP_EOL, LoggerLevel::INFO);
 
         return $this->response;
     }

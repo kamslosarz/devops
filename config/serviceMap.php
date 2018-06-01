@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'logger' => [
+        \Application\Service\Logger\Logger::class, [
+            'instances' => [
+                'ApplicationLogger' => [
+                    'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR,
+                    'name' => 'app'
+                ],
+                'ConsoleLogger' => [
+                    'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR,
+                    'name' => 'console'
+                ]
+            ]
+        ]
+    ],
     'session' => [
         \Application\Service\Session\Session::class, [
 

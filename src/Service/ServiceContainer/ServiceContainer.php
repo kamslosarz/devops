@@ -5,7 +5,6 @@ namespace Application\Service\ServiceContainer;
 
 use Application\Config\Config;
 use Application\Service\ServiceParameters;
-use Application\Service\ServiceContainer\ServiceResolver;
 
 class ServiceContainer
 {
@@ -44,15 +43,15 @@ class ServiceContainer
         $serviceParameters = new ServiceParameters($serviceMap[$serviceName]);
 
 
-        foreach($serviceParameters->getParameters() as $parameter)
+        foreach($serviceParameters->getParameters() as $parameterName => $parameter)
         {
-            if(substr($parameter, 0, 1) === '@')
+            if(is_string($parameter) && substr($parameter, 0, 1) === '@')
             {
                 $parameters[] = $this->serviceContainer[$serviceName] = $this->getService(ltrim($parameter, '@'));
             }
             else
             {
-                $parameters[] = $parameter;
+                $parameters[] = [$parameterName => $parameter];
             }
         }
 
