@@ -18,8 +18,14 @@ class Messages extends Extension implements \Twig_Extension_GlobalsInterface
         ];
     }
 
+    /**
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
     public function all()
     {
-        //return $this->serviceContainer->getAppender()->flashMessages();
+        $messages = $this->serviceContainer->getService('session')->get('messages');
+        $this->serviceContainer->getService('session')->set('messages', null);
+
+        return $messages;
     }
 }

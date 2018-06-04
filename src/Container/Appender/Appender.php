@@ -25,7 +25,7 @@ class Appender
     {
         $messages = $this->session->get('messages');
         $this->session->set('messages', null);
+
         return $messages;
     }
-
 }
