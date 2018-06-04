@@ -29,6 +29,6 @@ class DispatcherTest extends TestCase
         $dispatcher->dispatch($parameters);
 
         $this->assertInstanceOf(Dispatcher::class, $dispatcher);
-        $this->assertEquals('testResults', $dispatcher->getResults());
+        $this->assertEquals('testResults', $dispatcher->getResponse()->getParameters());
     }
 }

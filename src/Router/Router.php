@@ -6,24 +6,22 @@ use Application\Config\Config;
 
 class Router
 {
+    private static $routes;
     private $requestUri;
-    private $routes;
     private $parameters;
 
     public function __construct($requestUri = '')
     {
         $this->requestUri = $requestUri;
-
-        $this->loadRoutes();
     }
 
     /**
-     * @return mixed
+     * @return Route
      * @throws RouteException
      */
     public function __invoke()
     {
-        foreach($this->routes as $uriPattern => $route)
+        foreach(self::getRoutes() as $uriPattern => $route)
         {
             if($this->match($uriPattern, $this->requestUri))
             {
@@ -58,12 +56,17 @@ class Router
         return true;
     }
 
-    private function loadRoutes()
+    private static function getRoutes()
     {
-        foreach(Config::get('routes') as $route => $dest)
+        if(empty(self::$routes))
         {
-            $this->routes[$route] = $dest;
+            foreach(Config::get('routes') as $routeName => $route)
+            {
+                self::$routes[$routeName] = $route;
+            }
         }
+
+        return self::$routes;
     }
 
     public static function getCompactRouteName($controller, $action)
@@ -71,10 +74,18 @@ class Router
         return sprintf('%s:%s', $controller, str_replace('Action', '', $action));
     }
 
-    public function getRouteByParameters($controller, $action, $parameters)
+    /**
+     * @param $controller
+     * @param $action
+     * @param $parameters
+     * @return int|mixed|null|string
+     * @throws RouteException]
+     */
+    public static function getRouteByParameters($controller, $action, $parameters = [])
     {
         $relativeUrl = null;
-        foreach($this->routes as $uri => $route)
+
+        foreach(self::getRoutes() as $uri => $route)
         {
             if(isset($route[2]))
             {
@@ -94,7 +105,7 @@ class Router
 
         if(!$relativeUrl)
         {
-            throw new RouteException(sprintf('Route \'%s\' not found by parameters', $this->requestUri));
+            throw new RouteException(sprintf('Route \'%s:%s\' with parameters \'%s\' not found', $controller, $action, implode(',', $parameters)));
         }
 
         return $relativeUrl;

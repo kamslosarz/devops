@@ -4,7 +4,7 @@ namespace Application\Console;
 
 
 use Application\Console\Command\Command;
-use Application\Console\Command\CommandException;
+use Application\Response\Response;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Service\ServiceContainer\ServiceContainer;
 
@@ -20,14 +20,13 @@ class Console
     }
 
     /**
-     * @throws CommandException
+     * @return Response
      * @throws ConsoleException
      * @throws \ReflectionException
      */
     public function run()
     {
         /** @var Command $command */
-        
         $command = Command::getInstance($this->consoleParameters->getCommand());
 
         if(!($command instanceof Command))
@@ -48,6 +47,6 @@ class Console
         $dispatcher = new Dispatcher($command, 'execute');
         $dispatcher->dispatch($this->consoleParameters->getParameters());
 
-        return $dispatcher->getResults();
+        return $dispatcher->getResponse()->getContent();
     }
 }

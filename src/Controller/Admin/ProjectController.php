@@ -2,21 +2,20 @@
 
 namespace Application\Controller\Admin;
 
-use Application\Container\Appender\AppenderLevel;
-use Application\Model\User;
+use Application\Response\Response;
 use Model\ProjectQuery;
 
 class ProjectController extends Controller
 {
     public function indexAction()
     {
-        return [
+        return new Response([
             'projects' => ProjectQuery::create()->find()
-        ];
+        ]);
     }
 
     public function projectAction($id)
     {
-        return [];
+        return new Response();
     }
 }

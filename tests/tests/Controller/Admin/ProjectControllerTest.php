@@ -7,6 +7,7 @@ class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
         $results = $this->getApplicationContainer()->dispatch('/admin/project');
         $crawler = $this->getCrawler($results);
         $table = $crawler->filterXPath('//table[@id="projects-list"]');
+
         $this->assertCount(10, $table->filterXPath('//tr'));
         $this->assertEquals([
             'test project name',

@@ -4,6 +4,7 @@ namespace Application\Console\Command\Command\Admin;
 
 use Application\Config\Config;
 use Application\Console\Command\Command;
+use Application\Response\ResponseTypes\ConsoleResponse;
 use Application\Router\Router;
 use Model\User as user;
 use Model\UserPrivilege;
@@ -60,6 +61,6 @@ class Create extends Command
 
         $user->save();
 
-        return 'Admin created';
+        return $this->output('Admin created');
     }
 }

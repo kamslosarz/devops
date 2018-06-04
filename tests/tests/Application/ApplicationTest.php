@@ -2,13 +2,12 @@
 
 class ApplicationTest extends \Test\TestCase\ControllerTestCase
 {
-    public function testShouldThrowApplicationException()
+    public function testShouldThrowRouteException()
     {
-        $this->expectExceptionMessage('Route \'/asdasdas\' not found');
-        $this->expectException(\Application\Router\RouteException::class);
-
         $dispatcher = $this->getApplicationContainer();
         $dispatcher->dispatch('/asdasdas');
+
+        $this->assertEquals('ERROR Route &#039;/asdasdas&#039; not found', $dispatcher->getResponse()->getContent());
     }
 
     public function testShouldInvokeApplicationInstance()
@@ -27,5 +26,6 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
     {
         return parent::getUserDataSet();
     }
+
 
 }

@@ -35,9 +35,11 @@ class ConsoleParameters
 
     public function getCommandClassName($string)
     {
-        return preg_replace_callback(self::COMMAND_PATTERN_REGEX, function ($args)
+        $name = preg_replace_callback(self::COMMAND_PATTERN_REGEX, function ($args)
         {
-            return sprintf('%s\%s', ucfirst(strtolower($args[1])), ucfirst(strtolower($args[2])));
+            return sprintf('%s\\%s', ucfirst(strtolower($args[1])), ucfirst(strtolower($args[2])));
         }, $string);
+
+        return $name;
     }
 }

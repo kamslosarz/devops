@@ -21,10 +21,11 @@ try
 {
     $console = new Console(new ConsoleParameters($argv));
     echo $console->run();
+
 }
 catch(\Application\Console\ConsoleException $consoleException)
 {
-    echo 'ERROR: ' . $consoleException->getMessage(). $consoleException->getTraceAsString();
+    echo 'ERROR: ' . $consoleException->getMessage();
 }
 catch(\Exception $e)
 {

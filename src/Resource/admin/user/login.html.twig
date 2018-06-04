@@ -22,7 +22,7 @@
     <div class="main-content">
         <div class="messages">
             {% for type, message in messages.all %}
-                <p class="{{ type|lower }}">{{ message }}</p>
+                <p class="{{ type }}">{{ message }}</p>
             {% endfor %}
         </div>
         <div class="content">

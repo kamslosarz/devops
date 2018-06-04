@@ -4,11 +4,13 @@ namespace Application;
 
 use Application\Config\Config;
 use Application\Container\Container;
+use Application\Response\Response;
 
 final class Application
 {
     private static $environment = '_dev';
-    private $response;
+    /** @var Response $response */
+    private $response = null;
 
     public function __construct()
     {
@@ -17,8 +19,13 @@ final class Application
 
     public function __invoke()
     {
-        $container = new Container();
-        $this->response = $container();
+        if(is_null($this->response))
+        {
+            $container = new Container();
+            $this->response = $container();
+        }
+
+        return $this->response;
     }
 
     public function getResponse()

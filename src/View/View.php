@@ -9,10 +9,8 @@ final class View
 {
     private $vars = [];
     private $session = [];
-    private $results;
     private $twig;
     private $activeUri;
-    private $container;
     private $serviceContainer;
 
     public function __construct($vars = [], $serviceContainer)
@@ -92,11 +90,6 @@ final class View
         }
     }
 
-    public function getResults()
-    {
-        return $this->results;
-    }
-
     /**
      * @param $template
      * @return string
@@ -127,8 +120,6 @@ final class View
         {
             throw new ViewException($e);
         }
-
-        return $this->results;
     }
 
     /**
@@ -138,7 +129,6 @@ final class View
     {
         return $this->session;
     }
-
     /**
      * @param $session
      * @return $this

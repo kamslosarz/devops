@@ -3,9 +3,11 @@
 namespace Application\Router\Dispatcher;
 
 
+use Application\Response\Response;
+
 class Dispatcher
 {
-    private $results;
+    private $response;
     private $class;
     private $method;
 
@@ -20,12 +22,23 @@ class Dispatcher
      */
     public function dispatch($parameters = [])
     {
-        $this->results = $this->class->{$this->method}(...$parameters);
+        if(is_null($this->response))
+        {
+            $this->response = $this->class->{$this->method}(...$parameters);
+
+            if(!($this->response instanceof Response))
+            {
+                $this->response = new Response($this->response);
+            }
+        }
     }
 
-    public function getResults()
+    /**
+     * @return Response
+     */
+    public function getResponse()
     {
-        return $this->results;
+        return $this->response;
     }
 
 }

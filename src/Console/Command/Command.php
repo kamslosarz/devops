@@ -3,6 +3,7 @@
 namespace Application\Console\Command;
 
 use Application\Factory\Factory;
+use Application\Response\ResponseTypes\ConsoleResponse;
 use Application\Service\ServiceContainer\ServiceContainer;
 
 abstract class Command
@@ -57,10 +58,17 @@ abstract class Command
         return $this->errors;
     }
 
+    /**
+     * @return mixed
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
     public function getLogger()
     {
         return $this->serviceContainer->getService('logger');
     }
 
-    abstract public function isValid();
+    protected function output($content)
+    {
+        return (new ConsoleResponse())->setContent($content);
+    }
 }

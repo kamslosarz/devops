@@ -3,23 +3,22 @@
 namespace tests\Context;
 
 use Application\Container\Appender\Appender;
-use Application\Container\Container;
 use Application\Context\Context;
 use Application\Router\Router;
-use Application\Service\ServiceContainer\ServiceContainer;
-use Application\Service\Session\Session;
-use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Test\TestCase\Traits\ServiceContainerMockTrait;
 
 
 class ContextTest extends TestCase
 {
+    use ServiceContainerMockTrait;
+
     /**
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function testShouldConstructContext()
     {
-        $context = new Context($this->getContainerMock());
+        $context = new Context($this->getServiceContainerMock());
 
         $this->assertInstanceOf(Context::class, $context);
     }
@@ -29,9 +28,9 @@ class ContextTest extends TestCase
      */
     public function testShouldReturnNulledRouter()
     {
-        $context = new Context($this->getContainerMock());
+        $context = new Context($this->getServiceContainerMock());
 
-        $this->assertEquals(null, $context->getRouter());
+        $this->assertInstanceOf(Router::class, $context->getRouter());
     }
 
     /**
@@ -39,31 +38,8 @@ class ContextTest extends TestCase
      */
     public function testShouldReturnAppender()
     {
-        $context = new Context($this->getContainerMock());
+        $context = new Context($this->getServiceContainerMock());
 
         $this->assertInstanceOf(Appender::class, $context->getAppender());
-    }
-
-    private function getContainerMock()
-    {
-        $sessionMock = m::mock(Session::class);
-
-        $serviceContainerMock = m::mock(ServiceContainer::class)
-            ->shouldReceive('getService')
-            ->once()
-            ->withArgs(['session'])
-            ->andReturns($sessionMock)
-            ->getMock();
-
-        $containerMock = m::mock(Container::class)
-            ->shouldReceive('getLogger')
-            ->once()
-            ->getMock()
-            ->shouldReceive('getServiceContainer')
-            ->once()
-            ->andReturns($serviceContainerMock)
-            ->getMock();
-
-        return $containerMock;
     }
 }

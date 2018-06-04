@@ -158,7 +158,7 @@ class AuthService implements ServiceInterface
 
     public function clearSession()
     {
-        $this->request->getSession()->clear();
+        $this->request->getSession()->clear(self::AUTH_KEY_NAME);
     }
 
     public function getSessionToken()

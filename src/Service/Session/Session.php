@@ -33,11 +33,19 @@ class Session implements ServiceInterface
         return $this;
     }
 
-    public function clear()
+    public function clear($key = null)
     {
-        $_SESSION = null;
-        $this->session = null;
-        @session_destroy();
+        if(!$key)
+        {
+            $_SESSION = null;
+            $this->session = null;
+            @session_destroy();
+        }
+        else
+        {
+            $_SESSION[$key] = null;
+            $this->session[$key] = null;
+        }
     }
 
     private function init()

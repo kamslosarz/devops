@@ -32,12 +32,12 @@ class Menu extends Extension implements \Twig_Extension_GlobalsInterface
     {
         if(!preg_match('/[\*]+/', $uri))
         {
-            return $this->getService('request')->requestUri() === $uri;
+            return $this->getService('request')->getRequestUri() === $uri;
         }
 
         return preg_match(
             str_replace(self::ANY_PATTERN, self::ANY_REGEX, '/' . str_replace('/', '\/', $uri) . '/'),
-            $this->getService('request')->requestUri()
+            $this->getService('request')->getRequestUri()
         );
     }
 }

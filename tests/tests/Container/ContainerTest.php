@@ -8,27 +8,22 @@ class ContainerTest extends TestCase
 {
     public function testShouldConstructContainer()
     {
-        $logger = m::mock(\Application\Logger\Logger::class);
+        $logger = m::mock(\Application\Service\Logger\Logger::class);
 
         $logger->shouldReceive('log')
             ->atLeast(1)
             ->andReturns(true);
 
-        $container = new Container($logger);
+        $container = new Container();
 
         $this->assertInstanceOf(Container::class, $container);
     }
 
     public function testShouldInvokeAndReturnsResponse()
     {
-        $logger = m::mock(\Application\Logger\Logger::class);
-        $logger->shouldReceive('log')
-            ->atLeast(1)
-            ->andReturns(true);
-
-        $container = new Container($logger);
+        $container = new Container();
         $response = $container();
 
-        $this->assertTrue(strlen($response->getResults()) > 1000);
+        $this->assertTrue(strlen($response->getContent()) > 1000);
     }
 }

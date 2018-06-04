@@ -5,6 +5,8 @@ namespace Application\Context;
 use Application\Container\Appender\Appender;
 use Application\Controller\Controller;
 use Application\Factory\Factory;
+use Application\Response\Response;
+use Application\Response\ResponseTypes;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Route;
 use Application\Router\Router;
@@ -21,9 +23,10 @@ class Context
     private $router;
     private $appender;
     private $serviceContainer;
+    private $response;
 
     /**
-     * Context constructor.
+     * Context constructor.testShouldReturnNulledRouter
      * @param ServiceContainer $serviceContainer
      * @throws ServiceContainerException
      */
@@ -31,37 +34,82 @@ class Context
     {
         $this->serviceContainer = $serviceContainer;
         $this->appender = new Appender($serviceContainer->getService('session'));
-        $this->router = new Router($this->serviceContainer->getService('request')->requestUri());
+        $this->router = new Router($this->serviceContainer->getService('request')->getRequestUri());
     }
 
     /**
-     * @return array|string
+     * @return Response
      * @throws ContextException
+     * @throws ServiceContainerException
+     */
+    private function dispatch()
+    {
+        if(!($this->response instanceof Response))
+        {
+            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Initializing Router', LoggerLevel::INFO);
+            /** @var Route $route */
+            $route = ($this->router)();
+
+            /** @var Request $request */
+            $request = $this->serviceContainer->getService('request');
+            $request->setRoute($route);
+
+            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Gathering controller', LoggerLevel::INFO);
+            $controller = $this->getControllerFullName($route->getController());
+            $action = $route->getAction();
+
+            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Validating controller', LoggerLevel::INFO);
+            $this->validate($controller, $action);
+
+            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Dispatching controller', LoggerLevel::INFO);
+            $dispatcher = new Dispatcher(Factory::getInstance($controller, [
+                $this->serviceContainer, $this->appender, $this->router
+            ]), $action);
+            $dispatcher->dispatch($route->getParameters());
+
+            /** @var Response $response */
+            $this->response = $dispatcher->getResponse();
+            $this->response->setRoute($route);
+        }
+
+        return $this->response;
+    }
+
+    /**
+     * @return Response|ResponseTypes\ErrorResponse
      * @throws ServiceContainerException
      */
     public function __invoke()
     {
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Initializing Router', LoggerLevel::INFO);
-        /** @var Route $route */
-        $route = ($this->router)();
-        /** @var Request $request */
-        $request = $this->serviceContainer->getService('request');
-        $request->setRoute($route);
+        try
+        {
+            $response = $this->dispatch();
+        }
+        catch(\Exception $routeException)
+        {
+            $response = new ResponseTypes\ErrorResponse(['exception' => $routeException]);
+        }
 
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Gathering controller', LoggerLevel::INFO);
-        $controller = $this->getControllerFullName($route->getController());
-        $action = $route->getAction();
+        switch($response->getType())
+        {
+            case ResponseTypes::CONTEXT_JSON:
 
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Validating controller', LoggerLevel::INFO);
-        $this->validate($controller, $action);
+                break;
+            case ResponseTypes::REDIRECT:
 
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Dispatching controller', LoggerLevel::INFO);
-        $dispatcher = new Dispatcher(Factory::getInstance($controller, [
-            $this->serviceContainer, $this->appender, $this->router
-        ]), $action);
-        $dispatcher->dispatch($route->getParameters());
+                break;
+            case ResponseTypes::ERROR:
+                $response->setContent($this->executeView($response->getParameters(), 'error'));
+                break;
+            default:
+                $response->setContent($this->executeView($response->getParameters(), $this->getViewName($response->getRoute())));
+                break;
+        }
 
-        return $this->executeView($dispatcher->getResults(), $this->getViewName($route));
+        $this->serviceContainer->getService('session')->save();
+        $this->serviceContainer->getService('cookie')->save();
+
+        return $response;
     }
 
     private function getControllerFullName($controller)
@@ -87,11 +135,11 @@ class Context
         }
     }
 
-    public function executeView($results, $viewName)
+    public function executeView($parameters, $viewName)
     {
         try
         {
-            $results = (new View($results, $this->serviceContainer))->render($viewName);
+            $content = (new View($parameters, $this->serviceContainer))->render($viewName);
         }
         catch(ViewException $e)
         {
@@ -101,16 +149,17 @@ class Context
                 LoggerLevel::INFO
             );
             $view = new View(['exception' => $e], $this->serviceContainer);
-            $results = $view->render('error');
+            $content = $view->render('error');
         }
 
-        return $results;
+        return $content;
     }
 
     private function getViewName($route)
     {
         preg_match("/[a-z]+\\\+[a-z]+/", str_replace('controller', '', strtolower($route->getController())), $match);
         $namespace = ltrim(str_replace('-action', '', strtolower(preg_replace("/([A-Z])/x", "-$1", $route->getAction()))), '-');
+
         return str_replace('\\', DIRECTORY_SEPARATOR, $match[0]) . DIRECTORY_SEPARATOR . $namespace;
     }
 

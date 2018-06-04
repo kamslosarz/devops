@@ -60,9 +60,10 @@ class AdminCreateTest extends ConsoleTestCase
             'admin:create'
         ]))->getCommand());
 
-        $return = $command->execute($username, 'test admin password');
+        /** @var \Application\Response\Response $response */
+        $response = $command->execute($username, 'test admin password');
 
-        $this->assertEquals('Admin created', $return);
+        $this->assertEquals('Admin created', $response->getContent());
         $this->assertInstanceOf(User::class, UserQuery::create()->findOneByUsername($username));
     }
 

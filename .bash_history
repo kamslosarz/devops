@@ -1,135 +1,3 @@
-rm -rf html/
-cd ..
-cd www/devops/
-l;s
-ls
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-cd vendor/
-ls
-cd ..
-composer install
-composer install
-sudo apt-get intall composer
-sudo apt-get intall composer
-sudo apt-get install composer
-exit
-ks
-ls
-ls -la
-cd ..
-ls
-cd ..
-ls
-cd ..
-ls
-ls -la
-ls
-cd home/
-ls
-mkdir test
-cd ..
-cd /var/www/devops/
-ls
-ls -la
-exit
-ls
-ls -la
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-ls -la
-exio
-5exiot
-exit
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-exit
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-chmod 777 chmod 777 -R /var/www/devops/www/assets
-[Bchmod 777 -R /var/www/devops/www/assets
-chmod 777 -R /var/www/devops/www/assets
-sudo chmod 777 -R /var/www/devops/www/assets
-exit
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-ls -la
-cd www
-ls
-ls -la
-chmod 755 www
-cd ..
-chmod 755 www
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-cd www/
-cd assets/
-ls
-ls -la
-cd admin/
-ls
-ls -la
-cd css/styles.css 
-;;s
-ls
-ls -la
-ls -la
-ls -la
-ls -la
-cde css/
-cd ..
-cd cs
-cd 
-ls
-exuit
-eixt
-exit
-cd /var/www/
-kls
-ks
-ls
-cd devops/
-ls
-ls -l
-ls -la
-cd www/
-ls
-ls a-la
-ls -la
-cd assets/
-ls
-ls -la 
-rm rf admin/
-rm -rf admin/
-ls -la cd ..
-cd ..
-cd ..
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-cd www/
-ls
-cd assets/admin/
-ls
-ls -la
-cd ..
-ls -la
-cd ..
-ls -la
-c das
-cd assets/
-ls
-ls -la
-rm -rf admin/
 ls -la
 vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
 cd ..
@@ -497,4 +365,136 @@ vendor/bin/phpunit -c tests/phpunit/phpunit.xml
 vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
 vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
         var_dump($response);
+        exit;
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+claer
+clear
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+chmod 777 /var/www/devops/logs/ -R
+chmod 777 /var/www/devops/logs/ -R
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+clear
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldThrowRouteException
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginActionPost
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldExecuteLoginAct
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
         exit;

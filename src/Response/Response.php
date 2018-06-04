@@ -4,10 +4,17 @@ namespace Application\Response;
 
 class Response
 {
-    private $code = 200;
-    private $headers = [];
-    private $type = ResponseTypes::CONTEXT_HTML;
-    private $results;
+    protected $code = 200;
+    protected $headers = [];
+    protected $type = ResponseTypes::CONTEXT_HTML;
+    protected $content;
+    protected $parameters;
+    protected $route;
+
+    public function __construct($parameters = [])
+    {
+        $this->parameters = $parameters;
+    }
 
     public function setHeaders(array $headers = [])
     {
@@ -23,9 +30,9 @@ class Response
         return $this;
     }
 
-    public function setResults($results)
+    public function setContent($content)
     {
-        $this->results = $results;
+        $this->content = $content;
 
         return $this;
     }
@@ -35,6 +42,13 @@ class Response
         $this->type = $type;
 
         return $this;
+    }
+
+    public function setRoute($route)
+    {
+        $this->route = $route;
+
+        return $this->route;
     }
 
     public function getType()
@@ -47,14 +61,23 @@ class Response
         return $this->headers;
     }
 
-    public function getResults()
+    public function getContent()
     {
-        return $this->results;
+        return $this->content;
+    }
+
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    public function getRoute()
+    {
+        return $this->route;
     }
 
     public function __invoke()
     {
-
         if(!headers_sent())
         {
             foreach($this->headers as $header)
@@ -63,6 +86,6 @@ class Response
             }
         }
 
-        return $this->results;
+        echo $this->content;
     }
 }

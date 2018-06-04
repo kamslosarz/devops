@@ -4,6 +4,8 @@ namespace Application\Controller\Admin;
 
 use Application\Container\Appender\AppenderLevel;
 use Application\Form\User\LoginForm;
+use Application\Response\Response;
+use Application\Response\ResponseTypes\RedirectResponse;
 use Application\Service\AuthService\AuthService;
 
 class UserController extends Controller
@@ -18,7 +20,7 @@ class UserController extends Controller
 
         if($authService->isAuthenticated())
         {
-            return $this->redirect('Admin\AdminController:index', []);
+            return new RedirectResponse('Admin\AdminController:index');
         }
 
         if($request->isPost())
@@ -29,17 +31,23 @@ class UserController extends Controller
             {
                 $this->addMessage('Successfully logged in', AppenderLevel::SUCCESS);
 
-                return $this->redirect('Admin\AdminController:index', []);
+                return new RedirectResponse('Admin\AdminController:index');
             }
 
             $this->addMessage('User not found', AppenderLevel::ERROR);
         }
 
-        return [
+        return new Response([
             'form' => $form->renderView()
-        ];
+        ]);
     }
 
+    /**
+     * @return RedirectResponse
+     * @throws \Application\Router\RouteException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Response\ResponseTypes\RedirectResponseException
+     */
     public function logoutAction()
     {
         /** @var AuthService $authService */
@@ -47,11 +55,11 @@ class UserController extends Controller
         $authService->clearSession();
         $this->addMessage('Successfully logged out', AppenderLevel::SUCCESS);
 
-        return $this->redirect('Admin\UserController:login');
+        return new RedirectResponse('Admin\UserController:login');
     }
 
     public function indexAction()
     {
-        return [];
+        return new Response();
     }
 }

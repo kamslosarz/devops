@@ -50,9 +50,11 @@ class ApplicationContainer
         $_SESSION = $this->request->getSession();
         $_COOKIE = $this->request->getCookie();
 
-        $this->response = (new \Application\Application())();
+        $application = new \Application\Application();
+        $application();
+        $this->response = $application->getResponse();
 
-        return ($this->response)();
+        return $this->response->getContent();
     }
 
 }
