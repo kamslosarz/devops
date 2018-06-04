@@ -20,8 +20,9 @@ class Console
     }
 
     /**
-     * @return Response
+     * @return mixed
      * @throws ConsoleException
+     * @throws \Application\Router\Dispatcher\DispatcherException
      * @throws \ReflectionException
      */
     public function run()

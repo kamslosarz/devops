@@ -2,14 +2,23 @@
 
 namespace Application\Controller\Admin;
 
+use Application\Container\Appender\Appender;
 use Application\Container\Appender\AppenderLevel;
 use Application\Form\User\LoginForm;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\RedirectResponse;
 use Application\Service\AuthService\AuthService;
+use Application\Service\ServiceContainer\ServiceContainer;
 
 class UserController extends Controller
 {
+    /**
+     * @return Response|RedirectResponse
+     * @throws \Application\Router\RouteException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Propel\Runtime\Exception\PropelException
+     * @throws \Response\ResponseTypes\RedirectResponseException
+     */
     public function loginAction()
     {
         $form = new LoginForm();

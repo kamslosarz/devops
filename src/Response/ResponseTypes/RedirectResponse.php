@@ -21,12 +21,6 @@ class RedirectResponse extends Response
         $this->setType(ResponseTypes::REDIRECT);
         $route = explode(':', $redirect);
         $location = Router::getRouteByParameters($route[0], sprintf('%sAction', $route[1]), $parameters);
-
-        if(!$location)
-        {
-            throw new RedirectResponseException('Route \'%s\' not fount', $location);
-        }
-
         $this->setHeaders([sprintf('Location: %s', $location)]);
     }
 }

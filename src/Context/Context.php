@@ -4,7 +4,6 @@ namespace Application\Context;
 
 use Application\Container\Appender\Appender;
 use Application\Controller\Controller;
-use Application\Factory\Factory;
 use Application\Response\Response;
 use Application\Response\ResponseTypes;
 use Application\Router\Dispatcher\Dispatcher;
@@ -39,8 +38,8 @@ class Context
 
     /**
      * @return Response
-     * @throws ContextException
      * @throws ServiceContainerException
+     * @throws \Application\Router\Dispatcher\DispatcherException
      */
     private function dispatch()
     {
@@ -59,12 +58,11 @@ class Context
             $action = $route->getAction();
 
             $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Validating controller', LoggerLevel::INFO);
-            $this->validate($controller, $action);
-
             $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Dispatching controller', LoggerLevel::INFO);
-            $dispatcher = new Dispatcher(Factory::getInstance($controller, [
+
+            $dispatcher = new Dispatcher($controller, $action, [
                 $this->serviceContainer, $this->appender, $this->router
-            ]), $action);
+            ]);
             $dispatcher->dispatch($route->getParameters());
 
             /** @var Response $response */
@@ -83,10 +81,12 @@ class Context
     {
         try
         {
+            /** @var Response $response */
             $response = $this->dispatch();
         }
         catch(\Exception $routeException)
         {
+            /** @var ResponseTypes\ErrorResponse $response */
             $response = new ResponseTypes\ErrorResponse(['exception' => $routeException]);
         }
 
@@ -115,24 +115,6 @@ class Context
     private function getControllerFullName($controller)
     {
         return 'Application\\Controller\\' . $controller;
-    }
-
-    /**
-     * @param $controller
-     * @param $action
-     * @throws ContextException
-     */
-    private function validate($controller, $action)
-    {
-        if(!class_exists($controller))
-        {
-            throw new ContextException(sprintf('Controller \'%s\' not exists', $controller));
-        }
-
-        if(!method_exists($controller, $action))
-        {
-            throw new ContextException(sprintf('Action \'%s\' not exists in %s', $action, $controller));
-        }
     }
 
     public function executeView($parameters, $viewName)

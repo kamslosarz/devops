@@ -102,7 +102,6 @@ class AuthService implements ServiceInterface
      */
     public function hasAccess()
     {
-
         // OSOBNY SERVIS
         $route = $this->request->getRoute();
 

@@ -35,7 +35,7 @@ class ConsoleTest extends ConsoleTestCase
             ->getMock();
 
         $console = new Console($consoleParametersMock);
-        $this->assertEquals('Admin created', $console->run());
+        $this->assertEquals('Admin created', $console->run()->getContent());
     }
 
     /**
