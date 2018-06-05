@@ -2,13 +2,17 @@
 
 namespace Application\Context;
 
+use Application\Config\Config;
 use Application\Container\Appender\Appender;
+use Application\Container\Appender\AppenderLevel;
 use Application\Controller\Controller;
 use Application\Response\Response;
 use Application\Response\ResponseTypes;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Route;
+use Application\Router\RouteException;
 use Application\Router\Router;
+use Application\Service\AccessChecker\AccessDeniedException;
 use Application\Service\Logger\LoggerLevel;
 use Application\Service\Request\Request;
 use Application\Service\ServiceContainer\ServiceContainer;
@@ -38,8 +42,10 @@ class Context
 
     /**
      * @return Response
+     * @throws AccessDeniedException
      * @throws ServiceContainerException
      * @throws \Application\Router\Dispatcher\DispatcherException
+     * @throws \Application\Router\RouteException
      */
     private function dispatch()
     {
@@ -60,6 +66,11 @@ class Context
             $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Validating controller', LoggerLevel::INFO);
             $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Dispatching controller', LoggerLevel::INFO);
 
+            if(!$this->serviceContainer->getService('accessChecker')->hasAccess())
+            {
+                throw new AccessDeniedException(sprintf('Access denied to \'%s\'', Router::getRouteByParameters($route->getController(), $route->getAction(), $route->getParameters())));
+            }
+
             $dispatcher = new Dispatcher($controller, $action, [
                 $this->serviceContainer, $this->appender, $this->router
             ]);
@@ -74,8 +85,11 @@ class Context
     }
 
     /**
-     * @return Response|ResponseTypes\ErrorResponse
+     * @return Response|ResponseTypes\ErrorResponse|ResponseTypes\RedirectResponse
+     * @throws RouteException
      * @throws ServiceContainerException
+     * @throws \Application\Router\Dispatcher\DispatcherException
+     * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function __invoke()
     {
@@ -84,10 +98,14 @@ class Context
             /** @var Response $response */
             $response = $this->dispatch();
         }
-        catch(\Exception $routeException)
+        catch(RouteException $routeException)
         {
             /** @var ResponseTypes\ErrorResponse $response */
             $response = new ResponseTypes\ErrorResponse(['exception' => $routeException]);
+        }catch(AccessDeniedException $accessDeniedException){
+
+            $this->appender->append('Access denied', AppenderLevel::ERROR);
+            $response = new ResponseTypes\RedirectResponse(Config::get('defaultAction'));
         }
 
         switch($response->getType())

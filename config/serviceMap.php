@@ -35,5 +35,11 @@ return [
         \Application\Service\AuthService\AuthService::class, [
             '@request'
         ]
-    ]
+    ],
+    'accessChecker' => [
+        \Application\Service\AccessChecker\AccessChecker::class, [
+            '@request',
+            '@authService'
+        ]
+    ],
 ];

@@ -4,8 +4,6 @@ namespace Application;
 
 try
 {
-    var_dump($_SESSION); var_dump($_COOKIE);
-
     set_include_path(dirname(__DIR__));
 
     if(!in_array('mod_rewrite', \apache_get_modules()))
@@ -25,8 +23,6 @@ try
 
     //TODO cache the responses
     ($application->getResponse())();
-
-    var_dump($_SESSION);var_dump($_COOKIE);
 }
 catch(\Exception $e)
 {

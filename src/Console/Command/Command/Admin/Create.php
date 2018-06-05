@@ -4,7 +4,6 @@ namespace Application\Console\Command\Command\Admin;
 
 use Application\Config\Config;
 use Application\Console\Command\Command;
-use Application\Response\ResponseTypes\ConsoleResponse;
 use Application\Router\Router;
 use Model\User as user;
 use Model\UserPrivilege;

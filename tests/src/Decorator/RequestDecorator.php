@@ -75,6 +75,13 @@ class RequestDecorator extends Request
         return $this;
     }
 
+    public function setSession($key, $value)
+    {
+        $this->session[$key] = $value;
+
+        return $this;
+    }
+
     public function isPost()
     {
         return strtolower($this->server('REQUEST_METHOD')) === RequestMethods::POST;

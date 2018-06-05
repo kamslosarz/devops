@@ -29,6 +29,7 @@ return [
         ]
     ],
     'defaultAction' => 'Admin\AdminController:index',
+    'loginAction' => 'Admin\UserController:loginAction',
     'twig' => [
         'loader' => [
             'templates' => dirname(__DIR__) . '/src/Resource',

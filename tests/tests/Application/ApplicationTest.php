@@ -12,9 +12,8 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
 
     public function testShouldInvokeApplicationInstance()
     {
-        $dispatcher = $this->getApplicationContainer();
+        $dispatcher = $this->getApplicationContainer(false);
         $results = $dispatcher->dispatch('/admin/login');
-
         $crawler = $this->getCrawler($results);
 
         $this->assertEquals('login-form',

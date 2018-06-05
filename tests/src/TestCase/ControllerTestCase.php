@@ -33,7 +33,7 @@ abstract class ControllerTestCase extends TestCase
 
         if($logged)
         {
-            $app->getRequest()->setCookie(AuthService::AUTH_KEY_NAME, $this->getUser()->getUserAuthTokens()->getFirst()->getToken());
+            $app->getRequest()->setSession(AuthService::AUTH_KEY_NAME, $this->getUser()->getUserAuthTokens()->getFirst()->getToken());
         }
 
         return $app;

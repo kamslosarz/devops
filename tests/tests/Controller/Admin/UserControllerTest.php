@@ -13,6 +13,9 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         );
     }
 
+    /**
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
     public function testShouldExecuteLoginActionPostAndLoginUser()
     {
         $dispatcher = $this->getApplicationContainer(false);
@@ -48,6 +51,9 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         $this->assertEquals('Successfully logged out', $_SESSION['messages']['SUCCESS']);
     }
 
+    /**
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
     public function testShouldLogoutUser()
     {
         $dispatcher = $this->getApplicationContainer(false);
@@ -58,7 +64,6 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         ]);
 
         $dispatcher->dispatch('/admin/login');
-
         $this->assertEquals(
             $_SESSION[\Application\Service\AuthService\AuthService::AUTH_KEY_NAME],
             $this->getUser()->getUserAuthTokens(
@@ -71,6 +76,7 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         $this->assertNull($results);
         $this->assertEquals('Location: /admin/login', $dispatcher->getResponse()->getHeaders()[0]);
         $this->assertEquals('Successfully logged out', $_SESSION['messages']['SUCCESS']);
+        $this->assertNull($_SESSION[\Application\Service\AuthService\AuthService::AUTH_KEY_NAME]);
     }
 
     public function getDataSet()
