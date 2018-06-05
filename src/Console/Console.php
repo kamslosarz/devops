@@ -4,8 +4,7 @@ namespace Application\Console;
 
 
 use Application\Console\Command\Command;
-use Application\Response\Response;
-use Application\Router\Dispatcher\Dispatcher;
+use Application\Router\Dispatcher\ConsoleDispatcher;
 use Application\Service\ServiceContainer\ServiceContainer;
 
 class Console
@@ -28,9 +27,9 @@ class Console
     public function run()
     {
         /** @var Command $command */
-        $command = Command::getInstance($this->consoleParameters->getCommand());
+        $command = Command::getCommand($this->consoleParameters->getCommand());
 
-        if(!($command instanceof Command))
+        if(!$command)
         {
             throw new ConsoleException('Command not found');
         }
@@ -45,7 +44,7 @@ class Console
             throw new ConsoleException(implode(PHP_EOL, $command->getErrors()));
         }
 
-        $dispatcher = new Dispatcher($command, 'execute');
+        $dispatcher = new ConsoleDispatcher($command, 'execute');
         $dispatcher->dispatch($this->consoleParameters->getParameters());
 
         return $dispatcher->getResponse()->getContent();

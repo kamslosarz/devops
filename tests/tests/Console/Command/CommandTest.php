@@ -13,7 +13,7 @@ class CommandTest extends ConsoleTestCase
      */
     public function testShouldReturnInstance($class, $commandName)
     {
-        $command = Command::getInstance((new \Application\Console\ConsoleParameters(['',
+        $command = Command::getCommand((new \Application\Console\ConsoleParameters(['',
             $commandName
         ]))->getCommand());
 
@@ -51,7 +51,7 @@ class CommandTest extends ConsoleTestCase
      */
     public function testShouldReturnNull()
     {
-        $command = Command::getInstance((new \Application\Console\ConsoleParameters(['',
+        $command = Command::getCommand((new \Application\Console\ConsoleParameters(['',
             'notExistingCommand'
         ]))->getCommand());
 

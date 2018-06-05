@@ -13,7 +13,7 @@ class AdminCreateTest extends ConsoleTestCase
      */
     public function testShouldValidateCommand($username, $password)
     {
-        $command = Command::getInstance((new \Application\Console\ConsoleParameters([
+        $command = Command::getCommand((new \Application\Console\ConsoleParameters([
             '',
             'admin:create'
         ]))->getCommand());
@@ -26,7 +26,7 @@ class AdminCreateTest extends ConsoleTestCase
      */
     public function testShouldReturnInvalidUserDataError()
     {
-        $command = Command::getInstance((new \Application\Console\ConsoleParameters([
+        $command = Command::getCommand((new \Application\Console\ConsoleParameters([
             '',
             'admin:create'
         ]))->getCommand());
@@ -40,7 +40,7 @@ class AdminCreateTest extends ConsoleTestCase
      */
     public function testShouldReturnUserAlreadyExists()
     {
-        $command = Command::getInstance((new \Application\Console\ConsoleParameters([
+        $command = Command::getCommand((new \Application\Console\ConsoleParameters([
             '',
             'admin:create'
         ]))->getCommand());
@@ -55,7 +55,7 @@ class AdminCreateTest extends ConsoleTestCase
     public function testShouldCreateAdmin()
     {
         $username = 'TestUsername';
-        $command = Command::getInstance((new \Application\Console\ConsoleParameters([
+        $command = Command::getCommand((new \Application\Console\ConsoleParameters([
             '',
             'admin:create'
         ]))->getCommand());

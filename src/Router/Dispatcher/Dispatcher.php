@@ -8,15 +8,22 @@ use Application\Response\Response;
 
 class Dispatcher
 {
-    private $response;
-    private $class;
-    private $method;
+    protected $response;
+    protected $class;
+    protected $method;
 
+    /**
+     * Dispatcher constructor.
+     * @param $class
+     * @param $method
+     * @param array $parameters
+     * @throws DispatcherException
+     */
     public function __construct($class, $method, $parameters = [])
     {
         $this->class = $class;
         $this->method = $method;
-        $this->validate();
+        $this->isValid();
         $this->class = Factory::getInstance($class, $parameters);
     }
 
@@ -42,11 +49,11 @@ class Dispatcher
      * @param $action
      * @throws DispatcherException
      */
-    private function validate()
+    protected function isValid()
     {
         if(!class_exists($this->class))
         {
-            throw new DispatcherException(sprintf('Controller \'%s\' not exists', $this->class));
+            throw new DispatcherException(sprintf('Controller class \'%s\' not exists', $this->class));
         }
 
         if(!method_exists($this->class, $this->method))

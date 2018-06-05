@@ -17,7 +17,7 @@ abstract class Command
      * @param $command
      * @return mixed|null
      */
-    public static function getInstance($command)
+    public static function getCommand($command)
     {
         if(!self::exists($command))
         {

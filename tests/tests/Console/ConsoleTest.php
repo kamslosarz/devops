@@ -19,6 +19,11 @@ class ConsoleTest extends ConsoleTestCase
         $this->assertInstanceOf(Console::class, $console);
     }
 
+    /**
+     * @throws ConsoleException
+     * @throws ReflectionException
+     * @throws \Application\Router\Dispatcher\DispatcherException
+     */
     public function testShouldExecuteCommand()
     {
         $consoleParametersMock = m::mock(ConsoleParameters::class)
@@ -34,8 +39,8 @@ class ConsoleTest extends ConsoleTestCase
             ])
             ->getMock();
 
-        $console = new Console($consoleParametersMock);
-        $this->assertEquals('Admin created', $console->run()->getContent());
+        $results = (new Console($consoleParametersMock))->run();
+        $this->assertEquals('Admin created', $results);
     }
 
     /**
@@ -71,7 +76,7 @@ class ConsoleTest extends ConsoleTestCase
             ],
             'Invalid Number of parameters' => [
                 'Invalid number of parameters',
-                'Admin\create',
+                'Admin\Create',
                 []
             ],
         ];

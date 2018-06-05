@@ -1,128 +1,3 @@
-ls -la
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-cd ..
-cd ..
-cd ..
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-cd ../..
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-ls
-cd ~
-ls
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-ls -la
-cd www/
-ls -la
-cd assets/
-s
-ls
-ls -la
-ls -la
-ls -la
-rm -rf admin/
-rm -rf admin/
-cd ..
-cd ..
-la
-cd www/
-ls
-cd assets/
-rm -rf admin/
-exit
-ls
-cd www/
-cd w
-ls -la
-cd assets/
-ls
-ls -la
-ls
-cd admin/
-ls
-ls -la
-cd css/styles.css 
-ls
-cd css/
-ls -la
-cd ..
-cd ..
-ls -la
-exit
-exit
-cd www/
-ls
-ls -la
-cd assets/
-ls
-ls -la
-ls -la
-cd admin/
-lks
-ls
-cd ../../..
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-exit
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-cd www/
-ls
-cd assets/
-ls
-ls -la
-cd ..
-cd ..
-ls
-ls -la
-cd logs
-ls
-ls -la
-cd ..
-exit
-vendor/bin/phpunit -c tests/phpunit/phpunit.xml 
-ls
-ls
-ls -la
-r, -rf 777/
-rM -rf 777/
-chown -R www-data /var/www/devops
-chmod 777 -R /var/www/devops/www/assets
-chmod 777 -R /var/www/devops/www/assets
-ks
-ls
-rm -rf 777/
-chmod 777 -R /var/www/devops/www/assets
-ls
-ls -la
-chmod 777 -R /var/www/devops/www/assets
-chmod 777 -R /var/www/devops/www/assets
-ls
-ls -la
-chown -R www-data /var/www/devops
-ls -la
-ls
-ls
-chown -R www-data /var/www/devops
-mkdir 0777 /var/www/devops
-ls
-mkdir /var/www/devops
-exit
-cd logs/
-ls
-ls -la
-cd ..
-ls -la
-rm -rf 0777
-ls
-ls -la
-ls -la
-ls -la
 exit
 exit
 ls
@@ -498,3 +373,128 @@ vendor/bin/phpunit -c tests/phpunit/phpunit.xml
 vendor/bin/phpunit -c tests/phpunit/phpunit.xml
 vendor/bin/phpunit -c tests/phpunit/phpunit.xml
         exit;
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLogoutAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLogoutAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLogoutAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLogoutAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLogoutAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLogoutAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLogoutAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderLoginAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+clear
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+clear
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldRenderIndexAction
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldLogoutUser
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldLogoutUser
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldLogoutUser
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldLogoutUser
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldLogoutUser
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldLogoutUser
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldLogoutUser
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+clear
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml --filter=testShouldReturnRedirectResponse
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+exot
+exit

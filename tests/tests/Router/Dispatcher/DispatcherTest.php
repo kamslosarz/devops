@@ -5,8 +5,10 @@ namespace tests\Router\Dispatcher;
 use Application\Container\Appender\Appender;
 use Application\Response\Response;
 use Application\Router\Dispatcher\Dispatcher;
+use Application\Router\Dispatcher\DispatcherException;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
+use Test\Fixture\UserController;
 use Test\TestCase\Traits\ServiceContainerMockTrait;
 
 
@@ -14,27 +16,62 @@ class DispatcherTest extends TestCase
 {
     use ServiceContainerMockTrait;
 
+    /**
+     * @throws DispatcherException
+     */
     public function testShouldConstructDispatcher()
     {
-        $method = 'testMethod';
-        $parameters = [
-            'parameter',
-            'test',
-            'dataset'
-        ];
+        $serviceContainerMock = $this->getServiceContainerMock();
+        $appenderMock = m::mock(Appender::class);
 
-        $classMock = m::mock()
-            ->shouldReceive($method)
-            ->withArgs($parameters)
-            ->once()
-            ->andReturns('testResults')
-            ->getMock();
-
-        $dispatcher = new Dispatcher($classMock, $method);
-        $dispatcher->dispatch($parameters);
+        $dispatcher = new Dispatcher(UserController::class, 'indexAction', [
+            $serviceContainerMock,
+            $appenderMock
+        ]);
+        $dispatcher->dispatch();
 
         $this->assertInstanceOf(Dispatcher::class, $dispatcher);
-        $this->assertEquals('testResults', $dispatcher->getResponse()->getParameters());
+        $this->assertInstanceOf(Response::class, $dispatcher->getResponse());
+        $this->assertEquals(['test'], $dispatcher->getResponse()->getParameters());
+    }
+
+    /**
+     * @dataProvider shouldThrowDispatcherExceptionDataProvider
+     */
+    public function testShouldThrowDispatcherException($message, $class, $method, $parameters, $messageIsRegexp)
+    {
+        $this->expectException(DispatcherException::class);
+        if($messageIsRegexp)
+        {
+            $this->expectExceptionMessageRegExp($message);
+        }
+        else
+        {
+            $this->expectExceptionMessage($message);
+        }
+
+        $dispatcher = new Dispatcher($class, $method);
+        $dispatcher->dispatch($parameters);
+    }
+
+    public function shouldThrowDispatcherExceptionDataProvider()
+    {
+        return [
+            'Invalid class dataSet' => [
+                '/Controller class \'+[\Sa-zA-Z0-9]+\' not exists/',
+                m::mock(UserController::class),
+                '',
+                [],
+                true
+            ],
+            'invalid method data set' => [
+                sprintf('Action \'usersListAction\' not exists in \'%s\'', UserController::class),
+                UserController::class,
+                'usersListAction',
+                [],
+                false
+            ]
+        ];
     }
 
     /**
