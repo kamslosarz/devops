@@ -43,15 +43,16 @@ class Context
     /**
      * @return Response
      * @throws AccessDeniedException
+     * @throws RouteException
      * @throws ServiceContainerException
      * @throws \Application\Router\Dispatcher\DispatcherException
-     * @throws \Application\Router\RouteException
      */
     private function dispatch()
     {
         if(!($this->response instanceof Response))
         {
             $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Initializing Router', LoggerLevel::INFO);
+
             /** @var Route $route */
             $route = ($this->router)();
 
@@ -102,10 +103,18 @@ class Context
         {
             /** @var ResponseTypes\ErrorResponse $response */
             $response = new ResponseTypes\ErrorResponse(['exception' => $routeException]);
-        }catch(AccessDeniedException $accessDeniedException){
-
-            $this->appender->append('Access denied', AppenderLevel::ERROR);
-            $response = new ResponseTypes\RedirectResponse(Config::get('defaultAction'));
+        }
+        catch(AccessDeniedException $accessDeniedException)
+        {
+            if($this->serviceContainer->getService('accessChecker')->hasAccess(Config::get('defaultAction')))
+            {
+                $this->appender->append($accessDeniedException->getMessage(), AppenderLevel::ERROR);
+                $response = new ResponseTypes\RedirectResponse(Config::get('defaultAction'));
+            }
+            else
+            {
+                $response = new ResponseTypes\RedirectResponse(Config::get('loginAction'));
+            }
         }
 
         switch($response->getType())

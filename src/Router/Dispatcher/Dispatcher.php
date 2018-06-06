@@ -35,7 +35,7 @@ class Dispatcher
     {
         if(is_null($this->response))
         {
-            $this->response = $this->class->{$this->method}(...$parameters);
+            $this->response = $this->class->{$this->method}(...array_values($parameters));
 
             if(!($this->response instanceof Response))
             {

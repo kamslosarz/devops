@@ -37,7 +37,7 @@ abstract class Controller
 
     public function getUser()
     {
-        return $this->sergetService('authService')->getUser();
+        return $this->sergetService('auth')->getUser();
     }
 
     /**

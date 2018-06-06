@@ -20,11 +20,7 @@
     <div class="nav">
     </div>
     <div class="main-content">
-        <div class="messages">
-            {% for type, message in messages.all %}
-                <p class="{{ type }}">{{ message }}</p>
-            {% endfor %}
-        </div>
+        {% include 'messages.html.twig' with {'messages': messages} %}
         <div class="content">
             {% include 'form/form.html.twig' with {'form': form} %}
         </div>
@@ -34,3 +30,4 @@
     </div>
 </div>
 </body>
+</html>

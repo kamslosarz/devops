@@ -9,19 +9,19 @@ use Application\Router\Dispatcher\DispatcherException;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Test\Fixture\UserController;
-use Test\TestCase\Traits\ServiceContainerMockTrait;
+use Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 
 
 class DispatcherTest extends TestCase
 {
-    use ServiceContainerMockTrait;
+    use ServiceContainerMockBuilderTrait;
 
     /**
      * @throws DispatcherException
      */
     public function testShouldConstructDispatcher()
     {
-        $serviceContainerMock = $this->getServiceContainerMock();
+        $serviceContainerMock = $this->getServiceContainerMockBuilder()->build();
         $appenderMock = m::mock(Appender::class);
 
         $dispatcher = new Dispatcher(UserController::class, 'indexAction', [
@@ -88,7 +88,7 @@ class DispatcherTest extends TestCase
         $appenderMock = m::mock(Appender::class);
 
         $dispatcher = new Dispatcher(\Test\Fixture\UserController::class, $method, [
-            $this->getServiceContainerMock(),
+            $this->getServiceContainerMockBuilder()->build(),
             $appenderMock
         ]);
 

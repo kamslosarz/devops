@@ -31,7 +31,7 @@ return [
             '@cookie'
         ]
     ],
-    'authService' => [
+    'auth' => [
         \Application\Service\AuthService\AuthService::class, [
             '@request'
         ]
@@ -39,7 +39,7 @@ return [
     'accessChecker' => [
         \Application\Service\AccessChecker\AccessChecker::class, [
             '@request',
-            '@authService'
+            '@auth'
         ]
     ],
 ];

@@ -1,7 +1,5 @@
 <?php
 
-use \Mockery as m;
-
 class AdminControllerTest extends \Test\TestCase\ControllerTestCase
 {
     /**
@@ -11,11 +9,11 @@ class AdminControllerTest extends \Test\TestCase\ControllerTestCase
      */
     public function testShouldRenderIndexAction()
     {
-        $adminController = new \Application\Controller\Admin\AdminController($this->getServiceContainerMock(), $this->getAppenderMock());
-        $response = $adminController->indexAction();
+        $adminController = new \Application\Controller\Admin\AdminController($this->getServiceContainerMockBuilder()->build(), $this->getAppenderMock());
+        $response = $adminController->indexAction(99, 'test');
 
         $this->assertInstanceOf(\Application\Response\Response::class, $response);
-        $this->assertEquals([], $response->getParameters());
+        $this->assertEquals([99, 'test'], $response->getParameters());
     }
 
     public function getDataSet()

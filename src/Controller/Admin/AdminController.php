@@ -2,13 +2,15 @@
 
 namespace Application\Controller\Admin;
 
-use Application\Model\User;
 use Application\Response\Response;
 
 class AdminController extends Controller
 {
-    public function indexAction()
+    public function indexAction($integer, $string)
     {
-        return new Response();
+        return new Response([
+            $integer, $string
+        ]);
     }
+
 }

@@ -2,8 +2,8 @@
 
 namespace Test\TestCase;
 
+
 use Application\Config\Config;
-use Application\View\View;
 use PHPUnit\Framework\TestCase;
 
 abstract class ViewTestCase extends TestCase
@@ -17,7 +17,8 @@ abstract class ViewTestCase extends TestCase
         $loader = new \Twig_Loader_Filesystem($config['loader']['templates']);
 
         return new \Twig_Environment($loader, [
-            'cache' => $config['loader']['cache']
+            'cache' => $config['loader']['cache'],
+            'debug' => true,
         ]);
     }
 

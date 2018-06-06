@@ -2,7 +2,6 @@
 
 namespace Application\Service\AccessChecker;
 
-use Application\Config\Config;
 use Application\Router\Route;
 use Application\Router\Router;
 use Application\Service\AuthService\AuthService;
@@ -66,7 +65,7 @@ class AccessChecker implements ServiceInterface
             }
         }
 
-        return Router::getCompactRouteName($route->getController(), $route->getAction()) === Config::get('defaultAction');
+        return false;
     }
 
     private function checkPrivilege(UserPrivilege $privilege)

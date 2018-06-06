@@ -1,0 +1,11 @@
+<div class="messages">
+    {% for messagesType, messagesToFlash in messages.all %}
+        {% if messagesToFlash is iterable %}
+            {% for message in messagesArray %}
+                <p class="{{ messagesType }}">{{ message }}</p>
+            {% endfor %}
+        {% else %}
+            <p class="{{ messagesType }}">{{ messagesToFlash }}</p>
+        {% endif %}
+    {% endfor %}
+</div>

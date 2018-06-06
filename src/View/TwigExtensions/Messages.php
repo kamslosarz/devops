@@ -21,7 +21,7 @@ class Messages extends Extension implements \Twig_Extension_GlobalsInterface
     /**
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
-    public function all()
+    public function getAll()
     {
         $messages = $this->serviceContainer->getService('session')->get('messages');
         $this->serviceContainer->getService('session')->set('messages', null);

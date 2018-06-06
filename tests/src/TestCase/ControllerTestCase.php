@@ -11,15 +11,16 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Test\ApplicationContainer\ApplicationContainer;
 use Test\TestCase\Traits\DatabaseTestCaseTrait;
-use Test\TestCase\Traits\ServiceContainerMockTrait;
+use Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 
 abstract class ControllerTestCase extends TestCase
 {
     use TestCaseTrait;
     use DatabaseTestCaseTrait;
-    use ServiceContainerMockTrait;
+    use ServiceContainerMockBuilderTrait;
+
     /**
-    /**
+     * /**
      * @return m\MockInterface
      */
     public function getAppenderMock()
@@ -54,7 +55,7 @@ abstract class ControllerTestCase extends TestCase
      */
     public function getUserDataSet()
     {
-        return new ArrayDataSet( [
+        return new ArrayDataSet([
             'users' => [
                 [
                     'id' => 1,
@@ -67,6 +68,33 @@ abstract class ControllerTestCase extends TestCase
                     'id' => 1,
                     'user_id' => 1,
                     'token' => 'edc3d8b693144e3d62a3ac774c4da98c'
+                ]
+            ],
+            'users_privileges' => [
+                [
+                    'id' => 1,
+                    'user_id' => 1,
+                    'name' => 'Admin\UserController:login'
+                ], [
+                    'id' => 2,
+                    'user_id' => 1,
+                    'name' => 'Admin\UserController:logout'
+                ], [
+                    'id' => 3,
+                    'user_id' => 1,
+                    'name' => 'Admin\ProjectController:index'
+                ], [
+                    'id' => 4,
+                    'user_id' => 1,
+                    'name' => 'Admin\IndexController:index'
+                ], [
+                    'id' => 5,
+                    'user_id' => 1,
+                    'name' => 'Admin\ProjectController:project'
+                ], [
+                    'id' => 6,
+                    'user_id' => 1,
+                    'name' => 'Admin\AdminController:index'
                 ]
             ]
         ]);

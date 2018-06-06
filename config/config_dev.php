@@ -24,12 +24,12 @@ return [
             'projectAction',
         ],
         '/admin/test/[id]/[action]' => [
-            'Admin\IndexController',
+            'Admin\AdminController',
             'indexAction',
         ]
     ],
     'defaultAction' => 'Admin\AdminController:index',
-    'loginAction' => 'Admin\UserController:loginAction',
+    'loginAction' => 'Admin\UserController:login',
     'twig' => [
         'loader' => [
             'templates' => dirname(__DIR__) . '/src/Resource',
