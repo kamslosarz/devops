@@ -27,15 +27,25 @@ class Container
      */
     public function __invoke()
     {
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Executing Context', LoggerLevel::INFO);
-        $this->results = ($this->context)();
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Sending Response, Application is shutting down' . PHP_EOL, LoggerLevel::INFO);
+        if(!$this->results)
+        {
+            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Executing Context', LoggerLevel::INFO);
+            ($this->context)();
+            $this->results = $this->context->getResults();
+            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Sending Response, Application is shutting down' . PHP_EOL, LoggerLevel::INFO);
+        }
 
-        return $this->results;
+        return true;
     }
+
     public function getServiceContainer()
     {
         return $this->serviceContainer;
+    }
+
+    public function getResults()
+    {
+        return $this->results;
     }
 
     public function getContext()

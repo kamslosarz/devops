@@ -26,7 +26,8 @@ class Context
     private $router;
     private $appender;
     private $serviceContainer;
-    private $response;
+    /** @var Response */
+    private $results;
 
     /**
      * Context constructor.testShouldReturnNulledRouter
@@ -49,40 +50,35 @@ class Context
      */
     private function dispatch()
     {
-        if(!($this->response instanceof Response))
+        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Initializing Router', LoggerLevel::INFO);
+
+        /** @var Route $route */
+        $route = ($this->router)();
+
+        /** @var Request $request */
+        $request = $this->serviceContainer->getService('request');
+        $request->setRoute($route);
+
+        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Gathering controller', LoggerLevel::INFO);
+        $controller = $this->getControllerFullName($route->getController());
+        $action = $route->getAction();
+
+        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Validating controller', LoggerLevel::INFO);
+        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Dispatching controller', LoggerLevel::INFO);
+
+        if(!$this->serviceContainer->getService('accessChecker')->hasAccess())
         {
-            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Initializing Router', LoggerLevel::INFO);
-
-            /** @var Route $route */
-            $route = ($this->router)();
-
-            /** @var Request $request */
-            $request = $this->serviceContainer->getService('request');
-            $request->setRoute($route);
-
-            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Gathering controller', LoggerLevel::INFO);
-            $controller = $this->getControllerFullName($route->getController());
-            $action = $route->getAction();
-
-            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Validating controller', LoggerLevel::INFO);
-            $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Dispatching controller', LoggerLevel::INFO);
-
-            if(!$this->serviceContainer->getService('accessChecker')->hasAccess())
-            {
-                throw new AccessDeniedException(sprintf('Access denied to \'%s\'', Router::getRouteByParameters($route->getController(), $route->getAction(), $route->getParameters())));
-            }
-
-            $dispatcher = new Dispatcher($controller, $action, [
-                $this->serviceContainer, $this->appender, $this->router
-            ]);
-            $dispatcher->dispatch($route->getParameters());
-
-            /** @var Response $response */
-            $this->response = $dispatcher->getResponse();
-            $this->response->setRoute($route);
+            throw new AccessDeniedException(sprintf('Access denied to \'%s\'', Router::getRouteByParameters($route->getController(), $route->getAction(), $route->getParameters())));
         }
 
-        return $this->response;
+        $dispatcher = new Dispatcher($controller, $action, [
+            $this->serviceContainer, $this->appender, $this->router
+        ]);
+        $dispatcher->dispatch($route->getParameters());
+
+        /** @var Response $response */
+        $this->results = $dispatcher->getResponse();
+        $this->results->setRoute($route);
     }
 
     /**
@@ -94,49 +90,48 @@ class Context
      */
     public function __invoke()
     {
-        try
+        if(!$this->results)
         {
-            /** @var Response $response */
-            $response = $this->dispatch();
-        }
-        catch(RouteException $routeException)
-        {
-            /** @var ResponseTypes\ErrorResponse $response */
-            $response = new ResponseTypes\ErrorResponse(['exception' => $routeException]);
-        }
-        catch(AccessDeniedException $accessDeniedException)
-        {
-            if($this->serviceContainer->getService('accessChecker')->hasAccess(Config::get('defaultAction')))
+            try
             {
-                $this->appender->append($accessDeniedException->getMessage(), AppenderLevel::ERROR);
-                $response = new ResponseTypes\RedirectResponse(Config::get('defaultAction'));
+                $this->dispatch();
             }
-            else
+            catch(RouteException $routeException)
             {
-                $response = new ResponseTypes\RedirectResponse(Config::get('loginAction'));
+                $this->results = new ResponseTypes\ErrorResponse(['exception' => $routeException]);
             }
+            catch(AccessDeniedException $accessDeniedException)
+            {
+                if($this->serviceContainer->getService('accessChecker')->hasAccess(Config::get('defaultAction')))
+                {
+                    $this->appender->append($accessDeniedException->getMessage(), AppenderLevel::ERROR);
+                    $this->results = new ResponseTypes\RedirectResponse(Config::get('defaultAction'));
+                }
+                else
+                {
+                    $this->results = new ResponseTypes\RedirectResponse(Config::get('loginAction'));
+                }
+            }
+
+            switch($this->results->getType())
+            {
+                case ResponseTypes::CONTEXT_JSON:
+
+                    break;
+                case ResponseTypes::REDIRECT:
+
+                    break;
+                case ResponseTypes::ERROR:
+                    $this->results->setContent($this->executeView($this->results->getParameters(), 'error'));
+                    break;
+                default:
+                    $this->results->setContent($this->executeView($this->results->getParameters(), $this->getViewName($this->results->getRoute())));
+                    break;
+            }
+
+            $this->serviceContainer->getService('session')->save();
+            $this->serviceContainer->getService('cookie')->save();
         }
-
-        switch($response->getType())
-        {
-            case ResponseTypes::CONTEXT_JSON:
-
-                break;
-            case ResponseTypes::REDIRECT:
-
-                break;
-            case ResponseTypes::ERROR:
-                $response->setContent($this->executeView($response->getParameters(), 'error'));
-                break;
-            default:
-                $response->setContent($this->executeView($response->getParameters(), $this->getViewName($response->getRoute())));
-                break;
-        }
-
-        $this->serviceContainer->getService('session')->save();
-        $this->serviceContainer->getService('cookie')->save();
-
-        return $response;
     }
 
     private function getControllerFullName($controller)
@@ -180,6 +175,11 @@ class Context
     public function getAppender()
     {
         return $this->appender;
+    }
+
+    public function getResults()
+    {
+        return $this->results;
     }
 
 }

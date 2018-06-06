@@ -22,8 +22,8 @@ class ContainerTest extends TestCase
     public function testShouldInvokeAndReturnsResponse()
     {
         $container = new Container();
-        $response = $container();
+        $container();
 
-        $this->assertTrue(strlen($response->getContent()) > 1000);
+        $this->assertTrue(strlen($container->getResults()->getContent()) > 1000);
     }
 }

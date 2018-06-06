@@ -56,24 +56,30 @@ class ContextTest extends TestCase
             ->build();
 
         /** @var ErrorResponse $response */
-        $response = (new Context($serviceContainerMock))();
-        $this->assertInstanceOf(ErrorResponse::class, $response);
-        $this->assertEquals('Route \'/not-existing-route-to-nowhere\' not found', $response->getParameters()['exception']->getMessage());
+        $context = new Context($serviceContainerMock);
+        $context();
+        $this->assertInstanceOf(ErrorResponse::class, $context->getResults());
+        $this->assertEquals('Route \'/not-existing-route-to-nowhere\' not found', $context->getResults()->getParameters()['exception']->getMessage());
     }
 
     /**
-     * @dataProvider  shouldReturnExpectedResponseType
+     * @dataProvider shouldReturnExpectedResponseType
      * @param $mockBuilder
      * @param $type
      * @param $contentClosure
      * @param $parameters
      * @param $headers
+     * @throws \Application\Router\Dispatcher\DispatcherException
+     * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function testShouldReturnExpectedResponseType($mockBuilder, $type, $contentClosure, $parameters, $headers)
     {
         /** @var ErrorResponse $response */
-        $response = (new Context($mockBuilder->build()))();
+        $context = new Context($mockBuilder->build());
+        $context();
+        $response = $context->getResults();
 
         $this->assertInstanceOf($type, $response, 'invalid response type');
         $this->assertTrue($contentClosure($response->getContent()), sprintf('invalid response content: "%s"', $response->getContent()));

@@ -10,7 +10,7 @@ final class Application
 {
     private static $environment = '_dev';
     /** @var Response $response */
-    private $response = null;
+    private $results = null;
 
     public function __construct()
     {
@@ -19,18 +19,19 @@ final class Application
 
     public function __invoke()
     {
-        if(is_null($this->response))
+        if(is_null($this->results))
         {
             $container = new Container();
-            $this->response = $container();
+            $container();
+            $this->results = $container->getResults();
         }
 
-        return $this->response;
+        return $this->results;
     }
 
-    public function getResponse()
+    public function getResults()
     {
-        return $this->response;
+        return $this->results;
     }
 
     public static function getEnvironment()

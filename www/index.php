@@ -22,7 +22,7 @@ try
     $application();
 
     //TODO cache the responses
-    ($application->getResponse())();
+    ($application->getResults())();
 }
 catch(\Exception $e)
 {

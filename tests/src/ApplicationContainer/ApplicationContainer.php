@@ -52,7 +52,7 @@ class ApplicationContainer
 
         $application = new \Application\Application();
         $application();
-        $this->response = $application->getResponse();
+        $this->response = $application->getResults();
 
         return $this->response->getContent();
     }
