@@ -10,7 +10,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
         $route = $router();
 
         $this->assertEquals('Admin\AdminController', $route->getController());
-        $this->assertEquals('indexAction', $route->getAction());
+        $this->assertEquals('testAction', $route->getAction());
         $this->assertEquals(['id' => 1, 'action' => 'test'], $route->getParameters());
 
     }

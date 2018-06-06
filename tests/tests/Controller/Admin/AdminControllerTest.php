@@ -10,10 +10,10 @@ class AdminControllerTest extends \Test\TestCase\ControllerTestCase
     public function testShouldRenderIndexAction()
     {
         $adminController = new \Application\Controller\Admin\AdminController($this->getServiceContainerMockBuilder()->build(), $this->getAppenderMock());
-        $response = $adminController->indexAction(99, 'test');
+        $response = $adminController->indexAction();
 
         $this->assertInstanceOf(\Application\Response\Response::class, $response);
-        $this->assertEquals([99, 'test'], $response->getParameters());
+        $this->assertEquals([], $response->getParameters());
     }
 
     public function getDataSet()

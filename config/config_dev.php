@@ -25,7 +25,7 @@ return [
         ],
         '/admin/test/[id]/[action]' => [
             'Admin\AdminController',
-            'indexAction',
+            'testAction',
         ]
     ],
     'defaultAction' => 'Admin\AdminController:index',

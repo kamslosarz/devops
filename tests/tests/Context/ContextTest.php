@@ -76,7 +76,7 @@ class ContextTest extends TestCase
         $response = (new Context($mockBuilder->build()))();
 
         $this->assertInstanceOf($type, $response, 'invalid response type');
-        $this->assertTrue($contentClosure($response->getContent()), 'invalid response content');
+        $this->assertTrue($contentClosure($response->getContent()), sprintf('invalid response content: "%s"', $response->getContent()));
         $this->assertEquals($parameters, $response->getParameters(), 'invalid response parameters');
         $this->assertEquals($headers, $response->getHeaders(), 'invalid response headers');
 

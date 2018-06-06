@@ -6,11 +6,16 @@ use Application\Response\Response;
 
 class AdminController extends Controller
 {
-    public function indexAction($integer, $string)
+    public function testAction($integer, $string)
     {
         return new Response([
             $integer, $string
         ]);
+    }
+
+    public function indexAction()
+    {
+        return new Response([]);
     }
 
 }
