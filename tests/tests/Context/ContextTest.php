@@ -96,15 +96,15 @@ class ContextTest extends TestCase
         return [
             'dataSet Response' => [
                 $this->getServiceContainerMockBuilder()->setRequestMock(m::mock(Request::class)
-                    ->shouldReceive('getRequestUri')
+                    ->shouldHaveReceived('getRequestUri')
                     ->once()
                     ->andReturns('/admin/test/999/delete')
                     ->getMock()
-                    ->shouldReceive('getRoute')
+                    ->shouldHaveReceived('getRoute')
                     ->once()
                     ->andReturns(m::mock(Route::class))
                     ->getMock()
-                    ->shouldReceive('setRoute')
+                    ->shouldHaveReceived('setRoute')
                     ->once()
                     ->andReturns()
                     ->getMock()),
@@ -115,29 +115,29 @@ class ContextTest extends TestCase
             'dataSet RedirectResponse' => [
                 $this->getServiceContainerMockBuilder()
                     ->setRequestMock(m::mock(Request::class)
-                        ->shouldReceive('getRequestUri')
+                        ->shouldHaveReceived('getRequestUri')
                         ->once()
                         ->andReturns('/admin/logout')
                         ->getMock()
-                        ->shouldReceive('getRoute')
+                        ->shouldHaveReceived('getRoute')
                         ->once()
                         ->andReturns(m::mock(Route::class))
                         ->getMock()
-                        ->shouldReceive('setRoute')
+                        ->shouldHaveReceived('setRoute')
                         ->once()
                         ->andReturns()
                         ->getMock()
                     )->setAuthServiceMock(
                         $this->getServiceContainerMockBuilder()
                             ->getAuthServiceMock()
-                            ->shouldReceive('clearSession')
+                            ->shouldHaveReceived('clearSession')
                             ->once()
                             ->andReturnSelf()
                             ->getMock()
                     )->setSessionMock(
                         $this->getServiceContainerMockBuilder()
                             ->getSessionMock()
-                            ->shouldReceive('set')
+                            ->shouldHaveReceived('set')
                             ->andReturnSelf()
                             ->getMock()
                     ),
@@ -152,7 +152,7 @@ class ContextTest extends TestCase
     private function getAccessCheckerMock()
     {
         return m::mock(AccessChecker::class)
-            ->shouldReceive('hasAccess')
+            ->shouldHaveReceived('hasAccess')
             ->andReturns(true)
             ->getMock();
     }
@@ -160,15 +160,15 @@ class ContextTest extends TestCase
     private function getRequestMock()
     {
         return m::mock(Request::class)
-            ->shouldReceive('getRoute')
+            ->shouldHaveReceived('getRoute')
             ->once()
             ->andReturns($this->getServiceContainerMockBuilder()->getRouteMock())
             ->getMock()
-            ->shouldReceive('setRoute')
+            ->shouldHaveReceived('setRoute')
             ->once()
             ->andReturns()
             ->getMock()
-            ->shouldReceive('getRequestUri')
+            ->shouldHaveReceived('getRequestUri')
             ->once()
             ->andReturn('/not-existing-route-to-nowhere')
             ->getMock();

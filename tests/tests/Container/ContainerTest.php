@@ -12,7 +12,7 @@ class ContainerTest extends TestCase
     {
         $logger = m::mock(\Application\Service\Logger\Logger::class);
 
-        $logger->shouldReceive('log')
+        $logger->shouldHaveReceived('log')
             ->atLeast(1)
             ->andReturns(true);
 
@@ -32,7 +32,56 @@ class ContainerTest extends TestCase
     /**
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Application\View\ViewException
+     * @throws \Application\View\Twig\TwigFactoryException
+     * @throws \Response\ResponseTypes\RedirectResponseException
+     */
+    public function testShouldAppendSessionWithMessages()
+    {
+        $sessionParameters = [
+            'ERROR' => 'Test message for test usage'
+        ];
+
+        $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
+        $contextMock = m::mock(\Application\Context\Context::class)
+            ->shouldHaveReceived('__invoke')
+            ->getMock()
+            ->shouldHaveReceived('getResults')
+            ->andReturn(
+                m::mock(\Application\Service\Request\Request::class)
+                    ->shouldHaveReceived('getType')
+                    ->getMock()
+                    ->shouldHaveReceived('getRoute')
+                    ->getMock()
+                    ->shouldHaveReceived('getParameters')
+                    ->getMock()
+                    ->shouldHaveReceived('setContent')
+                    ->getMock()
+            )
+            ->getMock();
+
+        $appender = new \Application\Service\Appender\Appender(new \Application\Service\Session\Session());
+        $appender->append('Test message for test usage', \Application\Service\Appender\AppenderLevel::ERROR);
+        $serviceContainerMockBuilder->setAppenderMock($appender);
+
+        $viewMock = m::mock(\Application\View\View::class)
+            ->shouldHaveReceived('render')
+            ->getMock();
+
+        $container = new \Test\Decorator\ContainerDecorator(
+            $serviceContainerMockBuilder->build(),
+            $contextMock,
+            $viewMock
+        );
+
+        $container();
+
+        $this->assertEquals($sessionParameters, $_SESSION['messages']);
+    }
+
+    /**
+     * @throws \Application\Router\RouteException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Application\View\Twig\TwigFactoryException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function testShouldReturnRedirectResponseToDefaultAction()
@@ -40,18 +89,22 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setAccessCheckerMock(
             m::mock(\Application\Service\AccessChecker\AccessChecker::class)
-                ->shouldReceive('hasAccess')
+                ->shouldHaveReceived('hasAccess')
                 ->once()
                 ->withArgs(['Admin\AdminController:index'])
                 ->andReturn(true)
                 ->getMock()
-                ->shouldReceive('hasAccess')
+        );
+        $serviceContainerMockBuilder->setAppenderMock(
+            m::mock(\Application\Service\Appender\Appender::class)
+                ->shouldHaveReceived('append')
                 ->once()
-                ->andReturn(false)
+                ->withArgs(['Access denied to \'AdminController:indexAction\'', \Application\Service\Appender\AppenderLevel::ERROR])
                 ->getMock()
         );
+
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldReceive('__invoke')
+            ->shouldHaveReceived('__invoke')
             ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'AdminController:indexAction\'')
             ->getMock();
 
@@ -75,7 +128,7 @@ class ContainerTest extends TestCase
     /**
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Application\View\ViewException
+     * @throws \Application\View\Twig\TwigFactoryException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function testShouldReturnRedirectResponseToLoginAction()
@@ -83,13 +136,13 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setAccessCheckerMock(
             m::mock(\Application\Service\AccessChecker\AccessChecker::class)
-                ->shouldReceive('hasAccess')
+                ->shouldHaveReceived('hasAccess')
                 ->twice()
                 ->andReturn(true)
                 ->getMock()
         );
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldReceive('__invoke')
+            ->shouldHaveReceived('__invoke')
             ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'AdminController:loginAction\'')
             ->getMock();
 
@@ -121,18 +174,18 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setAccessCheckerMock(
             m::mock(\Application\Service\AccessChecker\AccessChecker::class)
-                ->shouldReceive('hasAccess')
+                ->shouldHaveReceived('hasAccess')
                 ->twice()
                 ->andReturn(true)
                 ->getMock()
         );
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldReceive('__invoke')
+            ->shouldHaveReceived('__invoke')
             ->andThrow(\Application\Router\RouteException::class, 'Route \'/a/s/d/1\' not found')
             ->getMock();
 
         $viewMock = m::mock(\Application\View\View::class)
-            ->shouldReceive('render')
+            ->shouldHaveReceived('render')
             ->withArgs(function (\Application\View\ViewElement $viewElement)
             {
                 return (($viewElement->getParameters()['exception'] instanceof \Application\Router\RouteException) && $viewElement->getParameters()['exception']->getMessage() === 'Route \'/a/s/d/1\' not found');
@@ -159,7 +212,7 @@ class ContainerTest extends TestCase
     /**
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Application\View\ViewException
+     * @throws \Application\View\Twig\TwigFactoryException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function testShouldReturnJsonResponse()
@@ -167,25 +220,25 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setRequestMock(
             m::mock(\Application\Service\Request\Request::class)
-                ->shouldReceive('getRequestUri')
+                ->shouldHaveReceived('getRequestUri')
                 ->once()
                 ->andReturn('/admin/json')
                 ->getMock()
         );
-        $responseParameters = [['test'=>'test']];
+        $responseParameters = [['test' => 'test']];
         $jsonResponse = new \Application\Response\ResponseTypes\JsonResponse($responseParameters);
 
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldReceive('__invoke')
+            ->shouldHaveReceived('__invoke')
             ->once()
             ->getMock()
-            ->shouldReceive('getResults')
+            ->shouldHaveReceived('getResults')
             ->once()
             ->andReturn($jsonResponse)
             ->getMock();
 
         $viewMock = m::mock(\Application\View\View::class)
-            ->shouldReceive('render')
+            ->shouldHaveReceived('render')
             ->getMock();
 
         $container = new \Test\Decorator\ContainerDecorator(
@@ -201,5 +254,52 @@ class ContainerTest extends TestCase
 
         $this->assertInstanceOf(\Application\Response\ResponseTypes\JsonResponse::class, $response);
         $this->assertEquals(json_encode($responseParameters), $response->getContent());
+    }
+
+    /**
+     * @throws \Application\Router\RouteException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Application\View\Twig\TwigFactoryException
+     * @throws \Response\ResponseTypes\RedirectResponseException
+     */
+    public function testShouldReturnOtherThanRouteErrorResponse()
+    {
+        $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
+        $serviceContainerMockBuilder->setRequestMock(
+            m::mock(\Application\Service\Request\Request::class)
+                ->shouldHaveReceived('getRequestUri')
+                ->once()
+                ->andReturn('/admin/json')
+                ->getMock()
+        );
+        $responseParameters = [['exception' => 'FATAL ERROR ']];
+        $errorResponse = new \Application\Response\ResponseTypes\ErrorResponse($responseParameters);
+
+        $contextMock = m::mock(\Application\Context\Context::class)
+            ->shouldHaveReceived('__invoke')
+            ->once()
+            ->getMock()
+            ->shouldHaveReceived('getResults')
+            ->once()
+            ->andReturn($errorResponse)
+            ->getMock();
+
+        $viewMock = m::mock(\Application\View\View::class)
+            ->shouldHaveReceived('render')
+            ->getMock();
+
+        $container = new \Test\Decorator\ContainerDecorator(
+            $serviceContainerMockBuilder->build(),
+            $contextMock,
+            $viewMock
+        );
+
+        $container();
+
+        /** @var \Application\Response\ResponseTypes\JsonResponse $response */
+        $response = $container->getResults();
+
+        $this->assertInstanceOf(\Application\Response\ResponseTypes\ErrorResponse::class, $response);
+        $this->assertEquals($responseParameters, $response->getParameters());
     }
 }

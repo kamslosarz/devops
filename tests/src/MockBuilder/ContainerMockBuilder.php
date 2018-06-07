@@ -85,6 +85,16 @@ class ContainerMockBuilder
 
         return $this;
     }
+    /**
+     * @param $appenderMock
+     * @return $this
+     */
+    public function setAppenderMock($appenderMock)
+    {
+        $this->appenderMock = $appenderMock;
+
+        return $this;
+    }
 
     public function getSessionMock()
     {

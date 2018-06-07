@@ -40,7 +40,6 @@ class Context
      * @throws RouteException
      * @throws ServiceContainerException
      * @throws \Application\Router\Dispatcher\DispatcherException
-     * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function __invoke()
     {

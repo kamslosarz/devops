@@ -26,11 +26,6 @@ class ViewElement implements ViewElementInterface
         $this->parameters = $parameters;
     }
 
-    public function isValid()
-    {
-
-    }
-
     public function getViewName()
     {
         return $this->viewName;

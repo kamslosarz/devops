@@ -25,7 +25,7 @@ class AppenderTest extends TestCase
         $level = AppenderLevel::SUCCESS;
 
         $sessionMock = m::mock(Session::class);
-        $sessionMock->shouldReceive('set')
+        $sessionMock->shouldHaveReceived('set')
             ->once()
             ->withArgs([
                 'messages', [
@@ -40,7 +40,7 @@ class AppenderTest extends TestCase
             ])
             ->andReturnSelf()
             ->getMock()
-            ->shouldReceive('get')
+            ->shouldHaveReceived('get')
             ->once()
             ->withArgs(['messages'])
             ->andReturns([
@@ -52,10 +52,10 @@ class AppenderTest extends TestCase
                 ]
             ])
             ->getMock()
-            ->shouldReceive('set')
+            ->shouldHaveReceived('set')
             ->once()
             ->getMock()
-            ->shouldReceive('get')
+            ->shouldHaveReceived('get')
             ->once()
             ->withArgs(['messages'])
             ->andReturns([
