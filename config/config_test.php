@@ -3,12 +3,9 @@
 use Application\Controller\Admin as Admin;
 use Application\Router\Route;
 
+
 return [
     'routes' => [
-        '/admin/index' => [
-            Admin\AdminController::class,
-            'indexAction',
-        ],
         '/admin/login' => [
             Admin\UserController::class,
             'loginAction',
@@ -18,6 +15,10 @@ return [
             Admin\UserController::class,
             'logoutAction',
         ],
+        '/admin/index' => [
+            Admin\AdminController::class,
+            'indexAction',
+        ],
         '/admin/project' => [
             Admin\ProjectController::class,
             'indexAction',
@@ -25,6 +26,10 @@ return [
         '/admin/project/edit/[id]' => [
             Admin\ProjectController::class,
             'projectAction',
+        ],
+        '/admin/test/[id]/[action]' => [
+            Admin\AdminController::class,
+            'testAction',
         ]
     ],
     'defaultAction' => 'Admin\AdminController:index',

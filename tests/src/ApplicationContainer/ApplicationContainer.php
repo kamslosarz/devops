@@ -50,7 +50,7 @@ class ApplicationContainer
         $_SESSION = $this->request->getSession();
         $_COOKIE = $this->request->getCookie();
 
-        $application = new \Application\Application();
+        $application = new \Application\Application('_test');
         $application();
         $this->response = $application->getResults();
 

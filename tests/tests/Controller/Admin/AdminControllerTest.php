@@ -3,9 +3,7 @@
 class AdminControllerTest extends \Test\TestCase\ControllerTestCase
 {
     /**
-     * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function testShouldRenderIndexAction()
     {

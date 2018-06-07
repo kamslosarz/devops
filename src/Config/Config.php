@@ -4,7 +4,7 @@ namespace Application\Config;
 
 use Application\Application;
 
-final class Config
+abstract class Config
 {
     private static $config;
     private static $configs = [];

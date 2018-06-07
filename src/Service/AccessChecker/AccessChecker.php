@@ -3,7 +3,6 @@
 namespace Application\Service\AccessChecker;
 
 use Application\Router\Route;
-use Application\Router\Router;
 use Application\Service\AuthService\AuthService;
 use Application\Service\Request\Request;
 use Application\Service\ServiceInterface;
@@ -14,6 +13,7 @@ use Model\UserRole;
 class AccessChecker implements ServiceInterface
 {
     private $request;
+    /** @var AuthService $authService */
     private $authService;
 
     public function __construct(Request $request, AuthService $authService)
@@ -23,13 +23,12 @@ class AccessChecker implements ServiceInterface
     }
 
     /**
+     * @param Route $route
      * @return bool
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function hasAccess()
+    public function hasAccess(Route $route)
     {
-        $route = $this->request->getRoute();
-
         if($route->getAccess() === Route::ACCESS_PUBLIC)
         {
             return true;
@@ -72,7 +71,7 @@ class AccessChecker implements ServiceInterface
     {
         $route = $this->request->getRoute();
 
-        return $privilege->getName() === Router::getCompactRouteName($route->getController(), $route->getAction());
+        return $privilege->getName() === $route->getCompactName();
     }
 
 }

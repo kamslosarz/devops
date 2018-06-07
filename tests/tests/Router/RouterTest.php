@@ -15,11 +15,9 @@ class RouterTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    public function testShouldGetRouteByParameters()
+    public function testShouldGetRouteUrlByParameters()
     {
-        $router = new \Application\Router\Router();
-
-        $relativeUrl = $router->getRouteByParameters('Admin\ProjectController', 'projectAction', ['id' => 9999]);
+        $relativeUrl = \Application\Router\Router::getRouteUrlByParameters('Admin\ProjectController', 'projectAction', ['id' => 9999]);
 
         $this->assertEquals('/admin/project/edit/9999', $relativeUrl);
     }

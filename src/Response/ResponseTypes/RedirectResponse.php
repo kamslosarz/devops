@@ -20,7 +20,7 @@ class RedirectResponse extends Response
     {
         $this->setType(ResponseTypes::REDIRECT);
         $route = explode(':', $redirect);
-        $location = Router::getRouteByParameters($route[0], sprintf('%sAction', $route[1]), $parameters);
+        $location = Router::getRouteUrlByParameters($route[0], sprintf('%sAction', $route[1]), $parameters);
         $this->setHeaders([sprintf('Location: %s', $location)]);
     }
 }

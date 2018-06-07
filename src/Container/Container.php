@@ -9,6 +9,7 @@ use Application\Response\ResponseTypes;
 use Application\Response\ResponseTypes\ErrorResponse;
 use Application\Response\ResponseTypes\RedirectResponse;
 use Application\Router\RouteException;
+use Application\Router\Router;
 use Application\Service\AccessChecker\AccessDeniedException;
 use Application\Service\Appender\AppenderLevel;
 use Application\Service\ServiceContainer\ServiceContainer;
@@ -57,7 +58,9 @@ class Container
             }
             catch(AccessDeniedException $accessDeniedException)
             {
-                if($this->serviceContainer->getService('accessChecker')->hasAccess(Config::get('defaultAction')))
+                $route = (new Router('/admin/index'))();
+
+                if($this->serviceContainer->getService('accessChecker')->hasAccess($route))
                 {
                     $this->serviceContainer->getService('appender')->append($accessDeniedException->getMessage(), AppenderLevel::ERROR);
                     $this->results = new RedirectResponse(Config::get('defaultAction'));

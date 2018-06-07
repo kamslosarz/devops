@@ -1,31 +1,30 @@
 <?php
 
+use Application\Controller\Admin as Admin;
+use Application\Router\Route;
+
 return [
     'routes' => [
-        '/admin/login' => [
-            'Admin\UserController',
-            'loginAction',
-            \Application\Router\Route::ACCESS_PUBLIC
-        ],
-        '/admin/logout' => [
-            'Admin\UserController',
-            'logoutAction',
-        ],
         '/admin/index' => [
-            'Admin\AdminController',
+            Admin\AdminController::class,
             'indexAction',
         ],
+        '/admin/login' => [
+            Admin\UserController::class,
+            'loginAction',
+            Route::ACCESS_PUBLIC
+        ],
+        '/admin/logout' => [
+            Admin\UserController::class,
+            'logoutAction',
+        ],
         '/admin/project' => [
-            'Admin\ProjectController',
+            Admin\ProjectController::class,
             'indexAction',
         ],
         '/admin/project/edit/[id]' => [
-            'Admin\ProjectController',
+            Admin\ProjectController::class,
             'projectAction',
-        ],
-        '/admin/test/[id]/[action]' => [
-            'Admin\AdminController',
-            'testAction',
         ]
     ],
     'defaultAction' => 'Admin\AdminController:index',

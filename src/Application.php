@@ -8,12 +8,13 @@ use Application\Response\Response;
 
 final class Application
 {
-    private static $environment = '_dev';
+    private static $environment = '';
     /** @var Response $response */
     private $results = null;
 
-    public function __construct()
+    public function __construct($environment = '')
     {
+        self::$environment = $environment;
         Config::load();
     }
 
@@ -37,10 +38,5 @@ final class Application
     public static function getEnvironment()
     {
         return self::$environment;
-    }
-
-    public static function setProduction()
-    {
-        self::$environment = null;
     }
 }

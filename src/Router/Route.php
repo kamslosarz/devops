@@ -16,7 +16,7 @@ class Route
     {
         $this->controller = $routeParameters[0];
         $this->action = $routeParameters[1];
-        $this->access = (isset($routeParameters[2]) && $routeParameters[2] === self::ACCESS_PUBLIC)? self::ACCESS_PUBLIC : self::ACCESS_PRIVATE;
+        $this->access = (isset($routeParameters[2]) && $routeParameters[2] === self::ACCESS_PUBLIC) ? self::ACCESS_PUBLIC : self::ACCESS_PRIVATE;
         $this->parameters = $controllerParameters;
     }
 
@@ -38,5 +38,10 @@ class Route
     public function getAccess()
     {
         return $this->access;
+    }
+
+    public function getCompactName()
+    {
+        return Router::getCompactRouteName($this->controller, $this->action);
     }
 }

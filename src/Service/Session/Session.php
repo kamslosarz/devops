@@ -37,8 +37,8 @@ class Session implements ServiceInterface
     {
         if(!$key)
         {
-            $_SESSION = null;
             $this->session = null;
+            unset($_SESSION);
             @session_destroy();
         }
         else
@@ -50,9 +50,8 @@ class Session implements ServiceInterface
 
     private function init()
     {
-        if(!session_id())
-        {
-            @session_start();
+        if(!isset($_SESSION)){
+            session_start();
         }
     }
 }

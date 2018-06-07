@@ -62,6 +62,7 @@ class Router
         {
             foreach(Config::get('routes') as $routeName => $route)
             {
+                $route[0] = preg_replace("/[a-z0-9]+\\\\Controller\\\\(.+)$/i", "$1", $route[0]);
                 self::$routes[$routeName] = $route;
             }
         }
@@ -77,11 +78,11 @@ class Router
     /**
      * @param $controller
      * @param $action
-     * @param $parameters
+     * @param array $parameters
      * @return int|mixed|null|string
-     * @throws RouteException]
+     * @throws RouteException
      */
-    public static function getRouteByParameters($controller, $action, $parameters = [])
+    public static function getRouteUrlByParameters($controller, $action, $parameters = [])
     {
         $relativeUrl = null;
 
@@ -105,7 +106,7 @@ class Router
 
         if(!$relativeUrl)
         {
-            throw new RouteException(sprintf('Route \'%s:%s\' with parameters \'%s\' not found', $controller, $action, implode(',', $parameters)));
+            throw new RouteException(sprintf('Route pattern \'%s:%s\' with parameters \'%s\' not found', $controller, $action, implode(',', $parameters)));
         }
 
         return $relativeUrl;

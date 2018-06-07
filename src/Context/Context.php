@@ -59,9 +59,9 @@ class Context
         $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Validating controller', LoggerLevel::INFO);
         $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Dispatching controller', LoggerLevel::INFO);
 
-        if(!$this->serviceContainer->getService('accessChecker')->hasAccess())
+        if(!$this->serviceContainer->getService('accessChecker')->hasAccess($route))
         {
-            throw new AccessDeniedException(sprintf('Access denied to \'%s\'', Router::getRouteByParameters($route->getController(), $route->getAction(), $route->getParameters())));
+            throw new AccessDeniedException(sprintf('Access denied to \'%s\'', Router::getRouteUrlByParameters($route->getController(), $route->getAction(), $route->getParameters())));
         }
 
         $dispatcher = new Dispatcher($controller, $action, [

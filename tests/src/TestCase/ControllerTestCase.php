@@ -2,7 +2,7 @@
 
 namespace Test\TestCase;
 
-use Application\Container\Appender\Appender;
+use Application\Service\Appender\Appender;
 use Application\Service\AuthService\AuthService;
 use Mockery as m;
 use PHPUnit\DbUnit\DataSet\ArrayDataSet;
@@ -83,10 +83,6 @@ abstract class ControllerTestCase extends TestCase
                     'id' => 3,
                     'user_id' => 1,
                     'name' => 'Admin\ProjectController:index'
-                ], [
-                    'id' => 4,
-                    'user_id' => 1,
-                    'name' => 'Admin\IndexController:index'
                 ], [
                     'id' => 5,
                     'user_id' => 1,
