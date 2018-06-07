@@ -2,7 +2,7 @@
 
 namespace Test\TestCase\Traits;
 
-use Test\Decorator\ContainerMockBuilder;
+use Test\MockBuilder\ContainerMockBuilder;
 
 trait ServiceContainerMockBuilderTrait
 {

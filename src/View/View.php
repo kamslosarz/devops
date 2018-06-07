@@ -6,7 +6,7 @@ use Application\Config\Config;
 use Application\Factory\Factory;
 use Application\Service\Logger\LoggerLevel;
 
-final class View
+class View
 {
     private $twig;
     private $serviceContainer;

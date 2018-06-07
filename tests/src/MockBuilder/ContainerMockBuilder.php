@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Decorator;
+namespace Test\MockBuilder;
 
 use Application\Router\Route;
 use Application\Service\AccessChecker\AccessChecker;
@@ -243,5 +243,6 @@ class ContainerMockBuilder
             ->withArgs(['appender'])
             ->andReturns($this->getAppenderMock())
             ->getMock();
+
     }
 }

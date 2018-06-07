@@ -10,16 +10,17 @@ use Application\Response\ResponseTypes\ErrorResponse;
 use Application\Response\ResponseTypes\RedirectResponse;
 use Application\Router\RouteException;
 use Application\Service\AccessChecker\AccessDeniedException;
+use Application\Service\Appender\AppenderLevel;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\View\View;
 
 class Container
 {
     /** @var Context */
-    private $context;
+    protected $context;
     /** @var ServiceContainer */
-    private $serviceContainer;
-    private $results;
+    protected $serviceContainer;
+    protected $results;
 
     /**
      * Container constructor.
