@@ -7,6 +7,7 @@ use Application\Context\Context;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\ErrorResponse;
 use Application\Router\Route;
+use Application\Router\RouteException;
 use Application\Router\Router;
 use Application\Service\AccessChecker\AccessChecker;
 use Application\Service\Request\Request;
@@ -48,8 +49,11 @@ class ContextTest extends TestCase
         $this->assertInstanceOf(Appender::class, $context->getAppender());
     }
 
-    public function testShouldReturnErrorResponse()
+    public function testShouldThrowRouteNotFoundException()
     {
+        $this->expectException(RouteException::class);
+        $this->expectExceptionMessage('Route \'/not-existing-route-to-nowhere\' not found');
+
         $serviceContainerMock = $this->getServiceContainerMockBuilder()
             ->setRequestMock($this->getRequestMock())
             ->setAccessCheckerMock($this->getAccessCheckerMock())
@@ -58,12 +62,10 @@ class ContextTest extends TestCase
         /** @var ErrorResponse $response */
         $context = new Context($serviceContainerMock);
         $context();
-        $this->assertInstanceOf(ErrorResponse::class, $context->getResults());
-        $this->assertEquals('Route \'/not-existing-route-to-nowhere\' not found', $context->getResults()->getParameters()['exception']->getMessage());
+        $context->getResults();
     }
 
     /**
-     * @dataProvider shouldReturnExpectedResponseType
      * @param $mockBuilder
      * @param $type
      * @param $contentClosure
@@ -71,10 +73,13 @@ class ContextTest extends TestCase
      * @param $headers
      * @throws \Application\Router\Dispatcher\DispatcherException
      * @throws \Application\Router\RouteException
+     * @throws \Application\Service\AccessChecker\AccessDeniedException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Response\ResponseTypes\RedirectResponseException
+     *
+     * @dataProvider shouldReturnExpectedResponseType
      */
-    public function testShouldReturnExpectedResponseType($mockBuilder, $type, $contentClosure, $parameters, $headers)
+    public function testShouldReturnExpectedResponseType($mockBuilder, $type, $parameters, $headers)
     {
         /** @var ErrorResponse $response */
         $context = new Context($mockBuilder->build());
@@ -82,10 +87,8 @@ class ContextTest extends TestCase
         $response = $context->getResults();
 
         $this->assertInstanceOf($type, $response, 'invalid response type');
-        $this->assertTrue($contentClosure($response->getContent()), sprintf('invalid response content: "%s"', $response->getContent()));
         $this->assertEquals($parameters, $response->getParameters(), 'invalid response parameters');
         $this->assertEquals($headers, $response->getHeaders(), 'invalid response headers');
-
     }
 
     public function shouldReturnExpectedResponseType()
@@ -106,10 +109,6 @@ class ContextTest extends TestCase
                     ->andReturns()
                     ->getMock()),
                 Response::class,
-                function ($content)
-                {
-                    return (preg_match_all("/<html lang=\"[a-z]+\">(.*?)<\/html>/si", $content) > 0);
-                },
                 [999, 'delete'],
                 []
             ],
@@ -143,10 +142,6 @@ class ContextTest extends TestCase
                             ->getMock()
                     ),
                 Response::class,
-                function ($content)
-                {
-                    return is_null($content);
-                },
                 null,
                 ['Location: /admin/login']
             ],

@@ -4,20 +4,18 @@ namespace Application\View;
 
 use Application\Config\Config;
 use Application\Factory\Factory;
+use Application\Service\Logger\LoggerLevel;
 
 final class View
 {
-    private $vars = [];
-    private $session = [];
     private $twig;
-    private $activeUri;
     private $serviceContainer;
 
-    public function __construct($vars = [], $serviceContainer)
+    public function __construct($serviceContainer)
     {
         $this->serviceContainer = $serviceContainer;
-        $this->vars = (array)$vars;
         $config = Config::get('twig');
+
         $loader = new \Twig_Loader_Filesystem($config['loader']['templates']);
         $this->twig = new \Twig_Environment($loader, [
             'cache' => $config['loader']['cache']
@@ -92,10 +90,11 @@ final class View
 
     /**
      * @param $template
-     * @return string
+     * @param $vars
+     * @return null|string
      * @throws ViewException
      */
-    public function render($template)
+    public function render($template, array $vars = [])
     {
         try
         {
@@ -103,47 +102,38 @@ final class View
 
             if(is_file(sprintf('%s/%s', Config::get('twig')['loader']['templates'], $filename)))
             {
-                return $this->twig->render($filename, $this->vars);
+                return $this->twig->render($filename, $vars);
             }
 
             return null;
         }
         catch(\Twig_Error_Loader $e)
         {
-            throw new ViewException($e);
+            return $this->handleViewError($e);
         }
         catch(\Twig_Error_Runtime $e)
         {
-            throw new ViewException($e);
+            return $this->handleViewError($e);
         }
         catch(\Twig_Error_Syntax $e)
         {
-            throw new ViewException($e);
+            return $this->handleViewError($e);
         }
     }
 
     /**
-     * @return array
+     * @param \Exception $exception
+     * @return null|string
+     * @throws ViewException
      */
-    public function getSession()
+    private function handleViewError(\Exception $exception)
     {
-        return $this->session;
-    }
-    /**
-     * @param $session
-     * @return $this
-     */
-    public function setSession($session)
-    {
-        $this->session = $session;
+        $this->serviceContainer->getService('logger')->log(
+            'ApplicationLogger',
+            sprintf('View Error: %s', $exception->getMessage()),
+            LoggerLevel::INFO
+        );
 
-        return $this;
-    }
-
-    public function setActiveUri($uri)
-    {
-        $this->activeUri = $uri;
-
-        return $this;
+        return $this->render('error', ['exception' => $exception]);
     }
 }
