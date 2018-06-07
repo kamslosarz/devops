@@ -27,11 +27,11 @@ class ConsoleTest extends ConsoleTestCase
     public function testShouldExecuteCommand()
     {
         $consoleParametersMock = m::mock(ConsoleParameters::class)
-            ->shouldHaveReceived('getCommand')
+            ->shouldReceive('getCommand')
             ->once()
             ->andReturns('Admin\Create')
             ->getMock()
-            ->shouldHaveReceived('getParameters')
+            ->shouldReceive('getParameters')
             ->once()
             ->andReturns([
                 'TestExecuteCommandAdmin',
@@ -44,6 +44,13 @@ class ConsoleTest extends ConsoleTestCase
     }
 
     /**
+     * @param $exceptionMessage
+     * @param $command
+     * @param $parameters
+     * @throws ConsoleException
+     * @throws ReflectionException
+     * @throws \Application\Router\Dispatcher\DispatcherException
+     *
      * @dataProvider shouldThrowConsoleException
      */
     public function testShouldThrowConsoleException($exceptionMessage, $command, $parameters)
@@ -52,11 +59,11 @@ class ConsoleTest extends ConsoleTestCase
         $this->expectExceptionMessage($exceptionMessage);
 
         $consoleParametersMock = m::mock(ConsoleParameters::class)
-            ->shouldHaveReceived('getCommand')
+            ->shouldReceive('getCommand')
             ->once()
             ->andReturns($command)
             ->getMock()
-            ->shouldHaveReceived('getParameters')
+            ->shouldReceive('getParameters')
             ->once()
             ->andReturns($parameters)
             ->getMock();

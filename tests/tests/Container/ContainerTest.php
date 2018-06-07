@@ -12,8 +12,8 @@ class ContainerTest extends TestCase
     {
         $logger = m::mock(\Application\Service\Logger\Logger::class);
 
-        $logger->shouldHaveReceived('log')
-            ->atLeast(1)
+        $logger->shouldReceive('log')
+            ->once()
             ->andReturns(true);
 
         $container = new Container();
@@ -43,18 +43,18 @@ class ContainerTest extends TestCase
 
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldHaveReceived('__invoke')
+            ->shouldReceive('__invoke')
             ->getMock()
-            ->shouldHaveReceived('getResults')
+            ->shouldReceive('getResults')
             ->andReturn(
                 m::mock(\Application\Service\Request\Request::class)
-                    ->shouldHaveReceived('getType')
+                    ->shouldReceive('getType')
                     ->getMock()
-                    ->shouldHaveReceived('getRoute')
+                    ->shouldReceive('getRoute')
                     ->getMock()
-                    ->shouldHaveReceived('getParameters')
+                    ->shouldReceive('getParameters')
                     ->getMock()
-                    ->shouldHaveReceived('setContent')
+                    ->shouldReceive('setContent')
                     ->getMock()
             )
             ->getMock();
@@ -64,7 +64,7 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder->setAppenderMock($appender);
 
         $viewMock = m::mock(\Application\View\View::class)
-            ->shouldHaveReceived('render')
+            ->shouldReceive('render')
             ->getMock();
 
         $container = new \Test\Decorator\ContainerDecorator(
@@ -89,7 +89,7 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setAccessCheckerMock(
             m::mock(\Application\Service\AccessChecker\AccessChecker::class)
-                ->shouldHaveReceived('hasAccess')
+                ->shouldReceive('hasAccess')
                 ->once()
                 ->withArgs(['Admin\AdminController:index'])
                 ->andReturn(true)
@@ -97,14 +97,14 @@ class ContainerTest extends TestCase
         );
         $serviceContainerMockBuilder->setAppenderMock(
             m::mock(\Application\Service\Appender\Appender::class)
-                ->shouldHaveReceived('append')
+                ->shouldReceive('append')
                 ->once()
                 ->withArgs(['Access denied to \'AdminController:indexAction\'', \Application\Service\Appender\AppenderLevel::ERROR])
                 ->getMock()
         );
 
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldHaveReceived('__invoke')
+            ->shouldReceive('__invoke')
             ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'AdminController:indexAction\'')
             ->getMock();
 
@@ -136,13 +136,13 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setAccessCheckerMock(
             m::mock(\Application\Service\AccessChecker\AccessChecker::class)
-                ->shouldHaveReceived('hasAccess')
+                ->shouldReceive('hasAccess')
                 ->twice()
                 ->andReturn(true)
                 ->getMock()
         );
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldHaveReceived('__invoke')
+            ->shouldReceive('__invoke')
             ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'AdminController:loginAction\'')
             ->getMock();
 
@@ -174,18 +174,18 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setAccessCheckerMock(
             m::mock(\Application\Service\AccessChecker\AccessChecker::class)
-                ->shouldHaveReceived('hasAccess')
+                ->shouldReceive('hasAccess')
                 ->twice()
                 ->andReturn(true)
                 ->getMock()
         );
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldHaveReceived('__invoke')
+            ->shouldReceive('__invoke')
             ->andThrow(\Application\Router\RouteException::class, 'Route \'/a/s/d/1\' not found')
             ->getMock();
 
         $viewMock = m::mock(\Application\View\View::class)
-            ->shouldHaveReceived('render')
+            ->shouldReceive('render')
             ->withArgs(function (\Application\View\ViewElement $viewElement)
             {
                 return (($viewElement->getParameters()['exception'] instanceof \Application\Router\RouteException) && $viewElement->getParameters()['exception']->getMessage() === 'Route \'/a/s/d/1\' not found');
@@ -220,7 +220,7 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setRequestMock(
             m::mock(\Application\Service\Request\Request::class)
-                ->shouldHaveReceived('getRequestUri')
+                ->shouldReceive('getRequestUri')
                 ->once()
                 ->andReturn('/admin/json')
                 ->getMock()
@@ -229,16 +229,16 @@ class ContainerTest extends TestCase
         $jsonResponse = new \Application\Response\ResponseTypes\JsonResponse($responseParameters);
 
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldHaveReceived('__invoke')
+            ->shouldReceive('__invoke')
             ->once()
             ->getMock()
-            ->shouldHaveReceived('getResults')
+            ->shouldReceive('getResults')
             ->once()
             ->andReturn($jsonResponse)
             ->getMock();
 
         $viewMock = m::mock(\Application\View\View::class)
-            ->shouldHaveReceived('render')
+            ->shouldReceive('render')
             ->getMock();
 
         $container = new \Test\Decorator\ContainerDecorator(
@@ -267,7 +267,7 @@ class ContainerTest extends TestCase
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setRequestMock(
             m::mock(\Application\Service\Request\Request::class)
-                ->shouldHaveReceived('getRequestUri')
+                ->shouldReceive('getRequestUri')
                 ->once()
                 ->andReturn('/admin/json')
                 ->getMock()
@@ -276,16 +276,16 @@ class ContainerTest extends TestCase
         $errorResponse = new \Application\Response\ResponseTypes\ErrorResponse($responseParameters);
 
         $contextMock = m::mock(\Application\Context\Context::class)
-            ->shouldHaveReceived('__invoke')
+            ->shouldReceive('__invoke')
             ->once()
             ->getMock()
-            ->shouldHaveReceived('getResults')
+            ->shouldReceive('getResults')
             ->once()
             ->andReturn($errorResponse)
             ->getMock();
 
         $viewMock = m::mock(\Application\View\View::class)
-            ->shouldHaveReceived('render')
+            ->shouldReceive('render')
             ->getMock();
 
         $container = new \Test\Decorator\ContainerDecorator(
