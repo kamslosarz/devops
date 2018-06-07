@@ -144,39 +144,6 @@ class ContextTest extends TestCase
                 Response::class,
                 null,
                 ['Location: /admin/login']
-            ],
-            'dataSet JsonResponse' => [
-                $this->getServiceContainerMockBuilder()
-                    ->setRequestMock(m::mock(Request::class)
-                        ->shouldReceive('getRequestUri')
-                        ->once()
-                        ->andReturns('/admin/logout')
-                        ->getMock()
-                        ->shouldReceive('getRoute')
-                        ->once()
-                        ->andReturns(m::mock(Route::class))
-                        ->getMock()
-                        ->shouldReceive('setRoute')
-                        ->once()
-                        ->andReturns()
-                        ->getMock()
-                    )->setAuthServiceMock(
-                        $this->getServiceContainerMockBuilder()
-                            ->getAuthServiceMock()
-                            ->shouldReceive('clearSession')
-                            ->once()
-                            ->andReturnSelf()
-                            ->getMock()
-                    )->setSessionMock(
-                        $this->getServiceContainerMockBuilder()
-                            ->getSessionMock()
-                            ->shouldReceive('set')
-                            ->andReturnSelf()
-                            ->getMock()
-                    ),
-                Response::class,
-                null,
-                ['Location: /admin/login']
             ]
         ];
 

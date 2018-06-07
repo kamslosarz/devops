@@ -6,7 +6,7 @@ class Response
 {
     protected $code = 200;
     protected $headers = [];
-    protected $type = ResponseTypes::CONTEXT_HTML;
+    protected $type = ResponseTypes::HTML;
     protected $content;
     protected $parameters;
     protected $route;

@@ -11,6 +11,10 @@ class JsonResponse extends Response
     {
         parent::__construct($parameters);
 
-        $this->setType(ResponseTypes::CONTEXT_JSON);
+        $this->setType(ResponseTypes::JSON);
+    }
+
+    public function getJson(){
+        return json_encode($this->parameters);
     }
 }

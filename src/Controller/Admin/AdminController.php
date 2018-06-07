@@ -17,5 +17,4 @@ class AdminController extends Controller
     {
         return new Response([]);
     }
-
 }

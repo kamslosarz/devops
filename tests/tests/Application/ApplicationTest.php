@@ -26,5 +26,4 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
         return parent::getUserDataSet();
     }
 
-
 }

@@ -47,6 +47,7 @@ class Dispatcher
     /**
      * @param $controller
      * @param $action
+     *
      * @throws DispatcherException
      */
     protected function isValid()
