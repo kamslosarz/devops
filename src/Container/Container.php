@@ -69,7 +69,7 @@ class Container
             switch($this->results->getType())
             {
                 case ResponseTypes::CONTEXT_JSON:
-
+                    $this->results->setContent($this->results->getParameters());
                     break;
                 case ResponseTypes::REDIRECT:
 
