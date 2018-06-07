@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Container\Appender;
+namespace Application\Service\Appender;
 
 class AppenderLevel
 {

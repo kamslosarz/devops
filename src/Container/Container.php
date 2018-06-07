@@ -56,7 +56,7 @@ class Container
             {
                 if($this->serviceContainer->getService('accessChecker')->hasAccess(Config::get('defaultAction')))
                 {
-                    //$this->appender->append($accessDeniedException->getMessage(), AppenderLevel::ERROR);
+                    $this->serviceContainer->getService('appender')->append($accessDeniedException->getMessage(), AppenderLevel::ERROR);
                     $this->results = new RedirectResponse(Config::get('defaultAction'));
                 }
                 else
@@ -104,11 +104,6 @@ class Container
         $namespace = ltrim(str_replace('-action', '', strtolower(preg_replace("/([A-Z])/x", "-$1", $route->getAction()))), '-');
 
         return str_replace('\\', DIRECTORY_SEPARATOR, $match[0]) . DIRECTORY_SEPARATOR . $namespace;
-    }
-
-    public function getServiceContainer()
-    {
-        return $this->serviceContainer;
     }
 
     public function getResults()

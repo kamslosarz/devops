@@ -3,7 +3,6 @@
 namespace Application\Controller\Admin;
 
 
-use Application\Container\Appender\Appender;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\Service\ServiceInterface;
 
@@ -12,10 +11,15 @@ abstract class Controller
     private $serviceContainer;
     private $appender;
 
-    public function __construct(ServiceContainer $serviceContainer, Appender $appender)
+    /**
+     * Controller constructor.
+     * @param ServiceContainer $serviceContainer
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
+    public function __construct(ServiceContainer $serviceContainer)
     {
         $this->serviceContainer = $serviceContainer;
-        $this->appender = $appender;
+        $this->appender = $serviceContainer->getService('appender');
     }
 
     public function addMessage($message, $level)
@@ -35,9 +39,13 @@ abstract class Controller
         return $this->serviceContainer->getService($serviceName);
     }
 
+    /**
+     * @return mixed
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
     public function getUser()
     {
-        return $this->sergetService('auth')->getUser();
+        return $this->getService('auth')->getUser();
     }
 
     /**

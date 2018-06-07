@@ -2,7 +2,6 @@
 
 namespace Application\Context;
 
-use Application\Container\Appender\Appender;
 use Application\Controller\Controller;
 use Application\Response\Response;
 use Application\Router\Dispatcher\Dispatcher;
@@ -25,15 +24,14 @@ class Context
     private $results;
 
     /**
-     * Context constructor.testShouldReturnNulledRouter
+     * Context constructor.
      * @param ServiceContainer $serviceContainer
      * @throws ServiceContainerException
      */
     public function __construct(ServiceContainer $serviceContainer)
     {
         $this->serviceContainer = $serviceContainer;
-        // appender must  be service
-        $this->appender = new Appender($serviceContainer->getService('session'));
+        $this->appender = $this->serviceContainer->getService('appender');
         $this->router = new Router($this->serviceContainer->getService('request')->getRequestUri());
     }
 

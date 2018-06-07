@@ -42,4 +42,9 @@ return [
             '@auth'
         ]
     ],
+    'appender' => [
+        \Application\Service\Appender\Appender::class, [
+            '@session'
+        ]
+    ]
 ];

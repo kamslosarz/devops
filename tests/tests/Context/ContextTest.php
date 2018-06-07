@@ -2,7 +2,6 @@
 
 namespace tests\Context;
 
-use Application\Container\Appender\Appender;
 use Application\Context\Context;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\ErrorResponse;
@@ -10,6 +9,7 @@ use Application\Router\Route;
 use Application\Router\RouteException;
 use Application\Router\Router;
 use Application\Service\AccessChecker\AccessChecker;
+use Application\Service\Appender\Appender;
 use Application\Service\Request\Request;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;

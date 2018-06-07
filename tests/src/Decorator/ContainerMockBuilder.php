@@ -4,6 +4,7 @@ namespace Test\Decorator;
 
 use Application\Router\Route;
 use Application\Service\AccessChecker\AccessChecker;
+use Application\Service\Appender\Appender;
 use Application\Service\Cookie\Cookie;
 use Application\Service\Logger\Logger;
 use Application\Service\Request\Request;
@@ -17,6 +18,7 @@ class ContainerMockBuilder
     private $authServiceMock;
     private $accessCheckerMock;
     private $cookieMock;
+    private $appenderMock;
 
     /**
      * @param $cookieMock
@@ -189,6 +191,20 @@ class ContainerMockBuilder
         return $this->cookieMock;
     }
 
+    public function getAppenderMock()
+    {
+
+        if(!$this->appenderMock)
+        {
+            $this->appenderMock = m::mock(Appender::class)
+                ->shouldReceive('append')
+                ->andReturnSelf()
+                ->getMock();
+        }
+
+        return $this->appenderMock;
+    }
+
     public function build()
     {
         return m::mock(\Application\Service\ServiceContainer\ServiceContainer::class)
@@ -221,6 +237,11 @@ class ContainerMockBuilder
             ->once()
             ->withArgs(['cookie'])
             ->andReturns($this->getCookieMock())
+            ->getMock()
+            ->shouldReceive('getService')
+            ->once()
+            ->withArgs(['appender'])
+            ->andReturns($this->getAppenderMock())
             ->getMock();
     }
 }

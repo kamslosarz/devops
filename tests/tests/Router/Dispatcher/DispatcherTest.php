@@ -2,10 +2,10 @@
 
 namespace tests\Router\Dispatcher;
 
-use Application\Container\Appender\Appender;
 use Application\Response\Response;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Dispatcher\DispatcherException;
+use Application\Service\Appender\Appender;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Test\Fixture\UserController;

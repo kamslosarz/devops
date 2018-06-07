@@ -1,11 +1,11 @@
 <?php
 
-namespace Application\Container\Appender;
+namespace Application\Service\Appender;
 
-
+use Application\Service\ServiceInterface;
 use Application\Service\Session\Session;
 
-class Appender
+class Appender implements ServiceInterface
 {
     private $session;
 

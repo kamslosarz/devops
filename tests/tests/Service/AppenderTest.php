@@ -1,9 +1,9 @@
 <?php
 
-namespace tests\Container\Appender;
+namespace tests\Service\Appender;
 
-use Application\Container\Appender\Appender;
-use Application\Container\Appender\AppenderLevel;
+use Application\Service\Appender\Appender;
+use Application\Service\Appender\AppenderLevel;
 use Application\Service\Session\Session;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
