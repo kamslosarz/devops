@@ -84,36 +84,15 @@ abstract class ControllerTestCase extends TestCase
                     'user_id' => 1,
                     'name' => 'Admin\ProjectController:index'
                 ], [
-                    'id' => 5,
+                    'id' => 4,
                     'user_id' => 1,
                     'name' => 'Admin\ProjectController:project'
                 ], [
-                    'id' => 6,
+                    'id' => 5,
                     'user_id' => 1,
                     'name' => 'Admin\AdminController:index'
                 ]
             ]
         ]);
     }
-
-    public function setUp()
-    {
-        $return = parent::setUp();
-
-        unset($_SESSION);
-        unset($_COOKIE);
-
-        return $return;
-    }
-
-    public function tearDown()
-    {
-        $return = parent::setUp();
-
-        unset($_SESSION);
-        unset($_COOKIE);
-
-        return $return;
-    }
-
 }

@@ -16,6 +16,11 @@ class ApplicationContainer
 
     public function __construct()
     {
+        $_SERVER = null;
+        $_POST = null;
+        $_GET = null;
+        $_SESSION = null;
+        $_COOKIE = null;
         $sessionMock = m::mock(Session::class);
         $cookieMock = m::mock(Cookie::class);
         $this->request = new RequestDecorator($sessionMock, $cookieMock);

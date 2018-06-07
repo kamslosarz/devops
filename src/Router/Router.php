@@ -72,6 +72,8 @@ class Router
 
     public static function getCompactRouteName($controller, $action)
     {
+        $controller = preg_replace("/[a-z0-9]+\\\\Controller\\\\(.+)$/i", "$1", $controller);
+
         return sprintf('%s:%s', $controller, str_replace('Action', '', $action));
     }
 
