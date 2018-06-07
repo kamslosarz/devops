@@ -23,20 +23,18 @@ class View
     }
 
     /**
-     * @param $template
-     * @param array $vars
+     * @param ViewElement $viewElement
      * @return null|string
-     * @throws ViewException
      */
-    public function render($template, array $vars = [])
+    public function render(ViewElement $viewElement)
     {
         try
         {
-            $filename = $template . '.html.twig';
+            $filename = sprintf('%s.html.twig', $viewElement->getViewName());
 
             if(is_file(sprintf('%s/%s', Config::get('twig')['loader']['templates'], $filename)))
             {
-                return $this->twig->render($filename, $vars);
+                return $this->twig->render($filename, $viewElement->getParameters());
             }
 
             return null;
@@ -55,11 +53,6 @@ class View
         }
     }
 
-    /**
-     * @param \Exception $exception
-     * @return null|string
-     * @throws ViewException
-     */
     private function handleViewError(\Exception $exception)
     {
         $this->serviceContainer->getService('logger')->log(
@@ -68,6 +61,6 @@ class View
             LoggerLevel::INFO
         );
 
-        return $this->render('error', ['exception' => $exception]);
+        return $this->twig->render('error.html.twig', ['exception' => $exception]);
     }
 }

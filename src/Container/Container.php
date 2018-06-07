@@ -13,6 +13,7 @@ use Application\Service\AccessChecker\AccessDeniedException;
 use Application\Service\Appender\AppenderLevel;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\View\View;
+use Application\View\ViewElement;
 
 class Container
 {
@@ -21,10 +22,12 @@ class Container
     /** @var ServiceContainer */
     protected $serviceContainer;
     protected $results;
+    protected $view;
 
     /**
      * Container constructor.
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Application\View\Twig\TwigFactoryException
      */
     public function __construct()
     {
@@ -37,7 +40,6 @@ class Container
      * @return bool
      * @throws RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Application\View\ViewException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function __invoke()
@@ -75,20 +77,17 @@ class Container
 
                     break;
                 case ResponseTypes::ERROR:
-                    $this->results->setContent(
-                        $this->view->render(
-                            'error',
-                            $this->results->getParameters()
-                        )
-                    );
+                    $this->results->setContent($this->view->render(new ViewElement(
+                        'error',
+                        $this->results->getParameters()
+                    )));
                     break;
                 default:
-                    $this->results->setContent(
-                        $this->view->render(
-                            $this->getViewName($this->results->getRoute()),
-                            $this->results->getParameters()
-                        )
-                    );
+                    $this->results->setContent($this->view->render(new ViewElement(
+                        $this->results->getRoute(),
+                        $this->results->getParameters()
+                    )));
+
                     break;
             }
 
@@ -97,14 +96,6 @@ class Container
         }
 
         return true;
-    }
-
-    private function getViewName($route)
-    {
-        preg_match("/[a-z]+\\\+[a-z]+/", str_replace('controller', '', strtolower($route->getController())), $match);
-        $namespace = ltrim(str_replace('-action', '', strtolower(preg_replace("/([A-Z])/x", "-$1", $route->getAction()))), '-');
-
-        return str_replace('\\', DIRECTORY_SEPARATOR, $match[0]) . DIRECTORY_SEPARATOR . $namespace;
     }
 
     public function getResults()

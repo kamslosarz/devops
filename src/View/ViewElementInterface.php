@@ -1,10 +1,9 @@
 <?php
 
-namespace View;
+namespace Application\View;
 
 
 interface ViewElementInterface
 {
-    public function __construct($viewName, $parameters = []);
-
+    public function __construct($route, $parameters = []);
 }

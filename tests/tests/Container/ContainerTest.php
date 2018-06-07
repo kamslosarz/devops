@@ -113,7 +113,7 @@ class ContainerTest extends TestCase
     /**
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Application\View\ViewException
+     * @throws \Application\View\Twig\TwigFactoryException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function testShouldReturnErrorResponse()
@@ -133,9 +133,9 @@ class ContainerTest extends TestCase
 
         $viewMock = m::mock(\Application\View\View::class)
             ->shouldReceive('render')
-            ->withArgs(function ($template, $vars)
+            ->withArgs(function (\Application\View\ViewElement $viewElement)
             {
-                return (($vars['exception'] instanceof \Application\Router\RouteException) && $vars['exception']->getMessage() === 'Route \'/a/s/d/1\' not found');
+                return (($viewElement->getParameters()['exception'] instanceof \Application\Router\RouteException) && $viewElement->getParameters()['exception']->getMessage() === 'Route \'/a/s/d/1\' not found');
             })
             ->andReturn('error: Route \'/a/s/d/1\' not found')
             ->getMock();

@@ -2,6 +2,8 @@
 
 namespace Application\Response;
 
+use Application\Router\Route;
+
 class Response
 {
     protected $code = 200;
@@ -9,6 +11,7 @@ class Response
     protected $type = ResponseTypes::HTML;
     protected $content;
     protected $parameters;
+    /** @var Route $route */
     protected $route;
 
     public function __construct($parameters = [])
@@ -71,6 +74,9 @@ class Response
         return $this->parameters;
     }
 
+    /**
+     * @return Route
+     */
     public function getRoute()
     {
         return $this->route;
