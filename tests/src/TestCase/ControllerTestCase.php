@@ -96,4 +96,24 @@ abstract class ControllerTestCase extends TestCase
         ]);
     }
 
+    public function setUp()
+    {
+        $return = parent::setUp();
+
+        unset($_SESSION);
+        unset($_COOKIE);
+
+        return $return;
+    }
+
+    public function tearDown()
+    {
+        $return = parent::setUp();
+
+        unset($_SESSION);
+        unset($_COOKIE);
+
+        return $return;
+    }
+
 }

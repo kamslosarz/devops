@@ -43,8 +43,10 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
 
     public function testShouldLogoutAction()
     {
+        var_dump($_SESSION);
         $dispatcher = $this->getApplicationContainer();
         $results = $dispatcher->dispatch('/admin/logout');
+        var_dump($_SESSION);
 
         $this->assertNull($results);
         $this->assertEquals('Location: /admin/login', $dispatcher->getResponse()->getHeaders()[0]);

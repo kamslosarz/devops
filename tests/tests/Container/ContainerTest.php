@@ -91,7 +91,6 @@ class ContainerTest extends TestCase
             m::mock(\Application\Service\AccessChecker\AccessChecker::class)
                 ->shouldReceive('hasAccess')
                 ->once()
-                ->withArgs(['Admin\AdminController:index'])
                 ->andReturn(true)
                 ->getMock()
         );
