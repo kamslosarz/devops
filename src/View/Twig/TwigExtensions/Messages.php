@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\View\TwigExtensions;
+namespace Application\View\Twig\TwigExtensions;
 
 class Messages extends Extension implements \Twig_Extension_GlobalsInterface
 {

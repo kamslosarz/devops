@@ -1,7 +1,6 @@
 <?php
 
-namespace Application\View\TwigExtensions;
-
+namespace Application\View\Twig\TwigExtensions;
 
 class Menu extends Extension implements \Twig_Extension_GlobalsInterface
 {

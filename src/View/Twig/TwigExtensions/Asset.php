@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\View\TwigExtensions;
+namespace Application\View\Twig\TwigExtensions;
 
 use Application\Config\Config;
 

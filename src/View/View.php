@@ -3,94 +3,28 @@
 namespace Application\View;
 
 use Application\Config\Config;
-use Application\Factory\Factory;
 use Application\Service\Logger\LoggerLevel;
+use Application\View\Twig\TwigFactory;
 
 class View
 {
     private $twig;
     private $serviceContainer;
 
+    /**
+     * View constructor.
+     * @param $serviceContainer
+     * @throws Twig\TwigFactoryException
+     */
     public function __construct($serviceContainer)
     {
         $this->serviceContainer = $serviceContainer;
-        $config = Config::get('twig');
-
-        $loader = new \Twig_Loader_Filesystem($config['loader']['templates']);
-        $this->twig = new \Twig_Environment($loader, [
-            'cache' => $config['loader']['cache']
-        ]);
-
-        $this->extendTwig();
-        $this->cacheAssets();
-    }
-
-    /**
-     * @throws ViewException
-     */
-    private function cacheAssets()
-    {
-        $directories = [
-            Config::get('twig')['loader']['templates'] . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR . 'assets',
-            Config::get('twig')['loader']['templates'] . DIRECTORY_SEPARATOR . 'assets'
-        ];
-
-        foreach($directories as $dir)
-        {
-            /** @var \SplFileInfo $fileInfo */
-            foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
-            {
-                if($fileInfo->isFile())
-                {
-                    $dest = str_replace(
-                        Config::get('twig')['loader']['templates'],
-                        sprintf('%s/assets', Config::get('web_dir')),
-                        str_replace('/assets', '', $fileInfo->getPathname())
-                    );
-                    if(!is_file($dest))
-                    {
-                        $destDirectory = dirname($dest);
-                        if(!is_dir($destDirectory))
-                        {
-                            $status = mkdir($destDirectory, 0777, true);
-
-                            if(!$status)
-                            {
-                                throw new ViewException(sprintf('Cannot create \'%s\' dir \'%s\'', $destDirectory, $status));
-                            }
-                        }
-
-                        if(!is_writable($destDirectory))
-                        {
-                            throw new ViewException(sprintf('Directory \'%s\' must be writeable', $destDirectory));
-                        }
-
-                        touch($dest);
-                        chmod($dest, 0777);
-                    }
-
-                    if(!is_writable($dest))
-                    {
-                        throw new ViewException(sprintf('Cannot write to file \'%s\'', $dest));
-                    }
-
-                    copy($fileInfo->getPathname(), $dest);
-                }
-            }
-        }
-    }
-
-    private function extendTwig()
-    {
-        foreach(TwigExtensionsMap::EXTENSIONS as $extension)
-        {
-            $this->twig->addExtension(Factory::getInstance($extension, [$this->serviceContainer]));
-        }
+        $this->twig = TwigFactory::getInstance($serviceContainer);
     }
 
     /**
      * @param $template
-     * @param $vars
+     * @param array $vars
      * @return null|string
      * @throws ViewException
      */
