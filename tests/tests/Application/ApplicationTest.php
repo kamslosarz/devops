@@ -10,7 +10,7 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
         $this->assertEquals('ERROR Route &#039;/asdasdas&#039; not found', $dispatcher->getResponse()->getContent());
     }
 
-    public function testShouldInvokeApplicationInstanceAndShowLoginForm()
+    public function testShouldInvokeApplicationInstanceAndReturnLoginForm()
     {
         $dispatcher = $this->getApplicationContainer(false);
         $results = $dispatcher->dispatch('/admin/login');
@@ -21,7 +21,7 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
         );
     }
 
-    public function testShouldInvokeApplicationInstanceAndShowAdminDashboard()
+    public function testShouldInvokeApplicationInstanceAndReturnAdminDashboard()
     {
         $dispatcher = $this->getApplicationContainer();
         $results = $dispatcher->dispatch('/admin/index');
