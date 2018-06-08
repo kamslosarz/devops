@@ -5,7 +5,10 @@ services:
         ports:
             - "8001:80"
         volumes:
-            - ./:/var/www/devops/
+            - ./src:/var/www/devops/src
+            - ./tests:/var/www/devops/tests
+            - ./console:/var/www/devops/console
+            - ./config:/var/www/devops/config
         networks:
             - default
 volumes:

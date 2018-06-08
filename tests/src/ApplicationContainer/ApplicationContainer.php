@@ -39,7 +39,7 @@ class ApplicationContainer
         return $this->response;
     }
 
-    public function setRequest($request)
+    public function setRequest($reques)
     {
         $this->request = $request;
 

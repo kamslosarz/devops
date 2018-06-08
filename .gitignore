@@ -1,11 +1,7 @@
 /.idea/
 /logs/
 /composer.lock
-/www/assets/
-/src/Model/*
-/data/devops.db3
-/vendor
 src/Model/
 src/Resource/assets/
-www/debug/
 /.bash_history
+/vendor
