@@ -51,7 +51,7 @@ class Response
     {
         $this->route = $route;
 
-        return $this->route;
+        return $this;
     }
 
     public function getType()

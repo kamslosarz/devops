@@ -9,10 +9,33 @@ use Application\View\View;
 
 class ContainerDecorator extends Container
 {
-    public function __construct(ServiceContainer $serviceContainer, Context $context, View $view)
+    public function __construct(ServiceContainer $serviceContainer = null, Context $context = null, View $view = null)
     {
-        $this->serviceContainer = $serviceContainer;
-        $this->context = $context;
-        $this->view = $view;
+        if($serviceContainer instanceof ServiceContainer)
+        {
+            $this->serviceContainer = $serviceContainer;
+        }
+        else
+        {
+            $this->serviceContainer = new ServiceContainer();
+        }
+
+        if($context instanceof Context)
+        {
+            $this->context = $context;
+        }
+        else
+        {
+            $this->context = new Context($this->serviceContainer);
+        }
+
+        if($view instanceof View)
+        {
+            $this->view = $view;
+        }
+        else
+        {
+            $this->view = new View($this->serviceContainer);
+        }
     }
 }

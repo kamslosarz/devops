@@ -39,4 +39,9 @@ final class Application
     {
         return self::$environment;
     }
+
+    public static function setEnvironment($environment)
+    {
+        self::$environment = $environment;
+    }
 }

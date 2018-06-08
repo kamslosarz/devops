@@ -5,6 +5,7 @@ namespace Application\Container;
 
 use Application\Config\Config;
 use Application\Context\Context;
+use Application\Response\Response;
 use Application\Response\ResponseTypes;
 use Application\Response\ResponseTypes\ErrorResponse;
 use Application\Response\ResponseTypes\RedirectResponse;
@@ -86,6 +87,7 @@ class Container
                     )));
                     break;
                 default:
+
                     $this->results->setContent($this->view->render(new ViewElement(
                         $this->results->getRoute(),
                         $this->results->getParameters()
@@ -101,6 +103,9 @@ class Container
         return true;
     }
 
+    /**
+     * @return Response
+     */
     public function getResults()
     {
         return $this->results;

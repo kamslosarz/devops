@@ -5,7 +5,6 @@ class RouterTest extends \PHPUnit\Framework\TestCase
     public function testShouldMatchRoute()
     {
         $router = new \Application\Router\Router('/admin/test/1/test');
-
         /** @var \Application\Router\Route $route */
         $route = $router();
 

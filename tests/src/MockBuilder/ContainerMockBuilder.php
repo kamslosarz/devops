@@ -102,7 +102,6 @@ class ContainerMockBuilder
         {
             $this->sessionMock = m::mock(\Application\Service\Session\Session::class)
                 ->shouldReceive('save')
-                ->once()
                 ->getMock()
                 ->shouldReceive('get')
                 ->withArgs(['messages'])
@@ -124,6 +123,12 @@ class ContainerMockBuilder
             $this->routeMock = m::mock(Route::class)
                 ->shouldReceive('getAccess')
                 ->andReturns(Route::ACCESS_PUBLIC)
+                ->getMock()
+                ->shouldReceive('getController')
+                ->andReturn('Admin\AdminController')
+                ->getMock()
+                ->shouldReceive('getAction')
+                ->andReturn('index')
                 ->getMock();
         }
 
@@ -136,15 +141,12 @@ class ContainerMockBuilder
         {
             $this->requestMock = m::mock(Request::class)
                 ->shouldReceive('getRequestUri')
-                ->once()
                 ->andReturns('/admin/index')
                 ->getMock()
                 ->shouldReceive('getRoute')
-                ->once()
                 ->andReturns($this->getRouteMock())
                 ->getMock()
                 ->shouldReceive('setRoute')
-                ->once()
                 ->andReturns()
                 ->getMock();
         }
@@ -161,11 +163,9 @@ class ContainerMockBuilder
                 ->andReturns($this->getSessionMock())
                 ->getMock()
                 ->shouldReceive('isAuthenticated')
-                ->once()
                 ->andReturns(true)
                 ->getMock()
                 ->shouldReceive('getRoute')
-                ->once()
                 ->andReturns($this->getRouteMock())
                 ->getMock();
         }
@@ -179,7 +179,6 @@ class ContainerMockBuilder
         {
             $this->accessCheckerMock = m::mock(AccessChecker::class)
                 ->shouldReceive('hasAccess')
-                ->once()
                 ->andReturns(true)
                 ->getMock();
         }
@@ -203,7 +202,6 @@ class ContainerMockBuilder
 
     public function getAppenderMock()
     {
-
         if(!$this->appenderMock)
         {
             $this->appenderMock = m::mock(Appender::class)
@@ -224,32 +222,26 @@ class ContainerMockBuilder
             ->andReturns($this->getSessionMock())
             ->getMock()
             ->shouldReceive('getService')
-            ->once()
             ->withArgs(['auth'])
             ->andReturns($this->getAuthServiceMock())
             ->getMock()
             ->shouldReceive('getService')
-            ->once()
             ->withArgs(['request'])
             ->andReturns($this->getRequestMock())
             ->getMock()
             ->shouldReceive('getService')
-            ->once()
-            ->withArgs(['accessChecker'])
+            ->with('accessChecker')
             ->andReturns($this->getAccessCheckerMock())
             ->getMock()
             ->shouldReceive('getService')
-            ->once()
             ->withArgs(['logger'])
             ->andReturns(m::mock(Logger::class)->shouldReceive('log')->getMock())
             ->getMock()
             ->shouldReceive('getService')
-            ->once()
             ->withArgs(['cookie'])
             ->andReturns($this->getCookieMock())
             ->getMock()
             ->shouldReceive('getService')
-            ->once()
             ->withArgs(['appender'])
             ->andReturns($this->getAppenderMock())
             ->getMock();

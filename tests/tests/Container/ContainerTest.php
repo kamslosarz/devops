@@ -21,9 +21,29 @@ class ContainerTest extends TestCase
         $this->assertInstanceOf(Container::class, $container);
     }
 
+    /**
+     * @throws \Application\Router\RouteException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Application\View\Twig\TwigFactoryException
+     * @throws \Response\ResponseTypes\RedirectResponseException
+     */
     public function testShouldInvokeAndReturnsResponse()
     {
-        $container = new Container();
+        $contextMock = m::mock(\Application\Context\Context::class)
+            ->shouldReceive('__invoke')
+            ->once()
+            ->getMock()
+            ->shouldReceive('getResults')
+            ->once()
+            ->andReturn((new \Application\Response\Response([
+                'test', 'test'
+            ]))->setRoute(new \Application\Router\Route([
+                'Admin\AdminController',
+                'indexAction'
+            ], [])))
+            ->getMock();
+
+        $container = new \Test\Decorator\ContainerDecorator($this->getServiceContainerMockBuilder()->build(), $contextMock);
         $container();
 
         $this->assertEquals(1, preg_match_all('/<html lang=\"[a-z]+\">(.*?)<\/html>/si', $container->getResults()->getContent()));
@@ -98,7 +118,10 @@ class ContainerTest extends TestCase
             m::mock(\Application\Service\Appender\Appender::class)
                 ->shouldReceive('append')
                 ->once()
-                ->withArgs(['Access denied to \'AdminController:indexAction\'', \Application\Service\Appender\AppenderLevel::ERROR])
+                ->withArgs([
+                    'Access denied to \'AdminController:indexAction\'',
+                    \Application\Service\Appender\AppenderLevel::ERROR
+                ])
                 ->getMock()
         );
 

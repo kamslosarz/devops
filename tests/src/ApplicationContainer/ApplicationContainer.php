@@ -24,6 +24,7 @@ class ApplicationContainer
         $sessionMock = m::mock(Session::class);
         $cookieMock = m::mock(Cookie::class);
         $this->request = new RequestDecorator($sessionMock, $cookieMock);
+        session_start();
     }
 
     public function getRequest()

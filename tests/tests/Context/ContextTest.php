@@ -5,6 +5,7 @@ namespace tests\Context;
 use Application\Context\Context;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\ErrorResponse;
+use Application\Response\ResponseTypes\RedirectResponse;
 use Application\Router\Route;
 use Application\Router\RouteException;
 use Application\Router\Router;
@@ -66,54 +67,51 @@ class ContextTest extends TestCase
     }
 
     /**
-     * @param $mockBuilder
+     * @param $serviceContainerMock
      * @param $type
-     * @param $contentClosure
      * @param $parameters
      * @param $headers
+     * @throws RouteException
      * @throws \Application\Router\Dispatcher\DispatcherException
-     * @throws \Application\Router\RouteException
      * @throws \Application\Service\AccessChecker\AccessDeniedException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Response\ResponseTypes\RedirectResponseException
-     *
-     * @dataProvider shouldReturnExpectedResponseType
      */
-    public function testShouldReturnExpectedResponseType($mockBuilder, $type, $parameters, $headers)
+    public function testShouldReturnResponse()
     {
+        $serviceContainerMock = $this->getServiceContainerMockBuilder()
+            ->setRequestMock(
+                m::mock('Request')
+                ->shouldReceive('getRequestUri')
+                ->andReturn('/admin/test/999/delete')
+                ->getMock()
+                ->shouldReceive('getRoute')
+                ->andReturn()
+                ->getMock()
+                ->shouldReceive('setRoute')
+                ->andReturnSelf()
+                ->getMock()
+            );
+
         /** @var ErrorResponse $response */
-        $context = new Context($mockBuilder->build());
+        $context = new Context($serviceContainerMock->build());
+
         $context();
         $response = $context->getResults();
 
-        $this->assertInstanceOf($type, $response, 'invalid response type');
-        $this->assertEquals($parameters, $response->getParameters(), 'invalid response parameters');
-        $this->assertEquals($headers, $response->getHeaders(), 'invalid response headers');
+        $this->assertInstanceOf(Response::class, $response, 'invalid response type');
+        $this->assertEquals([999, 'delete'], $response->getParameters(), 'invalid response parameters');
+        $this->assertEquals([], $response->getHeaders(), 'invalid response headers');
     }
 
-    public function shouldReturnExpectedResponseType()
+    /**
+     * @throws RouteException
+     * @throws \Application\Router\Dispatcher\DispatcherException
+     * @throws \Application\Service\AccessChecker\AccessDeniedException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
+    public function testShouldReturnRedirectResponse()
     {
-        return [
-            'dataSet Response' => [
-                $this->getServiceContainerMockBuilder()->setRequestMock(m::mock(Request::class)
-                    ->shouldReceive('getRequestUri')
-                    ->once()
-                    ->andReturns('/admin/test/999/delete')
-                    ->getMock()
-                    ->shouldReceive('getRoute')
-                    ->once()
-                    ->andReturns(m::mock(Route::class))
-                    ->getMock()
-                    ->shouldReceive('setRoute')
-                    ->once()
-                    ->andReturns()
-                    ->getMock()),
-                Response::class,
-                [999, 'delete'],
-                []
-            ],
-            'dataSet RedirectResponse' => [
-                $this->getServiceContainerMockBuilder()
+        $serviceContainerMock = $this->getServiceContainerMockBuilder()
                     ->setRequestMock(m::mock(Request::class)
                         ->shouldReceive('getRequestUri')
                         ->once()
@@ -140,13 +138,17 @@ class ContextTest extends TestCase
                             ->shouldReceive('set')
                             ->andReturnSelf()
                             ->getMock()
-                    ),
-                Response::class,
-                null,
-                ['Location: /admin/login']
-            ]
-        ];
+                    );
 
+        /** @var ErrorResponse $response */
+        $context = new Context($serviceContainerMock->build());
+
+        $context();
+        $response = $context->getResults();
+
+        $this->assertInstanceOf(RedirectResponse::class, $response, 'invalid response type');
+        $this->assertNull($response->getParameters(), 'invalid response parameters');
+        $this->assertEquals(['Location: /admin/login'], $response->getHeaders(), 'invalid response headers');
     }
 
     private function getAccessCheckerMock()

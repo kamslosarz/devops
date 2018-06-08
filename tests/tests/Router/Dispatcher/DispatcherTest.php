@@ -36,43 +36,29 @@ class DispatcherTest extends TestCase
     }
 
     /**
-     * @dataProvider shouldThrowDispatcherExceptionDataProvider
+     * @throws DispatcherException
      */
-    public function testShouldThrowDispatcherException($message, $class, $method, $parameters, $messageIsRegexp)
+    public function testShouldThrowInvalidClassException()
     {
         $this->expectException(DispatcherException::class);
-        if($messageIsRegexp)
-        {
-            $this->expectExceptionMessageRegExp($message);
-        }
-        else
-        {
-            $this->expectExceptionMessage($message);
-        }
+        $this->expectExceptionMessageRegExp('/Controller class \'+[\Sa-zA-Z0-9]+\' not exists/');
 
-        $dispatcher = new Dispatcher($class, $method);
-        $dispatcher->dispatch($parameters);
+        $dispatcher = new Dispatcher('UserController', '');
+        $dispatcher->dispatch([]);
     }
 
-    public function shouldThrowDispatcherExceptionDataProvider()
+    /**
+     * @throws DispatcherException
+     */
+    public function testShouldThrowInvalidMethodException()
     {
-        return [
-            'Invalid class dataSet' => [
-                '/Controller class \'+[\Sa-zA-Z0-9]+\' not exists/',
-                m::mock(UserController::class),
-                '',
-                [],
-                true
-            ],
-            'invalid method data set' => [
-                sprintf('Action \'usersListAction\' not exists in \'%s\'', UserController::class),
-                UserController::class,
-                'usersListAction',
-                [],
-                false
-            ]
-        ];
+        $this->expectException(DispatcherException::class);
+        $this->expectExceptionMessage(sprintf('Action \'usersListAction\' not exists in \'%s\'', UserController::class));
+
+        $dispatcher = new Dispatcher(UserController::class, 'usersListAction');
+        $dispatcher->dispatch([]);
     }
+
 
     /**
      * @throws \Application\Router\Dispatcher\DispatcherException
