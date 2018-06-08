@@ -10,7 +10,7 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
         $this->assertEquals('ERROR Route &#039;/asdasdas&#039; not found', $dispatcher->getResponse()->getContent());
     }
 
-    public function testShouldInvokeApplicationInstance()
+    public function testShouldInvokeApplicationInstanceAndShowLoginForm()
     {
         $dispatcher = $this->getApplicationContainer(false);
         $results = $dispatcher->dispatch('/admin/login');
@@ -19,6 +19,15 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
         $this->assertEquals('login-form',
             $crawler->filterXPath('//body/div/div[@class="main-content"]/div[@class="content"]/form[@class="login-form"]')->attr('class')
         );
+    }
+
+    public function testShouldInvokeApplicationInstanceAndShowAdminDashboard()
+    {
+        $dispatcher = $this->getApplicationContainer();
+        $results = $dispatcher->dispatch('/admin/index');
+        $crawler = $this->getCrawler($results);
+
+        $this->assertEquals('Dashboard', trim($crawler->filterXPath('//body/div/div[@class="main-content"]/div[@class="content"]')->text()));
     }
 
     public function getDataSet()
