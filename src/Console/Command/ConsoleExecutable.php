@@ -6,14 +6,17 @@ abstract class ConsoleExecutable extends Command
 {
     protected function executeInShell($command, $parameters = [])
     {
-//        $this->log(sprintf('Running ' . $command, ...$parameters), LoggerLevel::INFO);
-
-        passthru(sprintf($command, ...$parameters), $return_var);
-
-        if($return_var)
+        if(!empty($parameters))
         {
-//            $this->log(sprintf('Error %s', $return_var), LoggerLevel::ERROR);
+            passthru(sprintf($command, ...$parameters), $return_var);
         }
+        else
+        {
+            passthru($command, $return_var);
+        }
+
+
+        return $return_var;
     }
 
     private function log($message, $level)

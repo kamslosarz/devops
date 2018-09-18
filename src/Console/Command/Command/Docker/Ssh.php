@@ -12,7 +12,7 @@ class Ssh extends ConsoleExecutable
     {
         $dockerName = $dockerName ? $dockerName : self::DOCKER_CONTAINER_NAME;
 
-        $this->executeInShell('docker exec -it -u www-data %s /bin/bash', [$dockerName]);
+        $this->executeInShell('docker exec -it -u devops %s /bin/bash', [$dockerName]);
     }
 
     public function isValid($dockerName = null)

@@ -12,6 +12,7 @@ abstract class Command
     private $serviceContainer;
 
     const COMMAND_NAMESPACE = 'Application\Console\Command\Command';
+    private $output;
 
     /**
      * @param $command
@@ -67,8 +68,22 @@ abstract class Command
         return $this->serviceContainer->getService('logger');
     }
 
-    protected function output($content)
+    public function setOutput($output)
     {
-        return (new ConsoleResponse())->setContent($content);
+        $this->output = $output;
+
+        return $this;
+    }
+
+    public function addOutput($output)
+    {
+        $this->output .= $output;
+
+        return $this;
+    }
+
+    protected function sendOutput()
+    {
+        return (new ConsoleResponse())->setContent($this->output);
     }
 }

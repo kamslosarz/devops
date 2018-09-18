@@ -60,6 +60,6 @@ class Create extends Command
 
         $user->save();
 
-        return $this->output('Admin created');
+        return $this->setOutput('Admin created')->sendOutput();
     }
 }

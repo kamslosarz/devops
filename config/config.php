@@ -5,6 +5,11 @@ use Application\Router\Route;
 
 return [
     'routes' => [
+        '/' => [
+            Admin\UserController::class,
+            'loginAction',
+            Route::ACCESS_PUBLIC
+        ],
         '/admin/index' => [
             Admin\AdminController::class,
             'indexAction',

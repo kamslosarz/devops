@@ -9,6 +9,7 @@ services:
             - ./tests:/var/www/devops/tests
             - ./console:/var/www/devops/console
             - ./config:/var/www/devops/config
+            - ./www:/var/www/devops/www
         networks:
             - default
 volumes:
