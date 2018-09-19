@@ -1,5 +1,4 @@
 FROM php:7.1.2-apache
-
 RUN apt-get update -q && \
     a2enmod env && \
     a2enmod rewrite && \
@@ -8,13 +7,16 @@ RUN apt-get update -q && \
     rm -rf /var/www/devops && \
     mkdir 0777 /var/www/devops && \
     useradd -g www-data -d /var/www/devops -s /bin/bash -p $(echo devops | openssl passwd -1 -stdin) devops && \
-    chown -R devops:www-data  /var/www/devops
+    chown -R devops:www-data /var/www/devops && \
+    apt-get install -y git && \
+    apt-get install openssh-client
 
 ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 WORKDIR /var/www/devops
 RUN rm -rf /var/www/devops/*
-RUN git clone git@github.com:kamslosarz/devops.git
+RUN git clone https://github.com/kamslosarz/devops.git .
+
 COPY composer.json composer.json
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin && \
     su - devops -c "composer.phar install --prefer-dist"
