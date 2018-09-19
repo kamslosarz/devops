@@ -77,7 +77,7 @@ class ConsoleTest extends ConsoleTestCase
     {
         return [
             'invalid command' => [
-                'Command not found',
+                'Command InvalidCommand\InvalidAction not found',
                 'InvalidCommand\InvalidAction',
                 []
             ],

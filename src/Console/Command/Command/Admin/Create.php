@@ -16,7 +16,7 @@ class Create extends Command
      * @param string $password
      * @return bool
      */
-    public function isValid($username = '', $password = '')
+    public function isValid($username = '', $password = '', $force = false)
     {
         if(!$username || !$password)
         {
@@ -28,6 +28,13 @@ class Create extends Command
 
         if($user instanceof User)
         {
+            if($force)
+            {
+                $user->forceDelete();
+
+                return true;
+            }
+
             $this->setError('User already exists');
 
             return false;
@@ -39,10 +46,10 @@ class Create extends Command
     /**
      * @param $username
      * @param $password
-     * @return string
-     * @throws \Propel\Runtime\Exception\PropelException
+     * @param bool $force
+     * @return $this
      */
-    public function execute($username, $password)
+    public function execute($username, $password, $force = false)
     {
         $user = new User();
         $user->setUsername($username)

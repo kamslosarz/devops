@@ -8,6 +8,8 @@ use Application\Response\Response;
 
 final class Application
 {
+    const TEST = '_test';
+
     private static $environment = '';
     /** @var Response $response */
     private $results = null;
@@ -43,5 +45,10 @@ final class Application
     public static function setEnvironment($environment)
     {
         self::$environment = $environment;
+    }
+
+    public static function isTest()
+    {
+        return self::$environment === self::TEST;
     }
 }

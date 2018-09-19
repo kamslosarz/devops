@@ -9,7 +9,6 @@ use Application\Router\Route;
 use Application\Router\RouteException;
 use Application\Router\Router;
 use Application\Service\AccessChecker\AccessDeniedException;
-use Application\Service\Logger\LoggerLevel;
 use Application\Service\Request\Request;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\Service\ServiceContainer\ServiceContainerException;
@@ -43,22 +42,13 @@ class Context
      */
     public function __invoke()
     {
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Initializing Router', LoggerLevel::INFO);
-
         /** @var Route $route */
         $route = ($this->router)();
-
         /** @var Request $request */
         $request = $this->serviceContainer->getService('request');
         $request->setRoute($route);
-
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Gathering controller', LoggerLevel::INFO);
         $controller = $this->getControllerFullName($route->getController());
         $action = $route->getAction();
-
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Validating controller', LoggerLevel::INFO);
-        $this->serviceContainer->getService('logger')->log('ApplicationLogger', 'Dispatching controller', LoggerLevel::INFO);
-
         if(!$this->serviceContainer->getService('accessChecker')->hasAccess($route))
         {
             throw new AccessDeniedException(sprintf('Access denied to \'%s\'', Router::getRouteUrlByParameters($route->getController(), $route->getAction(), $route->getParameters())));

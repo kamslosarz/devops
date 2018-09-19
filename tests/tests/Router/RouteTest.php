@@ -4,14 +4,20 @@ class RouteTest extends \PHPUnit\Framework\TestCase
 {
     public function testShouldConstructRoute()
     {
-        $route = new \Application\Router\Route([], []);
+        $route = new \Application\Router\Route([
+            'Controller\UserController',
+            'loginAction',
+            'public'
+        ], []);
 
         $this->assertInstanceOf(\Application\Router\Route::class, $route);
     }
 
     public function testShouldCreateRoute()
     {
-        $route = new \Application\Router\Route(['ControllerName', 'ControllerAction', \Application\Router\Route::ACCESS_PUBLIC], ['test', 'test2']);
+        $route = new \Application\Router\Route([
+            'ControllerName', 'ControllerAction', \Application\Router\Route::ACCESS_PUBLIC
+        ], ['test', 'test2']);
 
         $this->assertEquals('ControllerName', $route->getController());
         $this->assertEquals('ControllerAction', $route->getAction());

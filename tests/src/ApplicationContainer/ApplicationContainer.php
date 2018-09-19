@@ -2,6 +2,7 @@
 
 namespace Test\ApplicationContainer;
 
+use Application\Application;
 use Application\Response\Response;
 use Application\Service\Cookie\Cookie;
 use Application\Service\Session\Session;
@@ -56,7 +57,7 @@ class ApplicationContainer
         $_SESSION = $this->request->getSession();
         $_COOKIE = $this->request->getCookie();
 
-        $application = new \Application\Application('_test');
+        $application = new Application(Application::TEST);
         $application();
         $this->response = $application->getResults();
 

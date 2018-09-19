@@ -92,4 +92,5 @@ CREATE TABLE [users_privileges]
     [name] VARCHAR(255) NOT NULL,
     UNIQUE ([id]),
     FOREIGN KEY ([user_id]) REFERENCES [users] ([id])
+        ON DELETE CASCADE
 );

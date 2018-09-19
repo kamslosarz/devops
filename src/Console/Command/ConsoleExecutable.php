@@ -23,4 +23,6 @@ abstract class ConsoleExecutable extends Command
     {
         $this->getLogger()->log('ConsoleLogger', $message, $level);
     }
+
+
 }

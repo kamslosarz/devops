@@ -6,3 +6,4 @@ src/Resource/assets/
 /.bash_history
 /vendor
 /www/assets/
+/data/devops.db3

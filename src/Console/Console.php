@@ -31,7 +31,7 @@ class Console
 
         if(!$command)
         {
-            throw new ConsoleException('Command not found');
+            throw new ConsoleException(sprintf('Command %s not found', $this->consoleParameters->getCommand()));
         }
 
         if(count($this->consoleParameters->getParameters()) < (new \ReflectionMethod($command, 'execute'))->getNumberOfRequiredParameters())

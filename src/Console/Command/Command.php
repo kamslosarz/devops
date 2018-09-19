@@ -86,4 +86,9 @@ abstract class Command
     {
         return (new ConsoleResponse())->setContent($this->output);
     }
+
+    public function isValid()
+    {
+        return true;
+    }
 }

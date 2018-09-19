@@ -22,7 +22,6 @@ class ConsoleParameters
 
         $this->parameters = $parameters;
     }
-
     public function getCommand()
     {
         return $this->command;

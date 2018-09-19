@@ -6,10 +6,10 @@ services:
             - "8001:80"
         volumes:
             - ./src:/var/www/devops/src
-            - ./tests:/var/www/devops/tests
-            - ./console:/var/www/devops/console
+            - ./deploy:/var/www/devops/deploy
             - ./config:/var/www/devops/config
-            - ./www:/var/www/devops/www
+            - ./console:/var/www/devops/console
+            - ./tests:/var/www/devops/tests
         networks:
             - default
 volumes:
