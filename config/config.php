@@ -30,6 +30,14 @@ return [
         '/admin/project/edit/[id]' => [
             Admin\ProjectController::class,
             'projectAction',
+        ],
+        '/admin/user' => [
+            Admin\UserController::class,
+            'indexAction',
+        ],
+        '/admin/user/edit/[id]' => [
+            Admin\UserController::class,
+            'editAction',
         ]
     ],
     'defaultAction' => 'Admin\AdminController:index',

@@ -25,7 +25,6 @@ class AccessChecker implements ServiceInterface
     /**
      * @param Route $route
      * @return bool
-     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function hasAccess(Route $route)
     {

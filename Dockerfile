@@ -15,9 +15,16 @@ ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 WORKDIR /var/www/devops
 RUN rm -rf /var/www/devops/*
-RUN git clone https://github.com/kamslosarz/devops.git .
 
+COPY www www
+COPY src src
+COPY tests tests
+COPY data data
+COPY config config
+COPY deploy deploy
+COPY console console
 COPY composer.json composer.json
+
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin && \
     su - devops -c "composer.phar install --prefer-dist"
 

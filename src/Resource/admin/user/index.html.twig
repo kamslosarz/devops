@@ -1,0 +1,30 @@
+{% extends 'admin/layouts/list.html.twig' %}
+
+{% block title %}Project details{% endblock %}
+
+{% block table %}
+    <table id="projects-list">
+        <th>{'fullname'|trans}</th>
+        <th>{'username'|trans}</th>
+        <th>{'email'|trans}</th>
+        <th>{'actions'|trans}</th>
+        <tbody class="main-table">
+            {% for user in users %}
+            <tr>
+                <td>
+                    {{ user.fullname }}
+                </td>
+                <td>
+                    {{ user.username }}
+                </td>
+                <td>
+                    {{ user.email }}
+                </td>
+                <td>
+                    {{ url('/admin/user/edit/[id]', 'pe-7s-science', 'Users') }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -30,7 +30,7 @@ class Create extends Command
         {
             if($force)
             {
-                $user->forceDelete();
+                $user->delete();
 
                 return true;
             }

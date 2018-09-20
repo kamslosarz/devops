@@ -7,6 +7,7 @@ use Application\Response\Response;
 use Application\Response\ResponseTypes\RedirectResponse;
 use Application\Service\Appender\AppenderLevel;
 use Application\Service\AuthService\AuthService;
+use Model\UserQuery;
 
 class UserController extends Controller
 {
@@ -67,6 +68,10 @@ class UserController extends Controller
 
     public function indexAction()
     {
-        return new Response();
+        $users = UserQuery::create()->find();
+
+        return new Response([
+            'users' => $users
+        ]);
     }
 }

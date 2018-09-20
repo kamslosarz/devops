@@ -1,0 +1,5 @@
+<div class="messages">
+    {% for type, message in messages.all %}
+        <p class="{{ type }}">{{ message }}</p>
+    {% endfor %}
+</div>

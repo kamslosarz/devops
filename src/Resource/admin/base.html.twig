@@ -17,26 +17,9 @@
             Dashboard
         </div>
     </div>
-
-    <div class="nav">
-        <ul>
-            <li class="{% if menu.isUri('/admin/index') %}active{% endif %}">
-                {{ url('/admin/index', 'pe-7s-graph', 'Dashboard') }}
-            </li>
-            <li class="{% if menu.isUri('/admin/project*') %}active{% endif %}">
-                {{ url('/admin/project', 'pe-7s-science', 'Projects') }}
-            </li>
-            <li class="{% if menu.isUri('/admin/logout') %}active{% endif %}">
-                {{ url('/admin/logout', 'pe-7s-logout', 'Logout') }}
-            </li>
-        </ul>
-    </div>
+    {% include 'admin/partials/menu.html.twig' %}
     <div class="main-content">
-        <div class="messages">
-            {% for type, message in messages.all %}
-                <p class="{{ type }}">{{ message }}</p>
-            {% endfor %}
-        </div>
+        {% include 'admin/partials/messages.html.twig' %}
         <div class="content">
             {% block content %}
 
@@ -44,7 +27,6 @@
         </div>
     </div>
     <div class="footer">
-
     </div>
 </div>
 </body>

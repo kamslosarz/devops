@@ -2,8 +2,12 @@
 <database package="users" name="default" namespace="Model">
     <table name="users" idMethod="native" phpName="User">
         <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-        <column name="username" phpName="Username" type="VARCHAR" size="255" required="true"/>
+        <column name="username" phpName="username" type="VARCHAR" size="255" required="true"/>
         <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
+
+        <column name="firstname" phpName="firstname" type="VARCHAR" size="255" required="false"/>
+        <column name="lastname" phpName="lastname" type="VARCHAR" size="255" required="false"/>
+        <column name="email" phpName="email" type="VARCHAR" size="255" required="false"/>
         <behavior name="timestampable"/>
     </table>
 
