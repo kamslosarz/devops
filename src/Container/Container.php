@@ -60,7 +60,7 @@ class Container
             }
             catch(AccessDeniedException $accessDeniedException)
             {
-                $route = (new Router('/admin/index', RequestMethods::GET))();
+                $route = Router::getRouteByName(Config::get('defaultAction'));
 
                 if($this->serviceContainer->getService('accessChecker')->hasAccess($route))
                 {

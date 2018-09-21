@@ -78,11 +78,21 @@ class Router
         return self::$routes;
     }
 
-    public static function getCompactRouteName($controller, $action)
+    /**
+     * @param $name
+     * @param array $parameters
+     * @return Route|null
+     */
+    public static function getRouteByName($name, $parameters = [])
     {
-        $controller = preg_replace("/[a-z0-9]+\\\\Controller\\\\(.+)$/i", "$1", $controller);
+        $route = isset(self::getRoutes()[$name]) ? self::getRoutes()[$name] : null;
 
-        return sprintf('%s:%s', $controller, str_replace('Action', '', $action));
+        if(!is_null($route))
+        {
+            return new Route($name, $route, $parameters);
+        }
+
+        return null;
     }
 
     /**
@@ -98,7 +108,6 @@ class Router
 
         foreach(self::getRoutes() as $routeName => $route)
         {
-
             if([$controller, $action] === [$route['controller'], $route['action']])
             {
                 $relativeUrl = $route['url'];
@@ -112,7 +121,7 @@ class Router
 
         if(!$relativeUrl)
         {
-            throw new RouteException(sprintf('Route pattern \'%s:%s\' with parameters \'%s\' not found', $controller, $action, implode(',', $parameters)));
+            throw new RouteException(sprintf('Route \'%s:%s\' with parameters \'%s\' not found', $controller, $action, implode(',', $parameters)));
         }
 
         return $relativeUrl;

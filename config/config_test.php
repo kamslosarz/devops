@@ -55,8 +55,8 @@ return [
             'url' => '/admin/test/[id]/test'
         ]
     ],
-    'defaultAction' => 'Admin\AdminController:index',
-    'loginAction' => 'Admin\UserController:login',
+    'defaultAction' => 'app_admin_index',
+    'loginAction' => 'app_admin_login',
     'twig' => [
         'loader' => [
             'templates' => dirname(__DIR__) . '/src/Resource',

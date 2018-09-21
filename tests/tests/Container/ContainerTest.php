@@ -120,7 +120,7 @@ class ContainerTest extends TestCase
                 ->shouldReceive('append')
                 ->once()
                 ->withArgs([
-                    'Access denied to \'AdminController:indexAction\'',
+                    'Access denied to \'app_admin_index\'',
                     \Application\Service\Appender\AppenderLevel::ERROR
                 ])
                 ->getMock()
@@ -128,7 +128,7 @@ class ContainerTest extends TestCase
 
         $contextMock = m::mock(\Application\Context\Context::class)
             ->shouldReceive('__invoke')
-            ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'AdminController:indexAction\'')
+            ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'app_admin_index\'')
             ->getMock();
 
         $viewMock = m::mock(\Application\View\View::class);
@@ -166,7 +166,7 @@ class ContainerTest extends TestCase
         );
         $contextMock = m::mock(\Application\Context\Context::class)
             ->shouldReceive('__invoke')
-            ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'AdminController:loginAction\'')
+            ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'app_admin_login\'')
             ->getMock();
 
         $viewMock = m::mock(\Application\View\View::class);

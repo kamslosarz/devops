@@ -2,6 +2,7 @@
 
 namespace Application\Controller\Admin;
 
+use Application\Config\Config;
 use Application\Form\User\LoginForm;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\RedirectResponse;
@@ -29,7 +30,7 @@ class UserController extends Controller
 
         if($authService->isAuthenticated())
         {
-            return new RedirectResponse('Admin\AdminController:index');
+            return new RedirectResponse(Config::get('defaultAction'));
         }
 
         if($request->isPost())
@@ -40,7 +41,7 @@ class UserController extends Controller
             {
                 $this->addMessage('Successfully logged in', AppenderLevel::SUCCESS);
 
-                return new RedirectResponse('Admin\AdminController:index');
+                return new RedirectResponse(Config::get('defaultAction'));
             }
 
             $this->addMessage('User not found', AppenderLevel::ERROR);
@@ -64,7 +65,7 @@ class UserController extends Controller
         $authService->clearSession();
         $this->addMessage('Successfully logged out', AppenderLevel::SUCCESS);
 
-        return new RedirectResponse('Admin\UserController:login');
+        return new RedirectResponse(Config::get('loginAction'));
     }
 
     public function indexAction()

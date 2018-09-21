@@ -33,12 +33,4 @@ class RouterTest extends \PHPUnit\Framework\TestCase
         $router();
     }
 
-    public function testShouldReturnCompactRouteName()
-    {
-        $compactName = \Application\Router\Router::getCompactRouteName('TestController', 'testAction');
-
-        $this->assertEquals('TestController:test', $compactName);
-    }
-
-
 }

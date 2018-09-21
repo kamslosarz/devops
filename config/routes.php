@@ -8,14 +8,14 @@ return [
     'app_admin_index' => [
         'controller' => Admin\AdminController::class,
         'action' => 'indexAction',
-        'url' => '/admin/index'
+        'url' => '/'
     ],
     'app_admin_login' => [
         'controller' => Admin\UserController::class,
         'action' => 'loginAction',
         'url' => '/admin/login',
+        'method' => RequestMethods::GET & RequestMethods::POST,
         'access' => Route::ACCESS_PUBLIC,
-        'method' => RequestMethods::GET & RequestMethods::POST
     ],
     'app_admin_logout' => [
         'controller' => Admin\UserController::class,
