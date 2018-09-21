@@ -61,6 +61,11 @@ class Request implements ServiceInterface
         return $this->server('REQUEST_URI');
     }
 
+    public function getRequestMethod()
+    {
+        return $this->server('REQUEST_METHOD');
+    }
+
     public function getRoute()
     {
         return $this->route;

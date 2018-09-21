@@ -16,6 +16,7 @@ class UserController extends Controller
      * @return Response|RedirectResponse
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Propel\Runtime\Exception\PropelException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function loginAction()
@@ -74,8 +75,10 @@ class UserController extends Controller
             'users' => $users
         ]);
     }
+
     /**
      * @convert('user', options={"type":"Model", "class":"\Model\User"})
+     * @param User $user
      * @return Response
      */
     public function editAction(User $user)
@@ -83,5 +86,19 @@ class UserController extends Controller
         return new Response([
             'user' => $user
         ]);
+    }
+
+    /**
+     * @convert('user', options={"type":"Model", "class":"\Model\User"})
+     * @param User $user
+     * @return Response
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
+    public function deleteAction(User $user)
+    {
+        $user->delete();
+        $this->addMessage('User was deleted', AppenderLevel::SUCCESS);
+
+        return new Response();
     }
 }

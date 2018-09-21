@@ -26,7 +26,6 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         ]);
 
         $dispatcher->dispatch('/admin/login');
-
         $this->assertEquals(
             $_SESSION[\Application\Service\AuthService\AuthService::AUTH_KEY_NAME],
             $this->getUser()->getUserAuthTokens(

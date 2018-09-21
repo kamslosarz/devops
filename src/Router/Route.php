@@ -11,12 +11,18 @@ class Route
     private $action;
     private $parameters;
     private $access;
+    private $urlPattern;
+    private $method;
+    private $name;
 
-    public function __construct($routeParameters, $controllerParameters)
+    public function __construct($name, $routeParameters, $controllerParameters)
     {
-        $this->controller = $routeParameters[0];
-        $this->action = $routeParameters[1];
-        $this->access = (isset($routeParameters[2]) && $routeParameters[2] === self::ACCESS_PUBLIC) ? self::ACCESS_PUBLIC : self::ACCESS_PRIVATE;
+        $this->controller = $routeParameters['controller'];
+        $this->action = $routeParameters['action'];
+        $this->access = (isset($routeParameters['access']) && $routeParameters['access'] === self::ACCESS_PUBLIC) ? self::ACCESS_PUBLIC : self::ACCESS_PRIVATE;
+        $this->method = isset($routeParameters['method']) ? $routeParameters['method'] : null;
+        $this->urlPattern = $routeParameters['url'];
+        $this->name = $name;
         $this->parameters = $controllerParameters;
     }
 
@@ -40,8 +46,18 @@ class Route
         return $this->access;
     }
 
-    public function getCompactName()
+    public function getUrlPattern()
     {
-        return Router::getCompactRouteName($this->controller, $this->action);
+        return $this->urlPattern;
+    }
+
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 }

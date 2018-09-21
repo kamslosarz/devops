@@ -13,7 +13,8 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         $config = \Application\Config\Config::get('routes');
 
-        $this->assertArrayHasKey('/admin/login', $config);
+        $this->assertArrayHasKey('app_admin_index', $config);
+        $this->assertEquals('/admin/login', $config['app_admin_login']['url']);
     }
 
     public function testShouldThrowConfigException()

@@ -25,6 +25,7 @@ class AccessChecker implements ServiceInterface
     /**
      * @param Route $route
      * @return bool
+     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function hasAccess(Route $route)
     {
@@ -70,7 +71,7 @@ class AccessChecker implements ServiceInterface
     {
         $route = $this->request->getRoute();
 
-        return $privilege->getName() === $route->getCompactName();
+        return $privilege->getName() === $route->getName();
     }
 
 }

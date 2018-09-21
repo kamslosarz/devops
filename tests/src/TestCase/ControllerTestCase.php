@@ -74,23 +74,19 @@ abstract class ControllerTestCase extends TestCase
                 [
                     'id' => 1,
                     'user_id' => 1,
-                    'name' => 'Admin\UserController:login'
+                    'name' => 'app_admin_login'
                 ], [
                     'id' => 2,
                     'user_id' => 1,
-                    'name' => 'Admin\UserController:logout'
+                    'name' => 'app_admin_logout'
                 ], [
                     'id' => 3,
                     'user_id' => 1,
-                    'name' => 'Admin\ProjectController:index'
+                    'name' => 'app_admin_index'
                 ], [
                     'id' => 4,
                     'user_id' => 1,
-                    'name' => 'Admin\ProjectController:project'
-                ], [
-                    'id' => 5,
-                    'user_id' => 1,
-                    'name' => 'Admin\AdminController:index'
+                    'name' => 'app_admin_project'
                 ]
             ]
         ]);

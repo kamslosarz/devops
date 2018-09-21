@@ -2,34 +2,57 @@
 
 use Application\Controller\Admin as Admin;
 use Application\Router\Route;
+use Application\Service\Request\RequestMethods;
 
 
 return [
     'routes' => [
-        '/admin/login' => [
-            Admin\UserController::class,
-            'loginAction',
-            Route::ACCESS_PUBLIC
+        'app_admin_index' => [
+            'controller' => Admin\AdminController::class,
+            'action' => 'indexAction',
+            'url' => '/admin/index'
         ],
-        '/admin/logout' => [
-            Admin\UserController::class,
-            'logoutAction',
+        'app_admin_login' => [
+            'controller' => Admin\UserController::class,
+            'action' => 'loginAction',
+            'url' => '/admin/login',
+            'access' => Route::ACCESS_PUBLIC,
+            'method' => RequestMethods::GET & RequestMethods::POST
         ],
-        '/admin/index' => [
-            Admin\AdminController::class,
-            'indexAction',
+        'app_admin_logout' => [
+            'controller' => Admin\UserController::class,
+            'action' => 'logoutAction',
+            'url' => '/admin/logout'
         ],
-        '/admin/project' => [
-            Admin\ProjectController::class,
-            'indexAction',
+        'app_admin_project' => [
+            'controller' => Admin\ProjectController::class,
+            'action' => 'indexAction',
+            'url' => '/admin/project'
         ],
-        '/admin/project/edit/[id]' => [
-            Admin\ProjectController::class,
-            'projectAction',
+        'app_admin_project_edit' => [
+            'controller' => Admin\ProjectController::class,
+            'action' => 'projectAction',
+            'url' => '/admin/project/edit/[id]'
         ],
-        '/admin/test/[id]/[action]' => [
-            Admin\AdminController::class,
-            'testAction',
+        'app_admin_user' => [
+            'controller' => Admin\UserController::class,
+            'action' => 'indexAction',
+            'url' => '/admin/user'
+        ],
+        'app_admin_user_delete' => [
+            'controller' => Admin\UserController::class,
+            'action' => 'deleteAction',
+            'url' => '/admin/user/[id]/delete'
+        ],
+        'app_admin_user_edit' => [
+            'controller' => Admin\UserController::class,
+            'action' => 'editAction',
+            'url' => '/admin/user/edit/[id]'
+        ],
+        'app_admin_test' => [
+            'controller' => Admin\AdminController::class,
+            'action' => 'testAction',
+            'url' => '/admin/test/[id]/test'
         ]
     ],
     'defaultAction' => 'Admin\AdminController:index',

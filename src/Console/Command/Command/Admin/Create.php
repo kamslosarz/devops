@@ -14,7 +14,9 @@ class Create extends Command
     /**
      * @param string $username
      * @param string $password
+     * @param bool $force
      * @return bool
+     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function isValid($username = '', $password = '', $force = false)
     {
@@ -48,6 +50,7 @@ class Create extends Command
      * @param $password
      * @param bool $force
      * @return $this
+     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function execute($username, $password, $force = false)
     {
@@ -56,10 +59,10 @@ class Create extends Command
             ->setPassword(md5($password))
             ->save();
 
-        foreach(Config::get('routes') as $route)
+        foreach(Config::get('routes') as $routeName => $route)
         {
             $userPrivilege = new UserPrivilege();
-            $userPrivilege->setName(Router::getCompactRouteName($route[0], $route[1]));
+            $userPrivilege->setName($routeName);
             $userPrivilege->setUser($user);
             $userPrivilege->save();
             $user->addUserPrivilege($userPrivilege);

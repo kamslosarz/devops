@@ -13,12 +13,23 @@ use Application\Service\AccessChecker\AccessChecker;
 use Application\Service\Appender\Appender;
 use Application\Service\Request\Request;
 use Mockery as m;
-use PHPUnit\Framework\TestCase;
+use Model\Map\UserTableMap;
+use Model\User;
+use Model\UserQuery;
+use PHPUnit\DbUnit\Database\DefaultConnection;
+use PHPUnit\DbUnit\DataSet\ArrayDataSet;
+use PHPUnit\DbUnit\TestCaseTrait;
+use Propel\Runtime\Propel;
+use Test\TestCase\Traits\DatabaseTestCaseTrait;
 use Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
+use PHPUnit\Framework\TestCase;
 
 class ContextTest extends TestCase
 {
+    use TestCaseTrait;
+    use DatabaseTestCaseTrait;
     use ServiceContainerMockBuilderTrait;
+
 
     /**
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
@@ -81,25 +92,35 @@ class ContextTest extends TestCase
         $serviceContainerMock = $this->getServiceContainerMockBuilder()
             ->setRequestMock(
                 m::mock('Request')
-                ->shouldReceive('getRequestUri')
-                ->andReturn('/admin/test/999/delete')
-                ->getMock()
-                ->shouldReceive('getRoute')
-                ->andReturn()
-                ->getMock()
-                ->shouldReceive('setRoute')
-                ->andReturnSelf()
-                ->getMock()
+                    ->shouldReceive('getRequestUri')
+                    ->andReturn('/admin/user/999/delete')
+                    ->getMock()
+                    ->shouldReceive('getRoute')
+                    ->andReturn()
+                    ->getMock()
+                    ->shouldReceive('setRoute')
+                    ->andReturnSelf()
+                    ->getMock()
+                    ->shouldReceive('getRequestMethod')
+                    ->once()
+                    ->andReturns('GET')
+                    ->getMock()
             );
 
+        $serviceContainerMock = $serviceContainerMock->build();
         /** @var ErrorResponse $response */
-        $context = new Context($serviceContainerMock->build());
+        $context = new Context($serviceContainerMock);
 
         $context();
         $response = $context->getResults();
 
+        /** @var m\MockInterface $appender */
+        $appender = $context->getAppender();
+        $appender->shouldHaveReceived('append')
+            ->with('User was deleted', 'SUCCESS')
+            ->once();
+
         $this->assertInstanceOf(Response::class, $response, 'invalid response type');
-        $this->assertEquals([999, 'delete'], $response->getParameters(), 'invalid response parameters');
         $this->assertEquals([], $response->getHeaders(), 'invalid response headers');
     }
 
@@ -112,33 +133,37 @@ class ContextTest extends TestCase
     public function testShouldReturnRedirectResponse()
     {
         $serviceContainerMock = $this->getServiceContainerMockBuilder()
-                    ->setRequestMock(m::mock(Request::class)
-                        ->shouldReceive('getRequestUri')
-                        ->once()
-                        ->andReturns('/admin/logout')
-                        ->getMock()
-                        ->shouldReceive('getRoute')
-                        ->once()
-                        ->andReturns(m::mock(Route::class))
-                        ->getMock()
-                        ->shouldReceive('setRoute')
-                        ->once()
-                        ->andReturns()
-                        ->getMock()
-                    )->setAuthServiceMock(
-                        $this->getServiceContainerMockBuilder()
-                            ->getAuthServiceMock()
-                            ->shouldReceive('clearSession')
-                            ->once()
-                            ->andReturnSelf()
-                            ->getMock()
-                    )->setSessionMock(
-                        $this->getServiceContainerMockBuilder()
-                            ->getSessionMock()
-                            ->shouldReceive('set')
-                            ->andReturnSelf()
-                            ->getMock()
-                    );
+            ->setRequestMock(m::mock(Request::class)
+                ->shouldReceive('getRequestUri')
+                ->once()
+                ->andReturns('/admin/logout')
+                ->getMock()
+                ->shouldReceive('getRoute')
+                ->once()
+                ->andReturns(m::mock(Route::class))
+                ->getMock()
+                ->shouldReceive('setRoute')
+                ->once()
+                ->andReturns()
+                ->getMock()
+                ->shouldReceive('getRequestMethod')
+                ->once()
+                ->andReturns('GET')
+                ->getMock()
+            )->setAuthServiceMock(
+                $this->getServiceContainerMockBuilder()
+                    ->getAuthServiceMock()
+                    ->shouldReceive('clearSession')
+                    ->once()
+                    ->andReturnSelf()
+                    ->getMock()
+            )->setSessionMock(
+                $this->getServiceContainerMockBuilder()
+                    ->getSessionMock()
+                    ->shouldReceive('set')
+                    ->andReturnSelf()
+                    ->getMock()
+            );
 
         /** @var ErrorResponse $response */
         $context = new Context($serviceContainerMock->build());
@@ -170,9 +195,29 @@ class ContextTest extends TestCase
             ->once()
             ->andReturns()
             ->getMock()
+            ->shouldReceive('getRequestMethod')
+            ->once()
+            ->andReturns('GET')
+            ->getMock()
             ->shouldReceive('getRequestUri')
             ->once()
             ->andReturn('/not-existing-route-to-nowhere')
             ->getMock();
+    }
+
+    public function getDataSet()
+    {
+        return new ArrayDataSet([
+            'users' => [
+                [
+                    'id' => 999,
+                    'username' => 'testAdmin',
+                    'password' => md5('testPassword'),
+                    'firstname' => 'test',
+                    'lastname' => 'test',
+                    'email' => 'test@test.pl'
+                ]
+            ],
+        ]);
     }
 }

@@ -10,14 +10,8 @@ class Converter extends Annotation
 {
     public function annotate(ControllerParameters $controllerParameters)
     {
-        try
-        {
-            $converter = self::getInstance($this->options);
-            $controllerParameters->setParameter($this->parameterName, $converter($this->parameterValue));
-        }
-        catch(AnnotationException $exception)
-        {
-        }
+        $converter = self::getInstance($this->options);
+        $controllerParameters->setParameter($this->parameterName, $converter($this->parameterValue));
     }
 
     /**

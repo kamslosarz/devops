@@ -9,10 +9,12 @@ class Router
     private static $routes;
     private $requestUri;
     private $parameters;
+    private $requestMethod;
 
-    public function __construct($requestUri = '')
+    public function __construct($requestUri = '', $requestMethod)
     {
         $this->requestUri = $requestUri;
+        $this->requestMethod = $requestMethod;
     }
 
     /**
@@ -21,28 +23,33 @@ class Router
      */
     public function __invoke()
     {
-        foreach(self::getRoutes() as $uriPattern => $route)
+        foreach(self::getRoutes() as $routeName => $route)
         {
-            if($this->match($uriPattern, $this->requestUri))
+            if($this->match($route, $this->requestUri))
             {
-                return new Route($route, $this->parameters);
+                return new Route($routeName, $route, $this->parameters);
             }
         }
 
         throw new RouteException(sprintf('Route \'%s\' not found', $this->requestUri));
     }
 
-    private function match($route, $uri)
+    private function match(array $route, $uri)
     {
         $uri = explode('/', $uri);
-        $route = explode('/', $route);
+        $routeUrlPattern = explode('/', $route['url']);
         $this->parameters = [];
+
+        if(sizeof($routeUrlPattern) !== sizeof($uri))
+        {
+            return false;
+        }
 
         foreach($uri as $key => $value)
         {
-            if($route[$key] !== $value)
+            if($routeUrlPattern[$key] !== $value)
             {
-                if(preg_match('/^\[([a-zA-Z0-9]+)\]$/', $route[$key], $match))
+                if(preg_match('/^\[([a-zA-Z0-9]+)\]$/', $routeUrlPattern[$key], $match))
                 {
                     $this->parameters[$match[1]] = $value;
                 }
@@ -62,7 +69,8 @@ class Router
         {
             foreach(Config::get('routes') as $routeName => $route)
             {
-                $route[0] = preg_replace("/[a-z0-9]+\\\\Controller\\\\(.+)$/i", "$1", $route[0]);
+                $route['controller'] = preg_replace("/[a-z0-9]+\\\\Controller\\\\(.+)$/i", "$1", $route['controller']);
+
                 self::$routes[$routeName] = $route;
             }
         }
@@ -88,16 +96,12 @@ class Router
     {
         $relativeUrl = null;
 
-        foreach(self::getRoutes() as $uri => $route)
+        foreach(self::getRoutes() as $routeName => $route)
         {
-            if(isset($route[2]))
-            {
-                unset($route[2]);
-            }
 
-            if([$controller, $action] === $route)
+            if([$controller, $action] === [$route['controller'], $route['action']])
             {
-                $relativeUrl = $uri;
+                $relativeUrl = $route['url'];
 
                 foreach($parameters as $key => $value)
                 {

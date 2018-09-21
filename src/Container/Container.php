@@ -13,6 +13,7 @@ use Application\Router\RouteException;
 use Application\Router\Router;
 use Application\Service\AccessChecker\AccessDeniedException;
 use Application\Service\Appender\AppenderLevel;
+use Application\Service\Request\RequestMethods;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\View\View;
 use Application\View\ViewElement;
@@ -59,7 +60,7 @@ class Container
             }
             catch(AccessDeniedException $accessDeniedException)
             {
-                $route = (new Router('/admin/index'))();
+                $route = (new Router('/admin/index', RequestMethods::GET))();
 
                 if($this->serviceContainer->getService('accessChecker')->hasAccess($route))
                 {

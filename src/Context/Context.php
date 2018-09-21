@@ -9,6 +9,7 @@ use Application\Router\Route;
 use Application\Router\RouteException;
 use Application\Router\Router;
 use Application\Service\AccessChecker\AccessDeniedException;
+use Application\Service\Appender\Appender;
 use Application\Service\Request\Request;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\Service\ServiceContainer\ServiceContainerException;
@@ -17,6 +18,7 @@ class Context
 {
     /** @var Controller * */
     private $router;
+    /** @var Appender $appender*/
     private $appender;
     private $serviceContainer;
     /** @var Response */
@@ -31,7 +33,8 @@ class Context
     {
         $this->serviceContainer = $serviceContainer;
         $this->appender = $this->serviceContainer->getService('appender');
-        $this->router = new Router($this->serviceContainer->getService('request')->getRequestUri());
+        $request = $this->serviceContainer->getService('request');
+        $this->router = new Router($request->getRequestUri(), $request->getRequestMethod());
     }
 
     /**
@@ -44,11 +47,13 @@ class Context
     {
         /** @var Route $route */
         $route = ($this->router)();
+
         /** @var Request $request */
         $request = $this->serviceContainer->getService('request');
         $request->setRoute($route);
         $controller = $this->getControllerFullName($route->getController());
         $action = $route->getAction();
+
         if(!$this->serviceContainer->getService('accessChecker')->hasAccess($route))
         {
             throw new AccessDeniedException(sprintf('Access denied to \'%s\'', Router::getRouteUrlByParameters($route->getController(), $route->getAction(), $route->getParameters())));

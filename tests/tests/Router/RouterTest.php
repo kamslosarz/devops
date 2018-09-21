@@ -4,13 +4,13 @@ class RouterTest extends \PHPUnit\Framework\TestCase
 {
     public function testShouldMatchRoute()
     {
-        $router = new \Application\Router\Router('/admin/test/1/test');
+        $router = new \Application\Router\Router('/admin/test/1/test', "GET");
         /** @var \Application\Router\Route $route */
         $route = $router();
 
         $this->assertEquals('Admin\AdminController', $route->getController());
         $this->assertEquals('testAction', $route->getAction());
-        $this->assertEquals(['id' => 1, 'action' => 'test'], $route->getParameters());
+        $this->assertEquals(['id' => 1], $route->getParameters());
 
     }
 
@@ -29,7 +29,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
         $fakeRoute = '/this/route/not/exists';
         $this->expectException(\Application\Router\RouteException::class);
         $this->expectExceptionMessage(sprintf('Route \'%s\' not found', $fakeRoute));
-        $router = new \Application\Router\Router($fakeRoute);
+        $router = new \Application\Router\Router($fakeRoute, 'GET');
         $router();
     }
 

@@ -148,6 +148,9 @@ class ContainerMockBuilder
                 ->getMock()
                 ->shouldReceive('setRoute')
                 ->andReturns()
+                ->getMock()
+                ->shouldReceive('getRequestMethod')
+                ->andReturns('GET')
                 ->getMock();
         }
 

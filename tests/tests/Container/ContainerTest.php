@@ -37,9 +37,10 @@ class ContainerTest extends TestCase
             ->once()
             ->andReturn((new \Application\Response\Response([
                 'test', 'test'
-            ]))->setRoute(new \Application\Router\Route([
-                'Admin\AdminController',
-                'indexAction'
+            ]))->setRoute(new \Application\Router\Route('app_test_route', [
+                'controller' => 'Admin\AdminController',
+                'action' => 'indexAction',
+                'url' => '/test/'
             ], [])))
             ->getMock();
 

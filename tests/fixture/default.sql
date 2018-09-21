@@ -39,6 +39,9 @@ CREATE TABLE [users]
     [id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     [username] VARCHAR(255) NOT NULL,
     [password] VARCHAR(255) NOT NULL,
+    [firstname] VARCHAR(255),
+    [lastname] VARCHAR(255),
+    [email] VARCHAR(255),
     [created_at] TIMESTAMP,
     [updated_at] TIMESTAMP,
     UNIQUE ([id])
@@ -59,6 +62,7 @@ CREATE TABLE [users_auth_tokens]
     [updated_at] TIMESTAMP,
     UNIQUE ([id]),
     FOREIGN KEY ([user_id]) REFERENCES [users] ([id])
+        ON DELETE CASCADE
 );
 
 CREATE INDEX [users_auth_tokens_i_6ca017] ON [users_auth_tokens] ([user_id]);
@@ -75,7 +79,8 @@ CREATE TABLE [users_roles]
     [role_id] INTEGER NOT NULL,
     PRIMARY KEY ([user_id],[role_id]),
     UNIQUE ([user_id],[role_id]),
-    FOREIGN KEY ([user_id]) REFERENCES [users] ([id]),
+    FOREIGN KEY ([user_id]) REFERENCES [users] ([id])
+        ON DELETE CASCADE,
     FOREIGN KEY ([role_id]) REFERENCES [roles] ([id])
 );
 
@@ -94,3 +99,23 @@ CREATE TABLE [users_privileges]
     FOREIGN KEY ([user_id]) REFERENCES [users] ([id])
         ON DELETE CASCADE
 );
+
+-----------------------------------------------------------------------
+-- users_auth_tokens_archive
+-----------------------------------------------------------------------
+
+DROP TABLE IF EXISTS [users_auth_tokens_archive];
+
+CREATE TABLE [users_auth_tokens_archive]
+(
+    [id] INTEGER NOT NULL,
+    [user_id] INTEGER,
+    [token] VARCHAR(255) NOT NULL,
+    [created_at] TIMESTAMP,
+    [updated_at] TIMESTAMP,
+    [archived_at] TIMESTAMP,
+    PRIMARY KEY ([id]),
+    UNIQUE ([id])
+);
+
+CREATE INDEX [users_auth_tokens_archive_i_6ca017] ON [users_auth_tokens_archive] ([user_id]);
