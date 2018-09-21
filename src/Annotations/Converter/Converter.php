@@ -19,7 +19,7 @@ class Converter extends Annotation
      * @return mixed
      * @throws AnnotationException
      */
-    public static function getInstance($options)
+    private static function getInstance($options)
     {
         $converterClass = sprintf('\Application\Annotations\Converter\Types\%sConverter', $options->type);
 

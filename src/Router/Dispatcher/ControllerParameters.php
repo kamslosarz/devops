@@ -28,6 +28,11 @@ class ControllerParameters
         $this->method = $method;
     }
 
+    public function getParameter($name)
+    {
+        return $this->parameters[$name];
+    }
+
     public function getParameters()
     {
         return $this->parameters;

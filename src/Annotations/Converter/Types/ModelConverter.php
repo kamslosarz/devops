@@ -2,13 +2,16 @@
 
 namespace Application\Annotations\Converter\Types;
 
-use Model\User;
+
+use Application\Annotations\AnnotationException;
+use Model\UserQuery;
 
 class ModelConverter extends ConverterType
 {
     /**
      * @param $value
      * @return mixed
+     * @throws AnnotationException
      */
     public function __invoke($value)
     {
