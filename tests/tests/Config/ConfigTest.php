@@ -51,7 +51,6 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'dataSet test' => ['_test', sprintf('%s/config/config_test.php', dirname(dirname(FIXTURE_DIR)))],
-            'dataSet dev' => ['_dev', sprintf('%s/config/config_dev.php', dirname(dirname(FIXTURE_DIR)))],
             'dataSet prod' => ['',sprintf('%s/config/config.php', dirname(dirname(FIXTURE_DIR)))]
         ];
     }

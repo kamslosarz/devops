@@ -14,7 +14,7 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function projectAction($id)
+    public function projectAction()
     {
         return new Response();
     }

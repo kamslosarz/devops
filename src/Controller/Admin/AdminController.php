@@ -4,6 +4,10 @@ namespace Application\Controller\Admin;
 
 use Application\Response\Response;
 
+/**
+ * Class AdminController
+ * @package Application\Controller\Admin
+ */
 class AdminController extends Controller
 {
     public function testAction($integer, $string)
@@ -13,6 +17,9 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * @return Response
+     */
     public function indexAction()
     {
         return new Response([]);

@@ -2,7 +2,6 @@
 
 namespace Application\Router\Dispatcher;
 
-
 use Application\Factory\Factory;
 use Application\Response\Response;
 
@@ -31,11 +30,13 @@ class Dispatcher
      * @param array $parameters
      * @throws DispatcherException
      */
-    public function dispatch($parameters = [])
+    public function dispatch(array $parameters = [])
     {
         if(is_null($this->response))
         {
-            $this->response = $this->class->{$this->method}(...array_values($parameters));
+            $controllerParameters = new ControllerParameters($this->class, array_values($parameters), $this->method);
+
+            $this->response = $this->class->{$this->method}(...$controllerParameters->toArray());
 
             if(!($this->response instanceof Response))
             {
@@ -45,9 +46,7 @@ class Dispatcher
     }
 
     /**
-     * @param $controller
-     * @param $action
-     *
+     * @return bool
      * @throws DispatcherException
      */
     protected function isValid()
@@ -61,6 +60,8 @@ class Dispatcher
         {
             throw new DispatcherException(sprintf('Action \'%s\' not exists in \'%s\'', $this->method, $this->class));
         }
+
+        return true;
     }
 
     /**

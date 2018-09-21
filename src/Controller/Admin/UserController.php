@@ -7,6 +7,7 @@ use Application\Response\Response;
 use Application\Response\ResponseTypes\RedirectResponse;
 use Application\Service\Appender\AppenderLevel;
 use Application\Service\AuthService\AuthService;
+use Model\User;
 use Model\UserQuery;
 
 class UserController extends Controller
@@ -15,7 +16,6 @@ class UserController extends Controller
      * @return Response|RedirectResponse
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Propel\Runtime\Exception\PropelException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function loginAction()
@@ -72,6 +72,16 @@ class UserController extends Controller
 
         return new Response([
             'users' => $users
+        ]);
+    }
+    /**
+     * @convert('user', options={"type":"Model", "class":"\Model\User"})
+     * @return Response
+     */
+    public function editAction(User $user)
+    {
+        return new Response([
+            'user' => $user
         ]);
     }
 }
