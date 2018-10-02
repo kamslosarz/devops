@@ -11,7 +11,7 @@ class Converter extends Annotation
     public function annotate(ControllerParameters $controllerParameters)
     {
         $converter = self::getInstance($this->options);
-        $controllerParameters->setParameter($this->parameterName, $converter($this->parameterValue));
+        $controllerParameters->addParameterToOverride($this->parameterName, $converter($this->parameterValue));
     }
 
     /**

@@ -20,3 +20,6 @@ cd $DEPLOY_DIRECTORY
 console/console cache:build
 console/console admin:create $ADMIN_LOGIN $ADMIN_PASSWORD true
 vendor/bin/phpunit -c tests/phpunit/phpunit.xml
+
+#./buildConfig.sh
+

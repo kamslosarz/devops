@@ -26,17 +26,22 @@ class ConsoleTest extends ConsoleTestCase
      */
     public function testShouldExecuteCommand()
     {
+        $commandParametersMock = m::mock(\Application\Console\Command\Command\CommandParameters::class)
+            ->shouldReceive('toArray')
+            ->andReturns([
+                'TestExecuteCommandAdminUsername',
+                'TestExecuteCommandAdminPassword'
+            ])
+            ->getMock();
+
         $consoleParametersMock = m::mock(ConsoleParameters::class)
             ->shouldReceive('getCommand')
             ->once()
             ->andReturns('Admin\Create')
             ->getMock()
-            ->shouldReceive('getParameters')
+            ->shouldReceive('getCommandParameters')
             ->once()
-            ->andReturns([
-                'TestExecuteCommandAdmin',
-                'TestExecuteCommandAdminPassword'
-            ])
+            ->andReturns($commandParametersMock)
             ->getMock();
 
         $results = (new Console($consoleParametersMock))->run();
@@ -55,6 +60,12 @@ class ConsoleTest extends ConsoleTestCase
      */
     public function testShouldThrowConsoleException($exceptionMessage, $command, $parameters)
     {
+        $commandParametersMock = m::mock(\Application\Console\Command\Command\CommandParameters::class);
+        foreach($parameters as $key => $value)
+        {
+            $commandParametersMock->{$key} = $value;
+        }
+
         $this->expectException(ConsoleException::class);
         $this->expectExceptionMessage($exceptionMessage);
 
@@ -63,7 +74,7 @@ class ConsoleTest extends ConsoleTestCase
             ->once()
             ->andReturns($command)
             ->getMock()
-            ->shouldReceive('getParameters')
+            ->shouldReceive('getCommandParameters')
             ->once()
             ->andReturns($parameters)
             ->getMock();
@@ -80,12 +91,7 @@ class ConsoleTest extends ConsoleTestCase
                 'Command InvalidCommand\InvalidAction not found',
                 'InvalidCommand\InvalidAction',
                 []
-            ],
-            'Invalid Number of parameters' => [
-                'Invalid number of parameters',
-                'Admin\Create',
-                []
-            ],
+            ]
         ];
     }
 

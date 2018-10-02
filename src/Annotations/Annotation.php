@@ -17,6 +17,11 @@ abstract class Annotation
         $this->options = $options;
     }
 
+    public function getParameterName()
+    {
+        return $this->parameterName;
+    }
+
     /**
      * @param ControllerParameters $controllerParameters
      */

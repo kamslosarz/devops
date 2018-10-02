@@ -3,6 +3,7 @@
 namespace Application\Router\Dispatcher;
 
 use Application\Factory\Factory;
+use Application\ParameterHolder\ParameterHolder;
 use Application\Response\Response;
 
 class Dispatcher
@@ -27,16 +28,13 @@ class Dispatcher
     }
 
     /**
-     * @param array $parameters
-     * @throws DispatcherException
+     * @param ParameterHolder $parameterHolder
      */
-    public function dispatch(array $parameters = [])
+    public function dispatch(ParameterHolder $parameterHolder)
     {
         if(is_null($this->response))
         {
-            $controllerParameters = new ControllerParameters($this->class, array_values($parameters), $this->method);
-
-            $this->response = $this->class->{$this->method}(...$controllerParameters->toArray());
+            $this->response = $this->class->{$this->method}(...array_values($parameterHolder->toArray()));
 
             if(!($this->response instanceof Response))
             {

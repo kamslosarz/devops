@@ -2,7 +2,9 @@
 
 namespace tests\Router\Dispatcher;
 
+use Application\ParameterHolder\ParameterHolder;
 use Application\Response\Response;
+use Application\Router\Dispatcher\ControllerParameters;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Dispatcher\DispatcherException;
 use Application\Service\Appender\Appender;
@@ -28,7 +30,12 @@ class DispatcherTest extends TestCase
             $serviceContainerMock,
             $appenderMock
         ]);
-        $dispatcher->dispatch();
+
+        $parameterHolder = m::mock(ParameterHolder::class)
+            ->shouldReceive('toArray')
+            ->andReturns([])
+            ->getMock();
+        $dispatcher->dispatch($parameterHolder);
 
         $this->assertInstanceOf(Dispatcher::class, $dispatcher);
         $this->assertInstanceOf(Response::class, $dispatcher->getResponse());
@@ -66,11 +73,15 @@ class DispatcherTest extends TestCase
     public function testShouldReturnRedirectResponse()
     {
         $method = 'indexAction';
-        $parameters = [
-            'parameter',
-            'test',
-            'dataset'
-        ];
+        $parameterHolder = m::mock(ParameterHolder::class)
+            ->shouldReceive('toArray')
+            ->andReturns([
+                'parameter',
+                'test',
+                'dataset'
+            ])
+            ->getMock();
+
         $appenderMock = m::mock(Appender::class);
 
         $dispatcher = new Dispatcher(\Test\Fixture\UserController::class, $method, [
@@ -78,7 +89,7 @@ class DispatcherTest extends TestCase
             $appenderMock
         ]);
 
-        $results = $dispatcher->dispatch($parameters);
+        $results = $dispatcher->dispatch($parameterHolder);
 
         $this->assertEmpty($results);
         $this->assertInstanceOf(Response::class, $dispatcher->getResponse());

@@ -5,6 +5,7 @@ namespace Application\Console\Command;
 use Application\Factory\Factory;
 use Application\Response\ResponseTypes\ConsoleResponse;
 use Application\Service\ServiceContainer\ServiceContainer;
+use Application\Console\Command\Command\CommandParameters;
 
 abstract class Command
 {
@@ -87,8 +88,10 @@ abstract class Command
         return (new ConsoleResponse())->setContent($this->output);
     }
 
-    public function isValid()
+    public function isValid(CommandParameters $commandParameters)
     {
         return true;
     }
+
+    abstract public function execute(CommandParameters $commandParameters);
 }

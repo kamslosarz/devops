@@ -4,6 +4,7 @@ namespace Application\Context;
 
 use Application\Controller\Controller;
 use Application\Response\Response;
+use Application\Router\Dispatcher\ControllerParameters;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Route;
 use Application\Router\RouteException;
@@ -16,7 +17,7 @@ use Application\Service\ServiceContainer\ServiceContainerException;
 
 class Context
 {
-    /** @var Controller * */
+    /** @var ROuter $router * */
     private $router;
     /** @var Appender $appender*/
     private $appender;
@@ -62,7 +63,9 @@ class Context
         $dispatcher = new Dispatcher($controller, $action, [
             $this->serviceContainer, $this->appender, $this->router
         ]);
-        $dispatcher->dispatch($route->getParameters());
+        $controllerParameters = new ControllerParameters($route->getParameters());
+        $controllerParameters->applyAnnotations($controller, $action);
+        $dispatcher->dispatch($controllerParameters);
 
         /** @var Response $response */
         $this->results = $dispatcher->getResponse();

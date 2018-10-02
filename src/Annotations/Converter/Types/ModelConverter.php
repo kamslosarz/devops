@@ -17,10 +17,12 @@ class ModelConverter extends ConverterType
     {
         try
         {
-            return eval(sprintf(
-                "return %sQuery::create()->filterByPrimaryKey(%s)->findOne();",
+            $user = sprintf(
+                "return %sQuery::create()->filterByPrimaryKey(%d)->findOne();",
                 $this->options->class,
-                $value));
+                $value);
+
+            return eval($user);
         }
         catch(\Exception $e)
         {

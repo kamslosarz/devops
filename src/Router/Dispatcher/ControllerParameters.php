@@ -5,55 +5,50 @@ namespace Application\Router\Dispatcher;
 
 use Application\Annotations\Annotation;
 use Application\Annotations\Annotations;
+use Application\ParameterHolder\ParameterHolder;
 
-class ControllerParameters
+class ControllerParameters extends ParameterHolder
 {
     private $class;
-    private $parameters;
     private $method;
+    private $parametersToOverride = [];
 
-    public function __construct($class, array $parameters = [], $method)
+    public function applyAnnotations($class, $method)
     {
         $this->class = $class;
-        $this->parameters = $parameters;
+        $this->method = $method;
 
-        $annotations = new Annotations((new \ReflectionClass($class))->getMethod($method), $parameters);
-
+        $annotations = new Annotations((new \ReflectionClass($class))->getMethod($method), array_values($this->toArray()));
         /** @var Annotation $annotation */
         foreach($annotations->getAnnotations() as $annotation)
         {
             $annotation->annotate($this);
         }
 
-        $this->method = $method;
+        $this->overrideParameters();
     }
 
-    public function getParameter($name)
+    public function addParameterToOverride($name, $value)
     {
-        return $this->parameters[$name];
+        $this->parametersToOverride[$name] = $value;
     }
 
-    public function getParameters()
+    public function getParametersToOverride()
     {
-        return $this->parameters;
+        return $this->parametersToOverride;
     }
 
-    public function setParameters(array $parameters = [])
+    public function overrideParameters()
     {
+        $parameters = array_values($this->parameters);
+
+        foreach($this->parametersToOverride as $id => $parameter)
+        {
+            $parameters[$id] = $parameter;
+        }
+
         $this->parameters = $parameters;
 
         return $this;
-    }
-
-    public function setParameter($name, $value)
-    {
-        $this->parameters[$name] = $value;
-
-        return $this;
-    }
-
-    public function toArray()
-    {
-        return $this->parameters;
     }
 }

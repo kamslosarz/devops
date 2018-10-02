@@ -1,14 +1,17 @@
 <?php
 
-namespace Application\Console\Command\Command\Docker;
+namespace Application\Console\Command\Command\Config\Build;
 
 use Application\Console\Command\Command\CommandParameters;
 use Application\Console\Command\ConsoleExecutable;
 
-class Start extends ConsoleExecutable
+class Routes extends ConsoleExecutable
 {
     public function execute(CommandParameters $commandParameters)
     {
-        $this->executeInShell('docker-compose up --no-build -d');
+        $this->addOutput('dupa');
+
+
+        return $this->sendOutput();
     }
 }

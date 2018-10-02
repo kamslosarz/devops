@@ -9,6 +9,7 @@ use Application\Service\ServiceContainer\ServiceContainer;
 
 class Console
 {
+    /** @var ConsoleParameters $consoleParameters */
     private $consoleParameters;
     private $serviceContainer;
 
@@ -29,23 +30,18 @@ class Console
         /** @var Command $command */
         $command = Command::getCommand($this->consoleParameters->getCommand());
 
-        if(!$command)
+        if(is_null($command))
         {
             throw new ConsoleException(sprintf('Command %s not found', $this->consoleParameters->getCommand()));
         }
 
-        if(count($this->consoleParameters->getParameters()) < (new \ReflectionMethod($command, 'execute'))->getNumberOfRequiredParameters())
-        {
-            throw new ConsoleException('Invalid number of parameters');
-        }
-
-        if(!$command->isValid(...$this->consoleParameters->getParameters()))
+        if(!$command->isValid($this->consoleParameters->getCommandParameters()))
         {
             throw new ConsoleException(implode(PHP_EOL, $command->getErrors()));
         }
 
         $dispatcher = new ConsoleDispatcher($command, 'execute');
-        $dispatcher->dispatch($this->consoleParameters->getParameters());
+        $dispatcher->dispatch($this->consoleParameters);
 
         return $dispatcher->getResponse()->getContent();
     }

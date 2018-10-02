@@ -18,11 +18,4 @@ abstract class ConsoleExecutable extends Command
 
         return $return_var;
     }
-
-    private function log($message, $level)
-    {
-        $this->getLogger()->log('ConsoleLogger', $message, $level);
-    }
-
-
 }

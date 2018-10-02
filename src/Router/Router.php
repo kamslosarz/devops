@@ -6,6 +6,7 @@ use Application\Config\Config;
 
 class Router
 {
+    const ROUTE_PARAM_PATTERN = '/[\{|\[]([a-zA-Z0-9]+)[\}|\]]/';
     private static $routes;
     private $requestUri;
     private $parameters;
@@ -49,7 +50,7 @@ class Router
         {
             if($routeUrlPattern[$key] !== $value)
             {
-                if(preg_match('/^\[([a-zA-Z0-9]+)\]$/', $routeUrlPattern[$key], $match))
+                if(preg_match(self::ROUTE_PARAM_PATTERN, $routeUrlPattern[$key], $match))
                 {
                     $this->parameters[$match[1]] = $value;
                 }

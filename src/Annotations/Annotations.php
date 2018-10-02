@@ -10,7 +10,7 @@ class Annotations
     private $reflection;
     private $parameters;
 
-    public function __construct(\ReflectionMethod $reflection, array $parameters = [])
+    public function __construct(\ReflectionMethod $reflection, $parameters)
     {
         $this->reflection = $reflection;
         $this->parameters = $parameters;
@@ -34,11 +34,11 @@ class Annotations
             {
                 if(preg_match(sprintf("/%s/", $annotationName), $commentLine))
                 {
-                    $options = $this->parseOptions($commentLine);
-                    $parameter = $this->getParameterOrderByName($this->parseParameterName($commentLine));
-                    $parameterValue = $this->parameters[$parameter];
-
-                    $annotations[] = Factory::getInstance($annotationClass, [$parameter, $parameterValue, $options]);
+                    $parameterOptions = $this->parseOptions($commentLine);
+                    $parameterName = $this->parseParameterName($commentLine);
+                    $parameterOrder = $this->getParameterArrayPositionByName($parameterName);
+                    $parameterValue = $this->parameters[$parameterOrder];
+                    $annotations[] = Factory::getInstance($annotationClass, [$parameterOrder, $parameterValue, $parameterOptions]);
                 }
             }
         }
@@ -46,7 +46,7 @@ class Annotations
         return $annotations;
     }
 
-    private function getParameterOrderByName($name)
+    private function getParameterArrayPositionByName($name)
     {
         foreach($this->reflection->getParameters() as $id => $parameter)
         {
@@ -56,12 +56,12 @@ class Annotations
             }
         }
 
-        return 0;
+        return null;
     }
 
     private function parseParameterName($commentLine)
     {
-        preg_match('/\([\'|\"](.*)[\'|\"][,|\)]/', $commentLine, $options);
+        preg_match('/\([\']{1}(.*)[\']{1}[,|\)]{1}/', $commentLine, $options);
 
         return $options[1];
     }

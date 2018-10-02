@@ -20,30 +20,26 @@ class ConverterTest extends TestCase
 
     /**
      * @dataProvider shouldConvertParameter
-     * @param $controllerClass
      * @param $name
      * @param $value
      * @param $options
      * @param $converted
      */
-    public function testShouldConvertParameter($controllerClass, $name, $value, $options, $converted)
+    public function testShouldConvertParameter($name, $value, $options, $converted)
     {
-        $controller = m::mock($controllerClass)
-            ->makePartial();
-
-        $controllerParameters = new ControllerParameters($controller, [$name => $value], 'editAction');
+        $controllerParameters = new ControllerParameters([$name => $value]);
 
         $converter = new Converter($name, $value, $options);
         $converter->annotate($controllerParameters);
+        $controllerParameters->overrideParameters();
 
-        $this->assertInstanceOf($converted, $controllerParameters->getParameter($name));
+        $this->assertInstanceOf($converted, $controllerParameters->getParametersToOverride()[$name]);
     }
 
     public function shouldConvertParameter()
     {
         return [
             'Test case Converter' => [
-                UserController::class,
                 'user',
                 999,
                 json_decode(json_encode([

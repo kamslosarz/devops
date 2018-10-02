@@ -1,6 +1,7 @@
 <?php
 
 use Application\Console\Command\Command;
+use Mockery as m;
 use Model\User;
 use Model\UserQuery;
 use Test\TestCase\ConsoleTestCase;
@@ -18,7 +19,14 @@ class AdminCreateTest extends ConsoleTestCase
             'admin:create'
         ]))->getCommand());
 
-        $this->assertTrue($command->isValid($username, $password));
+        $commandParameterMock = m::mock(Command\CommandParameters::class)
+            ->shouldReceive('toArray')
+            ->andReturns([
+                $username, $password
+            ])
+            ->getMock();
+
+        $this->assertTrue($command->isValid($commandParameterMock));
     }
 
     /**
@@ -31,7 +39,14 @@ class AdminCreateTest extends ConsoleTestCase
             'admin:create'
         ]))->getCommand());
 
-        $this->assertFalse($command->isValid('Admin', ''));
+        $commandParameterMock = m::mock(Command\CommandParameters::class)
+            ->shouldReceive('toArray')
+            ->andReturns([
+                'Admin', ''
+            ])
+            ->getMock();
+
+        $this->assertFalse($command->isValid($commandParameterMock));
         $this->assertEquals($command->getErrors(), ['Invalid user data \'Admin\' \'\'']);
     }
 
@@ -45,7 +60,14 @@ class AdminCreateTest extends ConsoleTestCase
             'admin:create'
         ]))->getCommand());
 
-        $this->assertFalse($command->isValid('testAdmin', 'password'));
+        $commandParameterMock = m::mock(Command\CommandParameters::class)
+            ->shouldReceive('toArray')
+            ->andReturns([
+                'testAdmin', 'password'
+            ])
+            ->getMock();
+
+        $this->assertFalse($command->isValid($commandParameterMock));
         $this->assertEquals($command->getErrors(), ['User already exists']);
     }
 
@@ -60,8 +82,15 @@ class AdminCreateTest extends ConsoleTestCase
             'admin:create'
         ]))->getCommand());
 
+        $commandParameterMock = m::mock(Command\CommandParameters::class)
+            ->shouldReceive('toArray')
+            ->andReturns([
+                $username, 'test admin password'
+            ])
+            ->getMock();
+
         /** @var \Application\Response\Response $response */
-        $response = $command->execute($username, 'test admin password');
+        $response = $command->execute($commandParameterMock);
 
         $this->assertEquals('Admin created', $response->getContent());
         $this->assertInstanceOf(User::class, UserQuery::create()->findOneByUsername($username));

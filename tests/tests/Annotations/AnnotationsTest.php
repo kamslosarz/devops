@@ -12,17 +12,23 @@ class AnnotationsTest extends TestCase
 
     /**
      * @dataProvider constructAnnotationsDataProvider
+     * @param $docComment
+     * @param array $expectedAnnotations
      */
-    public function testShouldConstructAnnotations($docComment, array $annotations = [])
+    public function testShouldConstructAnnotations($docComment, array $expectedAnnotations)
     {
         $parameters = [
-            $parameter1 = m::mock('\ReflectionParameter')
+            m::mock('\ReflectionParameter')
                 ->shouldReceive('getName')
                 ->andReturn('user')
                 ->getMock(),
-            $parameter2 = m::mock('\ReflectionParameter')
+            m::mock('\ReflectionParameter')
                 ->shouldReceive('getName')
-                ->andReturn('test')
+                ->andReturn('project')
+                ->getMock(),
+            m::mock('\ReflectionParameter')
+                ->shouldReceive('getName')
+                ->andReturn('secondProject')
                 ->getMock()
         ];
 
@@ -34,13 +40,14 @@ class AnnotationsTest extends TestCase
             ->andReturn($parameters)
             ->getMock();
 
+
         $annotations = new Annotations($reflection, $parameters);
 
         $this->assertInstanceOf(Annotations::class, $annotations);
 
-        foreach($annotations as $annotation)
+        foreach($annotations as $id => $annotation)
         {
-            $this->assertInstanceOf($annotation, $annotations->getAnnotations()[0]);
+            $this->assertInstanceOf($expectedAnnotations[$id], $annotations->getAnnotations()[0]);
         }
     }
 

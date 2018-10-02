@@ -5,15 +5,16 @@ namespace Application\Console\Command\Command\Cache;
 use Application\Config\Config;
 use Application\Console\Command\Command;
 use Application\Console\Command\CommandException;
+Use Application\Console\Command\Command\CommandParameters;
 
 class Build extends Command
 {
     /**
-     * @param null $dockerName
+     * @param CommandParameters $commandParameters
      * @return $this
      * @throws CommandException
      */
-    public function execute($dockerName = null)
+    public function execute(CommandParameters $commandParameters)
     {
         $template = Config::get('twig')['loader']['templates'] . DIRECTORY_SEPARATOR;
         $templates = [
@@ -70,7 +71,7 @@ class Build extends Command
         return $this->sendOutput();
     }
 
-    public function isValid()
+    public function isValid(CommandParameters $commandParameters)
     {
         return true;
     }

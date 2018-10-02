@@ -42,6 +42,10 @@ class CommandTest extends ConsoleTestCase
             'DataSet stop command' => [
                 Command\Docker\Stop::class,
                 'docker:stop'
+            ],
+            'DataSet config build routes command' => [
+                Command\Config\Build\Routes::class,
+                'config:build:routes'
             ]
         ];
     }

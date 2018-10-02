@@ -2,16 +2,12 @@
 
 namespace Application\Router\Dispatcher;
 
+use Application\Console\ConsoleParameters;
+use Application\ParameterHolder\ParameterHolder;
+use Application\Response\Response;
 
 class ConsoleDispatcher extends Dispatcher
 {
-    public function __construct($class, $method, $parameters = [])
-    {
-        $this->class = $class;
-        $this->method = $method;
-        $this->isValid();
-    }
-
     /**
      * @param $controller
      * @param $action
@@ -22,6 +18,22 @@ class ConsoleDispatcher extends Dispatcher
         if(!method_exists($this->class, $this->method))
         {
             throw new DispatcherException(sprintf('Action \'%s\' not exists in \'%s\'', $this->method, $this->class));
+        }
+    }
+
+    /**
+     * @param ConsoleParameters $parameterHolder
+     */
+    public function dispatch(ParameterHolder $parameterHolder)
+    {
+        if(is_null($this->response))
+        {
+            $this->response = $this->class->{$this->method}($parameterHolder->getCommandParameters());
+
+            if(!($this->response instanceof Response))
+            {
+                $this->response = new Response($this->response);
+            }
         }
     }
 }

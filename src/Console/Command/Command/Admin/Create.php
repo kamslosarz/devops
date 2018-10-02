@@ -4,7 +4,7 @@ namespace Application\Console\Command\Command\Admin;
 
 use Application\Config\Config;
 use Application\Console\Command\Command;
-use Application\Router\Router;
+use Application\Console\Command\Command\CommandParameters;
 use Model\User as user;
 use Model\UserPrivilege;
 use Model\UserQuery;
@@ -12,25 +12,26 @@ use Model\UserQuery;
 class Create extends Command
 {
     /**
-     * @param string $username
-     * @param string $password
-     * @param bool $force
+     * @param CommandParameters $commandParameters
      * @return bool
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function isValid($username = '', $password = '', $force = false)
+    public function isValid(CommandParameters $commandParameters)
     {
-        if(!$username || !$password)
+        $parameters = $commandParameters->toArray();
+
+        if(!$parameters[0] || !$parameters[1])
         {
-            $this->setError(sprintf('Invalid user data \'%s\' \'%s\'', $username, $password));
+            $this->setError(sprintf('Invalid user data \'%s\' \'%s\'', $parameters[0], $parameters[1]));
+
             return false;
         }
 
-        $user = UserQuery::create()->findOneByUsername($username);
+        $user = UserQuery::create()->findOneByUsername($parameters[0]);
 
         if($user instanceof User)
         {
-            if($force)
+            if(isset($parameters[2]) && $parameters[2])
             {
                 $user->delete();
 
@@ -46,17 +47,16 @@ class Create extends Command
     }
 
     /**
-     * @param $username
-     * @param $password
-     * @param bool $force
+     * @param CommandParameters $commandParameters
      * @return $this
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function execute($username, $password, $force = false)
+    public function execute(CommandParameters $commandParameters)
     {
+        $parameters = $commandParameters->toArray();
         $user = new User();
-        $user->setUsername($username)
-            ->setPassword(md5($password))
+        $user->setUsername($parameters[0])
+            ->setPassword(md5($parameters[1]))
             ->save();
 
         foreach(Config::get('routes') as $routeName => $route)
