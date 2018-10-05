@@ -29,7 +29,6 @@ class ConverterTest extends TestCase
     public function testShouldConvertParameter($name, $value, $options, $converted)
     {
         $controllerParameters = new ControllerParameters([$name => $value]);
-
         $converter = new Converter($name, $value, $options);
         $converter->annotate($controllerParameters);
         $controllerParameters->overrideParameters();

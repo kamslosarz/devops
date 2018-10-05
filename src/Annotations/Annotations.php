@@ -10,7 +10,7 @@ class Annotations
     private $reflection;
     private $parameters;
 
-    public function __construct(\ReflectionMethod $reflection, $parameters)
+    public function __construct(\ReflectionMethod $reflection, array $parameters)
     {
         $this->reflection = $reflection;
         $this->parameters = $parameters;
@@ -23,6 +23,17 @@ class Annotations
         {
             $this->annotations = $this->parseDocComment($reflection->getDocComment());
         }
+    }
+
+    public function getMethodParameterOrder()
+    {
+        $parameters = [];
+
+        foreach($this->reflection->getParameters() as $parameter){
+            $parameters[] = $parameter->getName();
+        }
+
+        return $parameters;
     }
 
     public function getAnnotations()
@@ -53,19 +64,6 @@ class Annotations
         }
 
         return $annotations;
-    }
-
-    private function getParameterArrayPositionByName($name)
-    {
-        foreach($this->reflection->getParameters() as $id => $parameter)
-        {
-            if($parameter->getName() === $name)
-            {
-                return $id;
-            }
-        }
-
-        return null;
     }
 
     private function parseParameterName($commentLine)

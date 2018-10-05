@@ -24,15 +24,26 @@ class ControllerParameters extends ParameterHolder
             $annotation->annotate($this);
         }
 
-        $this->overrideParameters();
+        $this->overrideParameters($this->getAnnotations()->getMethodParameterOrder());
     }
 
+    /**
+     * @return Annotations
+     * @throws \ReflectionException
+     */
     public function getAnnotations()
     {
-        return new Annotations(
+        if($this->annotations instanceof Annotations)
+        {
+            return $this->annotations;
+        }
+
+        $this->annotations = new Annotations(
             (new \ReflectionClass($this->class))->getMethod($this->method),
             $this->toArray()
         );
+
+        return $this->getAnnotations();
     }
 
     public function addParameterToOverride($name, $value)
@@ -45,9 +56,12 @@ class ControllerParameters extends ParameterHolder
         return $this->parametersToOverride;
     }
 
-    public function overrideParameters()
+    public function overrideParameters($order = [])
     {
-        $this->parameters = array_merge($this->parameters, $this->parametersToOverride);
+        $this->parameters = array_replace(
+            array_flip($order),
+            array_merge($this->parameters, $this->parametersToOverride)
+        );
 
         return $this;
     }

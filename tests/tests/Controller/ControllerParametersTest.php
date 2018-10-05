@@ -11,6 +11,30 @@ use Test\Decorator\ControllerDecorator;
 
 class ControllerParametersTest extends TestCase
 {
+    public function testShouldOverrideParametersByOrder()
+    {
+        $controllerParameters = new ControllerParameters([
+            'id' => 100,
+            'test' => 100,
+            'parameterName' => 'parameterName',
+            'param5' => 'param 5'
+        ]);
+        $controllerParameters->addParameterToOverride('id', 500);
+        $controllerParameters->addParameterToOverride('parameterName', 'parameterValue');
+        $controllerParameters->overrideParameters([
+            'param5',
+            'parameterName',
+            'test'
+        ]);
+
+        $this->assertEquals([
+            'param5' => 'param 5',
+            'parameterName' => 'parameterValue',
+            'test' => 100,
+            'id' => 500
+        ], $controllerParameters->toArray());
+    }
+
     public function testShouldOverrideParameters()
     {
         $controllerParameters = new ControllerParameters([
@@ -53,7 +77,11 @@ class ControllerParametersTest extends TestCase
             ->andReturns(m::mock(Annotations::class)
                 ->shouldReceive('getAnnotations')
                 ->andReturns([$annotation])
-                ->getMock())
+                ->getMock()
+                ->shouldReceive('getMethodParameterOrder')
+                ->andReturns(['user'])
+                ->getMock()
+            )
             ->getMock();
 
         $controllerParametersMock->applyAnnotations(ControllerDecorator::class, 'testAction');
