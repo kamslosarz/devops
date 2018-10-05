@@ -30,7 +30,7 @@ return [
     'app_admin-project_edit' => [
         'controller' => Admin\ProjectController::class,
         'action' => 'projectAction',
-        'url' => '/admin/project/edit/[id]'
+        'url' => '/admin/project/edit/[project]'
     ],
     'app_admin_user' => [
         'controller' => Admin\UserController::class,
@@ -40,6 +40,6 @@ return [
     'app_admin_user_edit' => [
         'controller' => Admin\UserController::class,
         'action' => 'editAction',
-        'url' => '/admin/user/edit/[id]'
+        'url' => '/admin/user/edit/[user]'
     ]
 ];

@@ -63,6 +63,7 @@ class Context
         $dispatcher = new Dispatcher($controller, $action, [
             $this->serviceContainer, $this->appender, $this->router
         ]);
+
         $controllerParameters = new ControllerParameters($route->getParameters());
         $controllerParameters->applyAnnotations($controller, $action);
         $dispatcher->dispatch($controllerParameters);

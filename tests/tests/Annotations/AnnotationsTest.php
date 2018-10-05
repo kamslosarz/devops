@@ -18,21 +18,21 @@ class AnnotationsTest extends TestCase
     public function testShouldConstructAnnotations($docComment, array $expectedAnnotations)
     {
         $parameters = [
-            m::mock('\ReflectionParameter')
+            'user' => m::mock('\ReflectionParameter')
                 ->shouldReceive('getName')
                 ->andReturn('user')
                 ->getMock(),
-            m::mock('\ReflectionParameter')
+            'project' => m::mock('\ReflectionParameter')
                 ->shouldReceive('getName')
                 ->andReturn('project')
                 ->getMock(),
-            m::mock('\ReflectionParameter')
+            'secondProject' => m::mock('\ReflectionParameter')
                 ->shouldReceive('getName')
                 ->andReturn('secondProject')
                 ->getMock()
         ];
 
-        $reflection = m::mock('\ReflectionMethod')
+        $reflectionMethodMock = m::mock('\ReflectionMethod')
             ->shouldReceive('getDocComment')
             ->andReturn($docComment)
             ->getMock()
@@ -40,8 +40,7 @@ class AnnotationsTest extends TestCase
             ->andReturn($parameters)
             ->getMock();
 
-
-        $annotations = new Annotations($reflection, $parameters);
+        $annotations = new Annotations($reflectionMethodMock, $parameters);
 
         $this->assertInstanceOf(Annotations::class, $annotations);
 

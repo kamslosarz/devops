@@ -25,6 +25,7 @@ class ConverterTest extends TestCase
      * @param $options
      * @param $converted
      */
+
     public function testShouldConvertParameter($name, $value, $options, $converted)
     {
         $controllerParameters = new ControllerParameters([$name => $value]);

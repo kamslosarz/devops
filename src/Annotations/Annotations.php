@@ -14,7 +14,15 @@ class Annotations
     {
         $this->reflection = $reflection;
         $this->parameters = $parameters;
-        $this->annotations = $this->parseDocComment($reflection->getDocComment());
+
+        if(empty($this->parameters))
+        {
+            $this->annotations = [];
+        }
+        else
+        {
+            $this->annotations = $this->parseDocComment($reflection->getDocComment());
+        }
     }
 
     public function getAnnotations()
@@ -36,9 +44,10 @@ class Annotations
                 {
                     $parameterOptions = $this->parseOptions($commentLine);
                     $parameterName = $this->parseParameterName($commentLine);
-                    $parameterOrder = $this->getParameterArrayPositionByName($parameterName);
-                    $parameterValue = $this->parameters[$parameterOrder];
-                    $annotations[] = Factory::getInstance($annotationClass, [$parameterOrder, $parameterValue, $parameterOptions]);
+
+                    $annotations[] = Factory::getInstance($annotationClass, [
+                        $parameterName, $this->parameters[$parameterName], $parameterOptions
+                    ]);
                 }
             }
         }

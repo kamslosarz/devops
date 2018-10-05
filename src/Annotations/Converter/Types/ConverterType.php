@@ -6,7 +6,7 @@ abstract class ConverterType
 {
     protected $options;
 
-    public function __construct($options)
+    public function __construct(\stdClass $options)
     {
         $this->options = $options;
     }

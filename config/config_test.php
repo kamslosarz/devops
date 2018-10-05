@@ -42,12 +42,12 @@ return [
         'app_admin_user_delete' => [
             'controller' => Admin\UserController::class,
             'action' => 'deleteAction',
-            'url' => '/admin/user/[id]/delete'
+            'url' => '/admin/user/[user]/delete'
         ],
         'app_admin_user_edit' => [
             'controller' => Admin\UserController::class,
             'action' => 'editAction',
-            'url' => '/admin/user/edit/[id]'
+            'url' => '/admin/user/edit/[user]'
         ],
         'app_admin_test' => [
             'controller' => Admin\AdminController::class,
