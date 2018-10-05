@@ -68,12 +68,7 @@ class Router
     {
         if(empty(self::$routes))
         {
-            foreach(Config::get('routes') as $routeName => $route)
-            {
-                $route['controller'] = preg_replace("/[a-z0-9]+\\\\Controller\\\\(.+)$/i", "$1", $route['controller']);
-
-                self::$routes[$routeName] = $route;
-            }
+            self::$routes = Config::get('routes');
         }
 
         return self::$routes;

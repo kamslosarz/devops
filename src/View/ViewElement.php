@@ -13,7 +13,8 @@ class ViewElement implements ViewElementInterface
     {
         if($route instanceof Route)
         {
-            preg_match("/[a-z]+\\\+[a-z]+/", str_replace('controller', '', strtolower($route->getController())), $match);
+            $controller = str_replace('Application\\Controller\\','', $route->getController());
+            preg_match("/[a-z]+\\\+[a-z]+/", str_replace('controller', '', strtolower($controller)), $match);
             $namespace = ltrim(str_replace('-action', '', strtolower(preg_replace("/([A-Z])/x", "-$1", $route->getAction()))), '-');
 
             $this->viewName = str_replace('\\', DIRECTORY_SEPARATOR, $match[0]) . DIRECTORY_SEPARATOR . $namespace;

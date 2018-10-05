@@ -9,9 +9,6 @@ class Routes extends ConsoleExecutable
 {
     public function execute(CommandParameters $commandParameters)
     {
-        $this->addOutput('dupa');
-
-
         return $this->sendOutput();
     }
 }

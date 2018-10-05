@@ -3,14 +3,11 @@
 namespace tests\Annotations\Annotation;
 
 use Application\Annotations\Converter\Converter;
-use Application\Controller\Admin\UserController;
 use Application\Router\Dispatcher\ControllerParameters;
 use Model\User;
 use PHPUnit\DbUnit\DataSet\ArrayDataSet;
-use PHPUnit\DbUnit\DataSet\IDataSet;
 use PHPUnit\DbUnit\TestCaseTrait;
 use PHPUnit\Framework\TestCase;
-use Mockery as m;
 use Test\TestCase\Traits\DatabaseTestCaseTrait;
 
 class ConverterTest extends TestCase

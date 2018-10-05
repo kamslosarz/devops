@@ -30,6 +30,18 @@ class ApplicationTest extends \Test\TestCase\ControllerTestCase
         $this->assertEquals('Dashboard', trim($crawler->filterXPath('//body/div/div[@class="main-content"]/div[@class="content"]')->text()));
     }
 
+    public function testShouldInvokeApplicationInstanceAndReturnOrderedParameters()
+    {
+        $dispatcher = $this->getApplicationContainer();
+        $results = $dispatcher->dispatch('/admin/test/1000/test/first/second');
+
+        $this->assertEquals([
+            1000,
+            'second',
+            'first'
+        ], json_decode($results));
+    }
+
     public function getDataSet()
     {
         return parent::getUserDataSet();

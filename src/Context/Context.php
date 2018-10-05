@@ -52,7 +52,6 @@ class Context
         /** @var Request $request */
         $request = $this->serviceContainer->getService('request');
         $request->setRoute($route);
-        $controller = $this->getControllerFullName($route->getController());
         $action = $route->getAction();
 
         if(!$this->serviceContainer->getService('accessChecker')->hasAccess($route))
@@ -60,26 +59,17 @@ class Context
             throw new AccessDeniedException(sprintf('Access denied to \'%s\'', Router::getRouteUrlByParameters($route->getController(), $route->getAction(), $route->getParameters())));
         }
 
-        $dispatcher = new Dispatcher($controller, $action, [
+        $dispatcher = new Dispatcher($route->getController(), $action, [
             $this->serviceContainer, $this->appender, $this->router
         ]);
 
         $controllerParameters = new ControllerParameters($route->getParameters());
-        $controllerParameters->applyAnnotations($controller, $action);
+        $controllerParameters->applyAnnotations($route->getController(), $action);
         $dispatcher->dispatch($controllerParameters);
 
         /** @var Response $response */
         $this->results = $dispatcher->getResponse();
         $this->results->setRoute($route);
-    }
-
-    /**
-     * @param $controller
-     * @return string
-     */
-    private function getControllerFullName($controller)
-    {
-        return 'Application\\Controller\\' . $controller;
     }
 
     public function getRouter()
