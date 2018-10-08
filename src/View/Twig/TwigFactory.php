@@ -14,10 +14,8 @@ abstract class TwigFactory
      * @return \Twig_Environment
      * @throws TwigFactoryException
      */
-    public static function getInstance(ServiceContainer $serviceContainer)
+    public static function getInstance(ServiceContainer $serviceContainer, $config)
     {
-        $config = Config::get('twig');
-
         $loader = new \Twig_Loader_Filesystem($config['loader']['templates']);
         $twig = new \Twig_Environment($loader, [
             'cache' => $config['loader']['cache']

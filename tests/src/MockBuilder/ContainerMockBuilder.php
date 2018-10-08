@@ -19,6 +19,7 @@ class ContainerMockBuilder
     private $accessCheckerMock;
     private $cookieMock;
     private $appenderMock;
+    private $translatorMock;
 
     /**
      * @param $cookieMock
@@ -93,6 +94,17 @@ class ContainerMockBuilder
     public function setAppenderMock($appenderMock)
     {
         $this->appenderMock = $appenderMock;
+
+        return $this;
+    }
+
+    /**
+     * @param $translatorMock
+     * @return $this
+     */
+    public function setTranslatorMock($translatorMock)
+    {
+        $this->translatorMock = $translatorMock;
 
         return $this;
     }
@@ -219,12 +231,18 @@ class ContainerMockBuilder
 
     public function getTranslatorMock()
     {
-        return m::mock('translator')
-            ->shouldReceive('translate')
-            ->andReturnUsing(function ($arg) {
-                return $arg;
-            })
-            ->getMock();
+        if(!$this->translatorMock)
+        {
+            $this->translatorMock = m::mock('translator')
+                ->shouldReceive('translate')
+                ->andReturnUsing(function ($arg)
+                {
+                    return $arg;
+                })
+                ->getMock();
+        }
+
+        return $this->translatorMock;
     }
 
     public function build()

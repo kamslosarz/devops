@@ -9,6 +9,11 @@ abstract class Config
     private static $config;
     private static $configs = [];
 
+    public static function set($config)
+    {
+        self::$config = $config;
+    }
+
     public static function get($key)
     {
         if(!is_array(self::$config))

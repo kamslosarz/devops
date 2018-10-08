@@ -6,7 +6,6 @@ use Twig\TwigFilter;
 
 class Translator extends Extension implements \Twig_Extension_GlobalsInterface
 {
-
     public function getGlobals()
     {
         return [];

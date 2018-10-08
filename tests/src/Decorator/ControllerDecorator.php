@@ -27,4 +27,10 @@ class ControllerDecorator extends Controller
     {
         return new JsonResponse([$id, $second, $first]);
     }
+
+
+    public function indexAction($test)
+    {
+        return new Response($test);
+    }
 }

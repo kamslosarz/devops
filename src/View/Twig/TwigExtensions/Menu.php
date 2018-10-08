@@ -17,14 +17,14 @@ class Menu extends Extension implements \Twig_Extension_GlobalsInterface
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('url', [$this, 'url']),
-            new \Twig_SimpleFunction('isUri', [$this, 'isUri'])
+            new \Twig_SimpleFunction('url', [$this, 'url'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('isUri', [$this, 'isUri'], ['is_safe' => ['html']])
         ];
     }
 
     public function url($url, $class, $title)
     {
-        echo sprintf('<a href=\'%s\'><i class=\'%s\'></i><p>%s</p></a>', $url, $class, $title);
+        return sprintf('<a href=\'%s\'><i class=\'%s\'></i><p>%s</p></a>', $url, $class, $title);
     }
 
     public function isUri($uri)
@@ -34,9 +34,9 @@ class Menu extends Extension implements \Twig_Extension_GlobalsInterface
             return $this->getService('request')->getRequestUri() === $uri;
         }
 
-        return preg_match(
+        return (1===preg_match(
             str_replace(self::ANY_PATTERN, self::ANY_REGEX, '/' . str_replace('/', '\/', $uri) . '/'),
             $this->getService('request')->getRequestUri()
-        );
+        ));
     }
 }

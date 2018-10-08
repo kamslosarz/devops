@@ -10,6 +10,7 @@ class View
 {
     private $twig;
     private $serviceContainer;
+    private $viewPath;
 
     /**
      * View constructor.
@@ -19,12 +20,13 @@ class View
     public function __construct($serviceContainer)
     {
         $this->serviceContainer = $serviceContainer;
-        $this->twig = TwigFactory::getInstance($serviceContainer);
+        $this->twig = TwigFactory::getInstance($serviceContainer, Config::get('twig'));
+        $this->viewPath = Config::get('twig')['loader']['templates'];
     }
 
     /**
      * @param ViewElement $viewElement
-     * @return null|string
+     * @return null|\string
      */
     public function render(ViewElement $viewElement)
     {
@@ -32,7 +34,7 @@ class View
         {
             $filename = sprintf('%s.html.twig', $viewElement->getViewName());
 
-            if(is_file(sprintf('%s/%s', Config::get('twig')['loader']['templates'], $filename)))
+            if(is_file(sprintf('%s/%s', $this->viewPath, $filename)))
             {
                 return $this->twig->render($filename, $viewElement->getParameters());
             }
