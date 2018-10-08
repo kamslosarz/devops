@@ -39,7 +39,7 @@ class UserController extends Controller
 
             if($authService->authenticate($form->getData('username'), $form->getData('password')))
             {
-                $this->addMessage('Successfully logged in', AppenderLevel::SUCCESS);
+                $this->addMessage($this->getService('translator')->translate('Successfully logged in'), AppenderLevel::SUCCESS);
 
                 return new RedirectResponse(Config::get('defaultAction'));
             }
@@ -63,7 +63,7 @@ class UserController extends Controller
         /** @var AuthService $authService */
         $authService = $this->getService('auth');
         $authService->clearSession();
-        $this->addMessage('Successfully logged out', AppenderLevel::SUCCESS);
+        $this->addMessage($this->getService('translator')->translate('Successfully logged out'), AppenderLevel::SUCCESS);
 
         return new RedirectResponse(Config::get('loginAction'));
     }
@@ -93,12 +93,13 @@ class UserController extends Controller
      * @convert('user', options={"type":"Model", "class":"\Model\User"})
      * @param User $user
      * @return Response
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Propel\Runtime\Exception\PropelException
      */
     public function deleteAction(User $user)
     {
         $user->delete();
-        $this->addMessage('User was deleted', AppenderLevel::SUCCESS);
+        $this->addMessage($this->getService('translator')->translate('User was deleted'), AppenderLevel::SUCCESS);
 
         return new Response();
     }

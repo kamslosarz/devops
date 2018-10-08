@@ -70,7 +70,7 @@ return [
     ],
     'translator' => [
         'adapter' => 'files',
-        'path'=> __DIR__.'/langs'
+        'path'=> dirname(__DIR__).'/tests/fixture/langs'
     ],
     'web_dir' => dirname(__DIR__) . '/www'
 ];

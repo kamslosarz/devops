@@ -22,6 +22,13 @@ class LanguageManager
         $this->adapter = Factory::getInstance($this->getAdapterClass(Config::get('translator')['adapter']), [$languageCode]);
     }
 
+    public function setAdapter(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+
+        return $this;
+    }
+
     /**
      * @param $phrase
      * @return Phrase
@@ -38,7 +45,7 @@ class LanguageManager
         }
     }
 
-    public function getAdapterClass($adapter)
+    private function getAdapterClass($adapter)
     {
         return self::ADAPTERS_MAP[$adapter];
     }

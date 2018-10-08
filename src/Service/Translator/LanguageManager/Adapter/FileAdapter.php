@@ -15,14 +15,14 @@ class FileAdapter extends Adapter
         $this->loadLanguageResources($langCode);
     }
 
-    public function loadLanguageResources($langCode)
+    private function loadLanguageResources($langCode)
     {
         $this->resources = new ParameterHolder();
 
         /** @var \SplFileInfo $fileInfo */
         foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(Config::get('translator')['path']), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
         {
-            if($fileInfo->isFile() && $fileInfo->getExtension() === 'php')
+            if($fileInfo->isFile() && $fileInfo->getBasename() === sprintf('%s.php', $langCode) && $fileInfo->getExtension() === 'php')
             {
                 $this->resources->add(include_once $fileInfo->getRealPath());
             }

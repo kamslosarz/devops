@@ -19,7 +19,7 @@ class Translator implements ServiceInterface
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->setLanguageCode($this->getLanguageCodeCookie() ?? $this->getLanguageCodeFromRequest());
+        $this->setLanguageCode($this->getLanguageCodeCookie() ?? $this->getLanguageCodeFromGlobals());
         $this->languageManager = Factory::getInstance(LanguageManager::class, [$this->languageCode]);
     }
 
@@ -30,11 +30,6 @@ class Translator implements ServiceInterface
         $phrase->setVariables($variables);
 
         return $phrase;
-    }
-
-    private function getLanguageCodeFromRequest()
-    {
-        return substr($this->request->server('HTTP_ACCEPT_LANGUAGE'), 0,2);
     }
 
     public function getLanguageCode()
@@ -59,5 +54,10 @@ class Translator implements ServiceInterface
     private function getLanguageCodeCookie()
     {
         return $this->request->getCookie()->get(self::LANG_CODE_COOKIE);
+    }
+
+    private function getLanguageCodeFromGlobals()
+    {
+        return substr($this->request->server('HTTP_ACCEPT_LANGUAGE'), 0,2);
     }
 }

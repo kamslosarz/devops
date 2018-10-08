@@ -12,13 +12,6 @@ class Phrase implements PhraseInterface
         $this->phrase = $phrase;
     }
 
-    public function setPhrase($phrase)
-    {
-        $this->phrase = $phrase;
-
-        return $this;
-    }
-
     public function setVariables($variables)
     {
         $this->variables = $variables;
@@ -26,12 +19,15 @@ class Phrase implements PhraseInterface
         return $this;
     }
 
-    public function applyVariables()
+    private function applyVariables()
     {
-        return sprintf($this->phrase, $this->variables);
+        return str_replace(array_map(function ($item){
+
+            return sprintf('%%%s%%', $item);
+        }, array_keys($this->variables)), array_values($this->variables), $this->phrase);
     }
 
-    public function __toString()
+    public function __toString() : string
     {
         if($this->hasVariables())
         {

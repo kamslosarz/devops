@@ -4,3 +4,6 @@
     - validate request method type
 - add request method annotation
 - add twig extensions test that check if twig was extended over new function/filter etc
+- view tests
+- services tests
+- add profiler
