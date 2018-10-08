@@ -46,5 +46,10 @@ return [
         \Application\Service\Appender\Appender::class, [
             '@session'
         ]
+    ],
+    'translator' => [
+        \Application\Service\Translator\Translator::class, [
+            '@request'
+        ]
     ]
 ];

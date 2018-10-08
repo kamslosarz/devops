@@ -68,5 +68,9 @@ return [
             'cache' => false
         ]
     ],
+    'translator' => [
+        'adapter' => 'files',
+        'path'=> __DIR__.'/langs'
+    ],
     'web_dir' => dirname(__DIR__) . '/www'
 ];

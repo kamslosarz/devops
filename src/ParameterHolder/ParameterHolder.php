@@ -30,7 +30,7 @@ class ParameterHolder implements \ArrayAccess
 
     public function offsetExists($offset)
     {
-        return isset($this->$parameters[$offset]);
+        return isset($this->parameters[$offset]);
     }
 
     public function offsetGet($offset)
@@ -55,5 +55,12 @@ class ParameterHolder implements \ArrayAccess
     public function toArray()
     {
         return $this->parameters;
+    }
+
+    public function add(array $parameters = [])
+    {
+        $this->parameters = array_merge($parameters, $this->parameters);
+
+        return $this;
     }
 }

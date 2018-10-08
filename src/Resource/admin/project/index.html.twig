@@ -4,10 +4,10 @@
 
 {% block table %}
     <table id="projects-list">
-        <th>{'Name'|trans}</th>
-        <th>{'Repository'|trans}</th>
-        <th>{'Status'|trans}</th>
-        <th>{'Actions'|trans}</th>
+        <th>{{ 'Name'|trans }}</th>
+        <th>{{ 'Repository'|trans }}</th>
+        <th>{{ 'Status'|trans }}</th>
+        <th>{{ 'actions'|trans }}</th>
         <tbody class="main-table">
             {% for project in projects %}
             <tr>

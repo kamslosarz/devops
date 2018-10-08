@@ -4,10 +4,10 @@
 
 {% block table %}
     <table id="projects-list">
-        <th>{'fullname'|trans}</th>
-        <th>{'username'|trans}</th>
-        <th>{'email'|trans}</th>
-        <th>{'actions'|trans}</th>
+        <th>{{ 'fullname'|trans }}</th>
+        <th>{{ 'username'|trans }}</th>
+        <th>{{ 'email'|trans }}</th>
+        <th>{{ 'actions'|trans }}</th>
         <tbody class="main-table">
             {% for user in users %}
             <tr>
@@ -21,7 +21,7 @@
                     {{ user.email }}
                 </td>
                 <td>
-                    {{ url('/admin/user/edit/1', 'pe-7s-science', 'Users') }}
+                    {{ url('/admin/user/edit/1', 'pe-7s-science', 'Edit') }}
                 </td>
             </tr>
             {% endfor %}

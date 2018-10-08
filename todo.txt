@@ -1,3 +1,6 @@
+- add translation filter
+- try to remove Application namespace prefix
 - add route annotation
     - validate request method type
 - add request method annotation
+- add twig extensions test that check if twig was extended over new function/filter etc
