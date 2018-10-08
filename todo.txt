@@ -1,10 +1,7 @@
-- view tests
-- try to remove Application namespace prefix
+- services tests
+- refactor test to use only controller/resources fixtures. Controller will be tested separately
+- add profiler
 - add annotation
     - route annotation
     - validate request method type
     - request method annotation
-- refactor test to use only controller/resources fixtures. Controller will be tested separately
-- add twig extensions test that check if twig was extended over new function/filter etc
-- services tests
-- add profiler

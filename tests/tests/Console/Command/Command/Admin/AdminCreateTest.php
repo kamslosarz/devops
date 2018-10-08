@@ -108,12 +108,15 @@ class AdminCreateTest extends ConsoleTestCase
 
     public function getDataSet()
     {
-        return $this->createArrayDataSet([
+        return new \PHPUnit\DbUnit\DataSet\ArrayDataSet([
             'users' => [
                 [
-                    'id' => 1,
+                    'id' => 999,
                     'username' => 'testAdmin',
-                    'password' => md5('testPassword')
+                    'password' => md5('testPassword'),
+                    'firstname' => 'test',
+                    'lastname' => 'test',
+                    'email' => 'test@test.pl'
                 ]
             ],
         ]);
