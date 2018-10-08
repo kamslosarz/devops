@@ -85,6 +85,7 @@ class ContainerMockBuilder
 
         return $this;
     }
+
     /**
      * @param $appenderMock
      * @return $this
@@ -216,6 +217,16 @@ class ContainerMockBuilder
         return $this->appenderMock;
     }
 
+    public function getTranslatorMock()
+    {
+        return m::mock('translator')
+            ->shouldReceive('translate')
+            ->andReturnUsing(function ($arg) {
+                return $arg;
+            })
+            ->getMock();
+    }
+
     public function build()
     {
         return m::mock(\Application\Service\ServiceContainer\ServiceContainer::class)
@@ -247,6 +258,10 @@ class ContainerMockBuilder
             ->shouldReceive('getService')
             ->withArgs(['appender'])
             ->andReturns($this->getAppenderMock())
+            ->getMock()
+            ->shouldReceive('getService')
+            ->withArgs(['translator'])
+            ->andReturns($this->getTranslatorMock())
             ->getMock();
 
     }
