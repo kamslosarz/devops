@@ -38,7 +38,7 @@ class MenuTest extends TwigExtensionTestCase
         $serviceContainerMock = $this->getServiceContainerMockBuilder()->build();
         $extension = new Menu($serviceContainerMock);
         $url = $extension->url('/test/test.html', 'extra-icon', 'some link item title');
-        $this->assertEquals("<a href='/test/test.html'><i class='extra-icon'></i><p>some link item title</p></a>", $url);
+        $this->assertEquals('<a href="/test/test.html"><i class="extra-icon"></i><p>some link item title</p></a>', $url);
     }
 
     public function testShouldCheckIfUriIsActivePage()

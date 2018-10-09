@@ -4,10 +4,12 @@
 
 {% block table %}
     <table id="projects-list">
+        <thead>
         <th>{{ 'fullname'|trans }}</th>
         <th>{{ 'username'|trans }}</th>
         <th>{{ 'email'|trans }}</th>
         <th>{{ 'actions'|trans }}</th>
+        </thead>
         <tbody class="main-table">
             {% for user in users %}
             <tr>

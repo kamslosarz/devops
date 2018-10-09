@@ -24,7 +24,7 @@ class Menu extends Extension implements \Twig_Extension_GlobalsInterface
 
     public function url($url, $class, $title)
     {
-        return sprintf('<a href=\'%s\'><i class=\'%s\'></i><p>%s</p></a>', $url, $class, $title);
+        return sprintf('<a href="%s"><i class="%s"></i><p>%s</p></a>', $url, $class, $title);
     }
 
     public function isUri($uri)

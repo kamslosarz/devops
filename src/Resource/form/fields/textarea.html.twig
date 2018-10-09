@@ -1,6 +1,6 @@
 <p>
     {% if field.label %}
-        <label for="size_1">{{ field.label }}</label>
+        <label for="{{ form.label(field.name) }}">{{ field.label }}</label>
     {% endif %}
-    <textarea name="{{ form.name(field.name) }}"{{ field.attributesAsString|raw }}>{% if field.value %}{{ field.value }}{% endif %}</textarea>
+    <textarea id="{{ form.label(field.name) }}" name="{{ form.name(field.name) }}"{{ field.attributesAsString|raw }}>{% if field.value %}{{ field.value }}{% endif %}</textarea>
 </p>

@@ -3,8 +3,10 @@
     padding: 0;
 }
 
+/*noinspection CssNoGenericFontName*/
 html, body {
     font-size: 14px;
+    /*noinspection CssNoGenericFontName*/
     font-family: arial, tahoma, vardana;
 }
 

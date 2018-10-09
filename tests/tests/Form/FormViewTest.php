@@ -29,6 +29,7 @@ class FormViewTest extends \Test\TestCase\FormViewTestCase
             'form' => $formViewHelper
         ]));
 
+
         $inputs = $domDocument->getElementsByTagName('input');
 
         $this->assertEquals($inputs->item(0)->getAttribute('name'), 'login[username]');

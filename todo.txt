@@ -1,4 +1,4 @@
-- services tests
+- refactor form view helper
 - refactor test to use only controller/resources fixtures. Controller will be tested separately
 - add profiler
 - add annotation

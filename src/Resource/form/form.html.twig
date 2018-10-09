@@ -1,5 +1,5 @@
 {% block content %}
-    <form class="login-form" action="{{ form.action }}" method="{{ form.method }}">
+    <form action="{{ form.action }}" method="{{ form.method }}" id="{{ form.label(form.name) }}" class="{{ form.class }}">
         <fieldset>
             <legend>{{ form.title }}</legend>
             {% for field in form.fields %}

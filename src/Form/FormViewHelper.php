@@ -50,4 +50,13 @@ class FormViewHelper
         return $this->form->getTitle();
     }
 
+    public function getLabel($fieldName)
+    {
+        return lcfirst(ucwords(trim(strtolower($fieldName))));
+    }
+
+    public function getClass()
+    {
+        return $this->form->getClass();
+    }
 }

@@ -73,9 +73,11 @@ abstract class Form
         return $this->data[$key];
     }
 
-    public function getName() { }
+    abstract public function getName();
 
-    public function getMethod() { }
+    abstract public function getMethod();
+
+    abstract public function getClass();
 
     public function getEntity()
     {

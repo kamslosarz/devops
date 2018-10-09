@@ -53,4 +53,9 @@ class LoginForm extends Form implements FormInterface
     {
         return 'Please login';
     }
+
+    public function getClass()
+    {
+        return 'login-form';
+    }
 }
