@@ -7,13 +7,13 @@ return [
     'twig' => [
         'loader' => [
             'templates' => dirname(__DIR__) . '/src/Resource',
-//            'cache' => dirname(__DIR__).'/cache/twig'
             'cache' => false
         ]
     ],
     'translator' => [
         'adapter' => 'files',
-        'path'=> __DIR__.'/langs'
+        'path' => __DIR__ . '/langs'
     ],
+    'servicesMapFIle' => 'serviceMap.php',
     'web_dir' => dirname(__DIR__) . '/www'
 ];

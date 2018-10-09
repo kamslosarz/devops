@@ -14,6 +14,7 @@ class ServiceContainer
      * @param $serviceName
      * @return mixed
      * @throws ServiceContainerException
+     * @throws \Application\Config\ConfigException
      */
     public function getService($serviceName)
     {
@@ -29,10 +30,11 @@ class ServiceContainer
      * @param $serviceName
      * @return mixed
      * @throws ServiceContainerException
+     * @throws \Application\Config\ConfigException
      */
     private function loadService($serviceName)
     {
-        $serviceMap = Config::loadFile('serviceMap.php');
+        $serviceMap = Config::loadFlatFile(Config::get('servicesMapFIle'));
 
         if(!isset($serviceMap[$serviceName]))
         {

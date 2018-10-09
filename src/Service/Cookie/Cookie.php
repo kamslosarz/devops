@@ -34,8 +34,7 @@ class Cookie implements ServiceInterface
 
     public function clear()
     {
-        $_SESSION = null;
-        $this->session = null;
-        session_destroy();
+        $_COOKIE = null;
+        $this->cookie = null;
     }
 }

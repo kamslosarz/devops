@@ -12,13 +12,10 @@ use Model\UserRole;
 
 class AccessChecker implements ServiceInterface
 {
-    private $request;
-    /** @var AuthService $authService */
     private $authService;
 
-    public function __construct(Request $request, AuthService $authService)
+    public function __construct(AuthService $authService)
     {
-        $this->request = $request;
         $this->authService = $authService;
     }
 
@@ -46,7 +43,7 @@ class AccessChecker implements ServiceInterface
 
         foreach($userPrivileges as $userPrivilege)
         {
-            if($this->checkPrivilege($userPrivilege))
+            if($this->checkPrivilege($userPrivilege, $route))
             {
                 return true;
             }
@@ -57,7 +54,7 @@ class AccessChecker implements ServiceInterface
         {
             foreach($userRole->getRole()->getPrivileges() as $privilege)
             {
-                if($this->checkPrivilege($privilege))
+                if($this->checkPrivilege($privilege, $route))
                 {
                     return true;
                 }
@@ -67,10 +64,8 @@ class AccessChecker implements ServiceInterface
         return false;
     }
 
-    private function checkPrivilege(UserPrivilege $privilege)
+    private function checkPrivilege(UserPrivilege $privilege, Route $route)
     {
-        $route = $this->request->getRoute();
-
         return $privilege->getName() === $route->getName();
     }
 

@@ -50,5 +50,12 @@ return [
         \Application\Service\Translator\Translator::class, [
             '@request'
         ]
+    ],
+    'testService' => [
+        \Test\Decorator\ServiceDecorator::class, [
+            '@request', [
+                'test' => 123
+            ]
+        ]
     ]
 ];
