@@ -5,3 +5,4 @@
     - route annotation
     - validate request method type
     - request method annotation
+ - add sqlite user
