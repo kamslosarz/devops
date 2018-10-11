@@ -37,7 +37,6 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
                 'SUCCESS' => 'Successfully logged in'
             ]
         );
-
     }
 
     public function testShouldLogoutAction()
@@ -49,7 +48,6 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         $this->assertEquals('Location: /admin/login', $dispatcher->getResponse()->getHeaders()[0]);
         $this->assertEquals('Successfully logged out', $_SESSION['messages']['SUCCESS']);
     }
-
 
     public function getDataSet()
     {

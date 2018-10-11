@@ -3,6 +3,7 @@
 namespace Application\Router;
 
 use Application\Config\Config;
+use Application\Service\Request\RequestMethods;
 
 class Router
 {
@@ -12,7 +13,7 @@ class Router
     private $parameters;
     private $requestMethod;
 
-    public function __construct($requestUri = '', $requestMethod)
+    public function __construct($requestUri = '', $requestMethod = RequestMethods::GET)
     {
         $this->requestUri = $requestUri;
         $this->requestMethod = $requestMethod;
@@ -79,7 +80,7 @@ class Router
      * @param array $parameters
      * @return Route|null
      */
-    public static function getRouteByName($name, $parameters = [])
+    public function getRouteByName($name, $parameters = [])
     {
         $route = isset(self::getRoutes()[$name]) ? self::getRoutes()[$name] : null;
 

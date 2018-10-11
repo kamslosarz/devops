@@ -29,6 +29,7 @@ class Container
 
     /**
      * Container constructor.
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
      */
@@ -42,6 +43,7 @@ class Container
     /**
      * @return bool
      * @throws RouteException
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
@@ -60,16 +62,16 @@ class Container
             }
             catch(AccessDeniedException $accessDeniedException)
             {
-                $route = Router::getRouteByName(Config::get('defaultAction'));
+                $route = $this->context->getRouter()->getRouteByName(Config::get('defaultAction'));
 
                 if($this->serviceContainer->getService('accessChecker')->hasAccess($route))
                 {
                     $this->serviceContainer->getService('appender')->append($accessDeniedException->getMessage(), AppenderLevel::ERROR);
-                    $this->results = new RedirectResponse(Config::get('defaultAction'));
+                    $this->results = new RedirectResponse($this->context->getRouter()->getRouteByName(Config::get('defaultAction'))->getUrl());
                 }
                 else
                 {
-                    $this->results = new RedirectResponse(Config::get('loginAction'));
+                    $this->results = new RedirectResponse($this->context->getRouter()->getRouteByName(Config::get('loginAction'))->getUrl());
                 }
             }
 

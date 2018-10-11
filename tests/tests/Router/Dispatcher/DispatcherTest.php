@@ -7,6 +7,7 @@ use Application\Response\Response;
 use Application\Router\Dispatcher\ControllerParameters;
 use Application\Router\Dispatcher\Dispatcher;
 use Application\Router\Dispatcher\DispatcherException;
+use Application\Router\Router;
 use Application\Service\Appender\Appender;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
@@ -24,11 +25,11 @@ class DispatcherTest extends TestCase
     public function testShouldConstructDispatcher()
     {
         $serviceContainerMock = $this->getServiceContainerMockBuilder()->build();
-        $appenderMock = m::mock(Appender::class);
+        $routerMock = m::mock(Router::class);
 
         $dispatcher = new Dispatcher(UserController::class, 'indexAction', [
             $serviceContainerMock,
-            $appenderMock
+            $routerMock
         ]);
 
         $parameterHolder = m::mock(ParameterHolder::class)
@@ -82,11 +83,11 @@ class DispatcherTest extends TestCase
             ])
             ->getMock();
 
-        $appenderMock = m::mock(Appender::class);
+        $routerMock = m::mock(Router::class);
 
         $dispatcher = new Dispatcher(\Test\Fixture\UserController::class, $method, [
             $this->getServiceContainerMockBuilder()->build(),
-            $appenderMock
+            $routerMock
         ]);
 
         $results = $dispatcher->dispatch($parameterHolder);

@@ -5,22 +5,28 @@ namespace Application\Form;
 use Application\Form\FormBuilder\Field\Field;
 use Application\Form\FormBuilder\FormBuilder;
 use Application\Form\FormHandler\FormHandler;
+use Application\Router\Router;
 use Application\Service\Request\Request;
+use Application\Service\Translator\Translator;
 
-abstract class Form
+abstract class Form implements FormInterface
 {
-    private $formBuilder;
-    private $formHandler;
+    protected $formHandler;
     protected $entity;
     protected $data;
+    protected $attributes;
+    protected $translator;
+    protected $router;
 
-    public function __construct($entity = null)
+    public function __construct($entity = null, Translator $translator, Router $router)
     {
         $this->entity = $entity;
         $this->formBuilder = new FormBuilder();
         $this->formHandler = new FormHandler();
+        $this->translator = $translator;
+        $this->router = $router;
 
-        $this->build($this->formBuilder);
+        $this->build();
 
         if($this->hasEntity())
         {
@@ -33,62 +39,31 @@ abstract class Form
         }
     }
 
+    abstract protected function build();
+
     public function renderView()
     {
-        return new FormViewHelper($this);
+        return new FormView($this);
     }
 
-    protected function build(FormBuilder $formBuilder)
-    {
-
-    }
-
-    public function getFormBuilder()
-    {
-        return $this->formBuilder;
-    }
-
-    /**
-     * @param Request $request
-     * @return bool
-     */
     public function handle(Request $request)
     {
         return $this->formHandler->handle($this, $request);
     }
 
-    public function setData($data)
+    public function setData(array $data)
     {
         $this->data = $data;
-
-        return $this;
     }
 
     public function getData($key = null)
     {
-        if(is_null($key))
-        {
-            return $this->data;
-        }
-        return $this->data[$key];
+        return is_null($key) ? $this->data : $this->data[$key];
     }
-
-    abstract public function getName();
-
-    abstract public function getMethod();
-
-    abstract public function getClass();
 
     public function getEntity()
     {
         return $this->entity;
-    }
-
-    public function setEntity($entity)
-    {
-        $this->entity = $entity;
-
-        return $this;
     }
 
     public function hasEntity()
@@ -96,4 +71,10 @@ abstract class Form
         return !is_null($this->entity);
     }
 
+    abstract public function getAttributes();
+
+    public function getAttribute($attribute)
+    {
+        return isset($this->getAttributes()[$attribute]) ? $this->getAttributes()[$attribute] : null;
+    }
 }

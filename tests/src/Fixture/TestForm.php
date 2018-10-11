@@ -4,20 +4,15 @@ namespace Test\Fixture;
 
 use Application\Form\Form;
 use Application\Form\FormBuilder\Field\FieldTypes;
-use Application\Form\FormBuilder\FormBuilder;
 use Application\Form\FormInterface;
 use Application\Service\Request;
 
 class TestForm extends Form implements FormInterface
 {
-    /**
-     * @param FormBuilder $formBuilder
-     * @return FormBuilder
-     * @throws \Application\Form\FormBuilder\Field\FieldException
-     */
-    protected function build(FormBuilder $formBuilder)
+
+    protected function build()
     {
-        $formBuilder->addField('username', FieldTypes::INPUT, [
+        return $this->formBuilder->addField('username', FieldTypes::INPUT, [
             'label' => 'Input'
         ], [
             'type' => 'text'
@@ -36,24 +31,6 @@ class TestForm extends Form implements FormInterface
             ], [
                 'type' => 'submit'
             ]);
-
-        return $formBuilder;
-    }
-
-    public function getAction()
-    {
-        return '/admin/login';
-    }
-
-    public function getName()
-    {
-        return 'test_form';
-    }
-
-    public function getTitle()
-    {
-
-        return 'Test Form';
     }
 
     public function getMethod()
@@ -61,8 +38,13 @@ class TestForm extends Form implements FormInterface
         return Request\RequestMethods::POST;
     }
 
-    public function getClass()
+    public function getAttributes()
     {
-        return 'test-form';
+        return [
+            'action' => $this->router->getRouteByName('app_test_action')->getUrl(),
+            'title' => $this->translator->translate('Test Form'),
+            'name' => 'test_form',
+            'class' => 'test-form'
+        ];
     }
 }

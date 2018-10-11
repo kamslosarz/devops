@@ -29,6 +29,7 @@ class Context
      * Context constructor.
      * @param ServiceContainer $serviceContainer
      * @throws ServiceContainerException
+     * @throws \Application\Config\ConfigException
      */
     public function __construct(ServiceContainer $serviceContainer)
     {
@@ -42,6 +43,7 @@ class Context
      * @throws AccessDeniedException
      * @throws RouteException
      * @throws ServiceContainerException
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\Dispatcher\DispatcherException
      */
     public function __invoke()
@@ -60,7 +62,7 @@ class Context
         }
 
         $dispatcher = new Dispatcher($route->getController(), $action, [
-            $this->serviceContainer, $this->appender, $this->router
+            $this->serviceContainer, $this->router
         ]);
 
         $controllerParameters = new ControllerParameters($route->getParameters());

@@ -22,6 +22,7 @@ class ContainerTest extends TestCase
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
@@ -51,6 +52,7 @@ class ContainerTest extends TestCase
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
@@ -100,6 +102,7 @@ class ContainerTest extends TestCase
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
@@ -127,6 +130,18 @@ class ContainerTest extends TestCase
         );
 
         $contextMock = m::mock(\Application\Context\Context::class)
+            ->shouldReceive('getRouter')
+            ->andReturn(
+                m::mock(\Application\Router\Router::class)
+                    ->shouldReceive('getRouteByName')
+                    ->andReturn(
+                        m::mock(\Application\Router\Route::class)
+                            ->shouldReceive('getUrl')
+                            ->andReturn('app_admin_index')
+                            ->getMock()
+                    )->getMock()
+            )
+            ->getMock()
             ->shouldReceive('__invoke')
             ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'app_admin_index\'')
             ->getMock();
@@ -145,10 +160,11 @@ class ContainerTest extends TestCase
         $response = $container->getResults();
 
         $this->assertInstanceOf(\Application\Response\ResponseTypes\RedirectResponse::class, $response);
-        $this->assertEquals(['Location: /admin/index'], $response->getHeaders());
+        $this->assertEquals(['Location: app_admin_index'], $response->getHeaders());
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
@@ -165,6 +181,18 @@ class ContainerTest extends TestCase
                 ->getMock()
         );
         $contextMock = m::mock(\Application\Context\Context::class)
+            ->shouldReceive('getRouter')
+            ->andReturn(
+                m::mock(\Application\Router\Router::class)
+                    ->shouldReceive('getRouteByName')
+                    ->andReturn(
+                        m::mock(\Application\Router\Route::class)
+                            ->shouldReceive('getUrl')
+                            ->andReturn('app_admin_login')
+                            ->getMock()
+                    )->getMock()
+            )
+            ->getMock()
             ->shouldReceive('__invoke')
             ->andThrow(\Application\Service\AccessChecker\AccessDeniedException::class, 'Access denied to \'app_admin_login\'')
             ->getMock();
@@ -183,10 +211,11 @@ class ContainerTest extends TestCase
         $response = $container->getResults();
 
         $this->assertInstanceOf(\Application\Response\ResponseTypes\RedirectResponse::class, $response);
-        $this->assertEquals(['Location: /admin/index'], $response->getHeaders());
+        $this->assertEquals(['Location: app_admin_login'], $response->getHeaders());
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
@@ -233,6 +262,7 @@ class ContainerTest extends TestCase
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
@@ -280,6 +310,7 @@ class ContainerTest extends TestCase
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException

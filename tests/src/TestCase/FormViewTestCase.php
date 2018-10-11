@@ -3,8 +3,14 @@
 namespace Test\TestCase;
 
 use Application\Form\FormBuilder\Field\FieldInterface;
-use Application\Form\FormViewHelper;
+use Application\Form\FormView;
+use Application\Router\Route;
+use Application\Router\Router;
+use Application\Service\Translator\Translator;
+use function foo\func;
 use Test\Fixture\TestForm;
+use Mockery as m;
+
 
 abstract class FormViewTestCase extends ViewTestCase
 {
@@ -15,7 +21,7 @@ abstract class FormViewTestCase extends ViewTestCase
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function renderForm(FormViewHelper $form)
+    public function renderForm(FormView $form)
     {
         return $this->getTwig()->render('form/form.html.twig', [
             'form' => $form
@@ -37,8 +43,29 @@ abstract class FormViewTestCase extends ViewTestCase
         ]);
     }
 
-    private function getForm()
+    /**
+     * @param null $entity
+     * @return TestForm
+     */
+    private function getForm($entity = null)
     {
-        return new TestForm();
+        return new TestForm(
+            $entity,
+            m::mock(Translator::class)
+                ->shouldReceive('translate')
+                ->andReturnUsing(function ($routeName)
+                {
+
+                    return $routeName;
+                })->getMock(),
+            m::mock(Router::class)
+                ->shouldReceive('getRouteByName')
+                ->andReturn(
+                    m::mock(Route::class)
+                    ->shouldReceive('getUrl')
+                    ->andReturn('/test/test/test')
+                    ->getMock()
+                )->getMock()
+        );
     }
 }

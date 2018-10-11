@@ -12,7 +12,7 @@ trait DatabaseTestCaseTrait
 {
     static private $pdo = null;
 
-    /** @var DefaultConnection $conn  */
+    /** @var DefaultConnection $conn */
     protected $conn = null;
 
     /** @var User */
@@ -61,6 +61,11 @@ trait DatabaseTestCaseTrait
         $this->user = UserQuery::create()->findOneById(1);
 
         return $this->user;
+    }
+
+    public function __sleep()
+    {
+        return [];
     }
 
 }

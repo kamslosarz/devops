@@ -3,22 +3,30 @@
 namespace Application\Controller\Admin;
 
 
+use Application\Factory\Factory;
+use Application\Router\Router;
+use Application\Service\Appender\Appender;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\Service\ServiceInterface;
+use Application\Service\Translator\Translator;
+use function Couchbase\fastlzCompress;
 
 abstract class Controller
 {
     private $serviceContainer;
-    private $appender;
+    protected $router;
 
     /**
      * Controller constructor.
      * @param ServiceContainer $serviceContainer
+     * @param Router $router
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
-    public function __construct(ServiceContainer $serviceContainer)
+    public function __construct(ServiceContainer $serviceContainer, Router $router)
     {
         $this->serviceContainer = $serviceContainer;
+        $this->router = $router;
         $this->appender = $serviceContainer->getService('appender');
     }
 
@@ -31,7 +39,8 @@ abstract class Controller
 
     /**
      * @param $serviceName
-     * @return ServiceInterface
+     * @return mixed
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function getService($serviceName)
@@ -41,6 +50,7 @@ abstract class Controller
 
     /**
      * @return mixed
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function getUser()
@@ -49,11 +59,34 @@ abstract class Controller
     }
 
     /**
-     * @return ServiceInterface
+     * @return mixed
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function getRequest()
     {
         return $this->getService('request');
+    }
+
+    /**
+     * @return mixed
+     * @throws \Application\Config\ConfigException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
+    public function getTranslator()
+    {
+        return $this->getService('translator');
+    }
+
+    /**
+     * @param $form
+     * @param null $entity
+     * @return mixed
+     * @throws \Application\Config\ConfigException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
+    public function getForm($form, $entity = null)
+    {
+        return Factory::getInstance($form, [$entity, $this->getTranslator(), new Router()]);
     }
 }

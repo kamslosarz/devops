@@ -4,20 +4,34 @@ namespace Application\Form\User;
 
 use Application\Form\Form;
 use Application\Form\FormBuilder\Field\FieldTypes;
-use Application\Form\FormBuilder\FormBuilder;
-use Application\Form\FormInterface;
+use Application\Router\Router;
 use Application\Service\Request\RequestMethods;
 
-class LoginForm extends Form implements FormInterface
+class LoginForm extends Form
 {
-    /**
-     * @param FormBuilder $formBuilder
-     * @return FormBuilder
-     * @throws \Application\Form\FormBuilder\Field\FieldException
-     */
-    protected function build(FormBuilder $formBuilder)
+    public function getAttributes()
     {
-        $formBuilder->addField('username', FieldTypes::INPUT, [
+        return [
+            'action' => $this->router->getRouteByName('app_admin_login')->getUrl(),
+            'title' => $this->translator->translate('Please login'),
+            'name' => 'login',
+            'class' => 'login-form'
+        ];
+    }
+
+    public function getMethod()
+    {
+        return RequestMethods::POST;
+    }
+
+    public function getFormBuilder()
+    {
+        return $this->formBuilder;
+    }
+
+    protected function build()
+    {
+        return $this->formBuilder->addField('username', FieldTypes::INPUT, [
             'label' => 'Username'
         ], [
             'type' => 'text'
@@ -30,32 +44,5 @@ class LoginForm extends Form implements FormInterface
         ], [
             'type' => 'submit'
         ]);
-
-        return $formBuilder;
-    }
-
-    public function getAction()
-    {
-        return '/admin/login';
-    }
-
-    public function getName()
-    {
-        return 'login';
-    }
-
-    public function getMethod()
-    {
-        return RequestMethods::POST;
-    }
-
-    public function getTitle()
-    {
-        return 'Please login';
-    }
-
-    public function getClass()
-    {
-        return 'login-form';
     }
 }

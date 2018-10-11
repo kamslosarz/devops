@@ -13,25 +13,15 @@ use Application\Service\AccessChecker\AccessChecker;
 use Application\Service\Appender\Appender;
 use Application\Service\Request\Request;
 use Mockery as m;
-use Model\Map\UserTableMap;
-use Model\User;
-use Model\UserQuery;
-use PHPUnit\DbUnit\Database\DefaultConnection;
-use PHPUnit\DbUnit\DataSet\ArrayDataSet;
 use PHPUnit\DbUnit\TestCaseTrait;
-use Propel\Runtime\Propel;
-use Test\TestCase\Traits\DatabaseTestCaseTrait;
-use Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 use PHPUnit\Framework\TestCase;
+use Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 
 class ContextTest extends TestCase
 {
-    use TestCaseTrait;
-    use DatabaseTestCaseTrait;
     use ServiceContainerMockBuilderTrait;
-
-
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function testShouldConstructContext()
@@ -42,6 +32,7 @@ class ContextTest extends TestCase
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function testShouldReturnNulledRouter()
@@ -52,6 +43,7 @@ class ContextTest extends TestCase
     }
 
     /**
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function testShouldReturnAppender()
@@ -78,11 +70,8 @@ class ContextTest extends TestCase
     }
 
     /**
-     * @param $serviceContainerMock
-     * @param $type
-     * @param $parameters
-     * @param $headers
      * @throws RouteException
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\Dispatcher\DispatcherException
      * @throws \Application\Service\AccessChecker\AccessDeniedException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
@@ -93,7 +82,7 @@ class ContextTest extends TestCase
             ->setRequestMock(
                 m::mock('Request')
                     ->shouldReceive('getRequestUri')
-                    ->andReturn('/admin/user/999/delete')
+                    ->andReturn('/admin/returnResponse')
                     ->getMock()
                     ->shouldReceive('getRoute')
                     ->andReturn()
@@ -110,15 +99,9 @@ class ContextTest extends TestCase
         $serviceContainerMock = $serviceContainerMock->build();
         /** @var ErrorResponse $response */
         $context = new Context($serviceContainerMock);
-
         $context();
-        $response = $context->getResults();
 
-        /** @var m\MockInterface $appender */
-        $appender = $context->getAppender();
-        $appender->shouldHaveReceived('append')
-            ->with('User was deleted', 'SUCCESS')
-            ->once();
+        $response = $context->getResults();
 
         $this->assertInstanceOf(Response::class, $response, 'invalid response type');
         $this->assertEquals([], $response->getHeaders(), 'invalid response headers');
@@ -126,6 +109,7 @@ class ContextTest extends TestCase
 
     /**
      * @throws RouteException
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\Dispatcher\DispatcherException
      * @throws \Application\Service\AccessChecker\AccessDeniedException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
@@ -171,9 +155,10 @@ class ContextTest extends TestCase
         $context();
         $response = $context->getResults();
 
-        $this->assertInstanceOf(RedirectResponse::class, $response, 'invalid response type');
-        $this->assertNull($response->getParameters(), 'invalid response parameters');
-        $this->assertEquals(['Location: /admin/login'], $response->getHeaders(), 'invalid response headers');
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertEquals(['Location: /admin/login'], $response->getHeaders());
+
+
     }
 
     private function getAccessCheckerMock()
@@ -203,21 +188,5 @@ class ContextTest extends TestCase
             ->once()
             ->andReturn('/not-existing-route-to-nowhere')
             ->getMock();
-    }
-
-    public function getDataSet()
-    {
-        return new ArrayDataSet([
-            'users' => [
-                [
-                    'id' => 999,
-                    'username' => 'testAdmin',
-                    'password' => md5('testPassword'),
-                    'firstname' => 'test',
-                    'lastname' => 'test',
-                    'email' => 'test@test.pl'
-                ]
-            ],
-        ]);
     }
 }

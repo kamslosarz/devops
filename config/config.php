@@ -14,6 +14,6 @@ return [
         'adapter' => 'files',
         'path' => __DIR__ . '/langs'
     ],
-    'servicesMapFIle' => 'serviceMap.php',
+    'servicesMapFIle' => __DIR__.'/serviceMap.php',
     'web_dir' => dirname(__DIR__) . '/www'
 ];

@@ -1,16 +1,18 @@
 <?php
 
+use Mockery as m;
+
 class FormViewTest extends \Test\TestCase\FormViewTestCase
 {
-    public function testShouldRenderFormViewHelper()
+    public function testShouldRenderFormView()
     {
-        $loginForm = new \Application\Form\User\LoginForm();
-        $formViewHelper = $loginForm->renderView();
+        $loginForm = new \Application\Form\User\LoginForm(null, $this->getTranslatorMock(), $this->getRouterMock());
+        $formView = $loginForm->renderView();
 
-        $this->assertInstanceOf(\Application\Form\FormViewHelper::class, $formViewHelper);
-        $this->assertEquals($formViewHelper->getName(), 'login');
-        $this->assertEquals($formViewHelper->getMethod(), \Application\Service\Request\RequestMethods::POST);
-        $this->assertEquals($formViewHelper->getAction(), '/admin/login');
+        $this->assertInstanceOf(\Application\Form\FormView::class, $formView);
+        $this->assertEquals($formView->getName(), 'login');
+        $this->assertEquals($formView->getMethod(), \Application\Service\Request\RequestMethods::POST);
+        $this->assertEquals($formView->getAction(), '/admin/login');
     }
 
     /**
@@ -20,14 +22,14 @@ class FormViewTest extends \Test\TestCase\FormViewTestCase
      */
     public function testShouldRenderForm()
     {
-        $loginForm = new \Application\Form\User\LoginForm();
-        $formViewHelper = $loginForm->renderView();
+        $loginForm = new \Application\Form\User\LoginForm(null, $this->getTranslatorMock(), $this->getRouterMock());
+        $formView = $loginForm->renderView();
 
         $domDocument = new \DOMDocument();
         $domDocument->loadHTML($this->getTwig()
             ->render('form/form.html.twig', [
-            'form' => $formViewHelper
-        ]));
+                'form' => $formView
+            ]));
 
 
         $inputs = $domDocument->getElementsByTagName('input');
@@ -35,5 +37,27 @@ class FormViewTest extends \Test\TestCase\FormViewTestCase
         $this->assertEquals($inputs->item(0)->getAttribute('name'), 'login[username]');
         $this->assertEquals($inputs->item(1)->getAttribute('name'), 'login[password]');
         $this->assertEquals($domDocument->getElementsByTagName('button')->item(0)->getAttribute('type'), 'submit');
+    }
+
+    private function getTranslatorMock()
+    {
+        return m::mock(\Application\Service\Translator\Translator::class)
+            ->shouldReceive('translate')
+            ->andReturnUsing(function ($phrase, $vars = []) {
+                return $phrase;
+            })
+            ->getMock();
+    }
+
+    private function getRouterMock()
+    {
+        return m::mock(\Application\Router\Router::class)
+            ->shouldReceive('getRouteByName')
+            ->andReturn(
+                m::mock()
+                    ->shouldReceive('getUrl')
+                    ->andReturn('/admin/login')
+                    ->getMock()
+            )->getMock();
     }
 }

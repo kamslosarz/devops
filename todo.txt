@@ -1,4 +1,5 @@
-- refactor form view helper
+- create router service that manage active urls
+- implement router service as twig extensions
 - refactor test to use only controller/resources fixtures. Controller will be tested separately
 - add profiler
 - add annotation

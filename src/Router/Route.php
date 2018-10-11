@@ -26,6 +26,18 @@ class Route
         $this->parameters = $controllerParameters;
     }
 
+    public function getUrl()
+    {
+        $url = $this->urlPattern;
+
+        foreach($this->parameters as $key => $value)
+        {
+            $url = str_replace(sprintf('[%s]', $key), $value, $url);
+        }
+
+        return $url;
+    }
+
     public function getController()
     {
         return $this->controller;

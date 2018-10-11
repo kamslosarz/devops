@@ -58,6 +58,12 @@ return [
             'action' => 'parameterOrderTestAction',
             'url' => '/admin/test/[id]/test/[first]/[second]',
             'access' => Route::ACCESS_PUBLIC,
+        ],
+        'app_admin_test_test' => [
+            'controller' => \Test\Decorator\ControllerDecorator::class,
+            'action' => 'returnResponseAction',
+            'url' => '/admin/returnResponse',
+            'access' => Route::ACCESS_PUBLIC,
         ]
     ],
     'defaultAction' => 'app_admin_index',

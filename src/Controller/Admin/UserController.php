@@ -15,14 +15,13 @@ class UserController extends Controller
 {
     /**
      * @return Response|RedirectResponse
-     * @throws \Application\Router\RouteException
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Propel\Runtime\Exception\PropelException
-     * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function loginAction()
     {
-        $form = new LoginForm();
+        $form = $this->getForm(LoginForm::class);
         $request = $this->getRequest();
 
         /** @var AuthService $authService */
@@ -30,7 +29,7 @@ class UserController extends Controller
 
         if($authService->isAuthenticated())
         {
-            return new RedirectResponse(Config::get('defaultAction'));
+            return new RedirectResponse($this->router->getRouteByName(Config::get('defaultAction'))->getUrl());
         }
 
         if($request->isPost())
@@ -41,7 +40,7 @@ class UserController extends Controller
             {
                 $this->addMessage($this->getService('translator')->translate('Successfully logged in'), AppenderLevel::SUCCESS);
 
-                return new RedirectResponse(Config::get('defaultAction'));
+                return new RedirectResponse($this->router->getRouteByName(Config::get('defaultAction'))->getUrl());
             }
 
             $this->addMessage('User not found', AppenderLevel::ERROR);
@@ -54,6 +53,7 @@ class UserController extends Controller
 
     /**
      * @return RedirectResponse
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Response\ResponseTypes\RedirectResponseException
@@ -65,7 +65,7 @@ class UserController extends Controller
         $authService->clearSession();
         $this->addMessage($this->getService('translator')->translate('Successfully logged out'), AppenderLevel::SUCCESS);
 
-        return new RedirectResponse(Config::get('loginAction'));
+        return new RedirectResponse($this->router->getRouteByName(Config::get('loginAction'))->getUrl());
     }
 
     public function indexAction()
@@ -90,11 +90,12 @@ class UserController extends Controller
     }
 
     /**
-     * @convert('user', options={"type":"Model", "class":"\Model\User"})
      * @param User $user
      * @return Response
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Propel\Runtime\Exception\PropelException
+     * @convert('user', options={"type":"Model", "class":"\Model\User"})
      */
     public function deleteAction(User $user)
     {

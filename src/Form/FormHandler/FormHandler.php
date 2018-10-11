@@ -13,11 +13,11 @@ class FormHandler
     {
         if($form->getMethod() === RequestMethods::POST)
         {
-            $form->setData($request->post($form->getName()));
+            $form->setData($request->post($form->getAttribute('name')));
         }
         elseif($form->getMethod() === RequestMethods::GET)
         {
-            $form->setData($request->get($form->getName()));
+            $form->setData($request->get($form->getAttribute('name')));
         }
         else
         {

@@ -5,7 +5,7 @@ namespace Application\Form;
 use Application\Form\FormBuilder\Field\Field;
 use Application\Form\FormBuilder\FormBuilder;
 
-class FormViewHelper
+class FormView
 {
     /** @var FormInterface $form */
     private $form;
@@ -15,9 +15,9 @@ class FormViewHelper
         $this->form = $form;
     }
 
-    public function get($name)
+    public function get($fieldName)
     {
-        return $this->form->getFormBuilder()->getField($name);
+        return $this->form->getFormBuilder()->getField($fieldName);
     }
 
     public function getFields()
@@ -27,27 +27,7 @@ class FormViewHelper
 
     public function getName($name = '')
     {
-        if(!$name)
-        {
-            return $this->form->getName();
-        }
-
-        return sprintf('%s[%s]', $this->form->getName(), $name);
-    }
-
-    public function getAction()
-    {
-        return $this->form->getAction();
-    }
-
-    public function getMethod()
-    {
-        return $this->form->getMethod();
-    }
-
-    public function getTitle()
-    {
-        return $this->form->getTitle();
+        return $name ? sprintf('%s[%s]', $this->form->getAttribute('name'), $name) : $this->form->getAttribute('name');
     }
 
     public function getLabel($fieldName)
@@ -55,8 +35,23 @@ class FormViewHelper
         return lcfirst(ucwords(trim(strtolower($fieldName))));
     }
 
+    public function getMethod()
+    {
+        return $this->form->getMethod();
+    }
+
+    public function getAction()
+    {
+        return $this->form->getAttribute('action');
+    }
+
+    public function getTitle()
+    {
+        return $this->form->getAttribute('title');
+    }
+
     public function getClass()
     {
-        return $this->form->getClass();
+        return $this->form->getAttribute('class');
     }
 }
