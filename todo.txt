@@ -1,4 +1,6 @@
-- refactor test to use only controller/resources fixtures. Controller will be tested separately
+- add abstract controller class test
+- add ApplicationTest
+- add create ProjectControllerTest
 - add profiler
 - add annotation
     - route annotation

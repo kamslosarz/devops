@@ -7,49 +7,49 @@ use Application\Service\Request\RequestMethods;
 return [
     'routes' => [
         'app_admin_index' => [
-            'controller' => \Application\Controller\Admin\AdminController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'indexAction',
             'url' => '/admin/index'
         ],
         'app_admin_login' => [
-            'controller' => \Application\Controller\Admin\UserController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'loginAction',
             'url' => '/admin/login',
             'access' => Route::ACCESS_PUBLIC,
             'method' => RequestMethods::GET & RequestMethods::POST
         ],
         'app_admin_logout' => [
-            'controller' => \Application\Controller\Admin\UserController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'logoutAction',
             'url' => '/admin/logout'
         ],
         'app_admin_project' => [
-            'controller' => \Application\Controller\Admin\ProjectController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'indexAction',
             'url' => '/admin/project'
         ],
         'app_admin_project_edit' => [
-            'controller' => \Application\Controller\Admin\ProjectController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'projectAction',
             'url' => '/admin/project/edit/[id]'
         ],
         'app_admin_user' => [
-            'controller' => \Application\Controller\Admin\UserController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'indexAction',
             'url' => '/admin/user'
         ],
         'app_admin_user_delete' => [
-            'controller' => \Application\Controller\Admin\UserController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'deleteAction',
             'url' => '/admin/user/[user]/delete'
         ],
         'app_admin_user_edit' => [
-            'controller' => \Application\Controller\Admin\UserController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'editAction',
             'url' => '/admin/user/edit/[user]'
         ],
         'app_admin_test' => [
-            'controller' => \Application\Controller\Admin\AdminController::class,
+            'controller' => \Test\Decorator\ControllerDecorator::class,
             'action' => 'testAction',
             'url' => '/admin/test/[id]/test',
         ],

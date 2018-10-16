@@ -1,6 +1,11 @@
 <?php
 
-class UserControllerTest extends \Test\TestCase\ControllerTestCase
+namespace tests\Functional\Controller;
+
+use Test\TestCase\ControllerTestCase;
+use Application\Config\Config;
+
+class UserTest extends ControllerTestCase
 {
     public function testShouldRenderLoginAction()
     {
@@ -16,6 +21,16 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
     /**
      * @throws \Propel\Runtime\Exception\PropelException
      */
+    public function testShouldLogoutAction()
+    {
+        $dispatcher = $this->getApplicationContainer();
+        $results = $dispatcher->dispatch('/admin/logout');
+
+        $this->assertNull($results);
+        $this->assertEquals('Location: /admin/login', $dispatcher->getResponse()->getHeaders()[0]);
+        $this->assertEquals('Successfully logged out', $_SESSION['messages']['SUCCESS']);
+    }
+
     public function testShouldExecuteLoginActionPostAndLoginUser()
     {
         $dispatcher = $this->getApplicationContainer(false);
@@ -39,19 +54,15 @@ class UserControllerTest extends \Test\TestCase\ControllerTestCase
         );
     }
 
-    public function testShouldLogoutAction()
-    {
-        $dispatcher = $this->getApplicationContainer();
-        $results = $dispatcher->dispatch('/admin/logout');
-
-        $this->assertNull($results);
-        $this->assertEquals('Location: /admin/login', $dispatcher->getResponse()->getHeaders()[0]);
-        $this->assertEquals('Successfully logged out', $_SESSION['messages']['SUCCESS']);
-    }
-
     public function getDataSet()
     {
         return parent::getUserDataSet();
     }
 
+    protected function setUp()
+    {
+        Config::set(Config::loadFlatFile(FIXTURE_DIR . '/controllersTestConfig.php'));
+
+        parent::setUp();
+    }
 }

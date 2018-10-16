@@ -5,6 +5,7 @@ namespace Test\Decorator;
 use Application\Controller\Controller;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\JsonResponse;
+use Application\Response\ResponseTypes\RedirectResponse;
 use Model\User;
 
 class ControllerDecorator extends Controller
@@ -28,13 +29,23 @@ class ControllerDecorator extends Controller
         return new JsonResponse([$id, $second, $first]);
     }
 
-    public function indexAction($test)
+    public function indexAction()
     {
-        return new Response($test);
+        return new Response([]);
     }
 
     public function returnResponseAction()
     {
         return new Response();
+    }
+
+    public function loginAction()
+    {
+        return new Response([]);
+    }
+
+    public function logoutAction()
+    {
+        return new RedirectResponse('/admin/login');
     }
 }

@@ -80,14 +80,14 @@ class Container
                 case ResponseTypes::JSON:
                     $this->results->setContent($this->results->getJson());
                     break;
-                case ResponseTypes::REDIRECT:
-
-                    break;
                 case ResponseTypes::ERROR:
                     $this->results->setContent($this->view->render(new ViewElement(
                         'error',
                         $this->results->getParameters()
                     )));
+                    break;
+                case ResponseTypes::REDIRECT:
+
                     break;
                 default:
 

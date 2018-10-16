@@ -6,12 +6,19 @@ use Application\Application;
 
 abstract class Config
 {
-    private static $config;
+    public static $config;
     private static $configs = [];
 
     public static function set($config)
     {
         self::$config = $config;
+    }
+
+    public static function reload()
+    {
+        self::$config = null;
+
+        self::load();
     }
 
     public static function get($key)
@@ -24,14 +31,12 @@ abstract class Config
         return self::$config[$key];
     }
 
-    public static function reload()
-    {
-        self::load();
-    }
-
     public static function load()
     {
-        self::$config = self::loadFile('config' . Application::getEnvironment() . '.php');
+        if(!self::$config)
+        {
+            self::$config = self::loadFile('config' . Application::getEnvironment() . '.php');
+        }
     }
 
     public static function loadFile($filename)

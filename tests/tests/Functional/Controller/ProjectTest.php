@@ -1,6 +1,8 @@
 <?php
 
-class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
+use Application\Config\Config;
+
+class ProjectTest extends \Test\TestCase\ControllerTestCase
 {
     public function testShouldRenderIndexAction()
     {
@@ -28,5 +30,10 @@ class ProjectControllerTest extends \Test\TestCase\ControllerTestCase
         return $dataSet;
     }
 
-}
+    protected function setUp()
+    {
+        Config::set(Config::loadFlatFile(FIXTURE_DIR . '/controllersTestConfig.php'));
 
+        parent::setUp();
+    }
+}

@@ -37,6 +37,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $config = include_once $config_file;
 
         \Application\Application::setEnvironment($env);
+        \Application\Config\Config::reload();
 
         $configLoaded = [];
 
@@ -45,7 +46,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
             $configLoaded[$key] = \Application\Config\Config::get($key);
         }
 
-        $this->assertEquals($configLoaded, $config);
+        $this->assertEquals($config, $configLoaded);
     }
 
     public function differentEnvironmentConfigsData()
