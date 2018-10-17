@@ -9,7 +9,6 @@ use Application\Service\Request;
 
 class TestForm extends Form implements FormInterface
 {
-
     protected function build()
     {
         return $this->formBuilder->addField('username', FieldTypes::INPUT, [

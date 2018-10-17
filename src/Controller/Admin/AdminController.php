@@ -2,6 +2,7 @@
 
 namespace Application\Controller\Admin;
 
+use Application\Controller\Controller;
 use Application\Response\Response;
 
 /**

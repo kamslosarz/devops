@@ -4,6 +4,7 @@ namespace Application;
 
 use Application\Config\Config;
 use Application\Container\Container;
+use Application\Context\Context;
 use Application\Response\Response;
 
 final class Application
@@ -11,22 +12,25 @@ final class Application
     const TEST = '_test';
 
     private static $environment = '';
+
     /** @var Response $response */
     private $results = null;
+    private $container = null;
 
     public function __construct($environment = '')
     {
         self::$environment = $environment;
         Config::load();
+
+        $this->container = new Container();
     }
 
     public function __invoke()
     {
         if(is_null($this->results))
         {
-            $container = new Container();
-            $container();
-            $this->results = $container->getResults();
+            ($this->container)();
+            $this->results = $this->container->getResults();
         }
 
         return $this->results;
@@ -50,5 +54,12 @@ final class Application
     public static function isTest()
     {
         return self::$environment === self::TEST;
+    }
+
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+
+        return $this;
     }
 }

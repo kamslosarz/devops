@@ -2,7 +2,7 @@
 
 use Application\Config\Config;
 
-class AdminTest extends \Test\TestCase\ControllerTestCase
+class AdminTest extends \Test\TestCase\FunctionalTestCase
 {
     public function testShouldInvokeApplicationInstanceAndReturnLoginForm()
     {

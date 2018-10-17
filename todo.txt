@@ -1,9 +1,11 @@
-- add abstract controller class test
-- add ApplicationTest
 - add create ProjectControllerTest
 - add profiler
 - add annotation
     - route annotation
     - validate request method type
     - request method annotation
- - add sqlite user
+ - add sqlite user perms
+- refactor to create instance of framework usage. Framework will be used as composer requirement
+    - create place to test controllers (functional)
+    - create place to develop services, controllers, views
+- add command to generate crud based on php array config (index/list, edit, delete, create, details)

@@ -13,7 +13,7 @@ use Test\ApplicationContainer\ApplicationContainer;
 use Test\TestCase\Traits\DatabaseTestCaseTrait;
 use Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 
-abstract class ControllerTestCase extends TestCase
+abstract class FunctionalTestCase extends TestCase
 {
     use TestCaseTrait;
     use DatabaseTestCaseTrait;

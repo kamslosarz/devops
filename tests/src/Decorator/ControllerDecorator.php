@@ -10,7 +10,6 @@ use Model\User;
 
 class ControllerDecorator extends Controller
 {
-
     /**
      * @convert('user', options={"type":"Model", "class":"\Model\User"})
      *

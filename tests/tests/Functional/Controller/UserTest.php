@@ -4,8 +4,9 @@ namespace tests\Functional\Controller;
 
 use Test\TestCase\ControllerTestCase;
 use Application\Config\Config;
+use Test\TestCase\FunctionalTestCase;
 
-class UserTest extends ControllerTestCase
+class UserTest extends FunctionalTestCase
 {
     public function testShouldRenderLoginAction()
     {

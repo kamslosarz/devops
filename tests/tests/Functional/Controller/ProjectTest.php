@@ -2,7 +2,7 @@
 
 use Application\Config\Config;
 
-class ProjectTest extends \Test\TestCase\ControllerTestCase
+class ProjectTest extends \Test\TestCase\FunctionalTestCase
 {
     public function testShouldRenderIndexAction()
     {

@@ -24,14 +24,10 @@ COPY config config
 COPY deploy deploy
 COPY console console
 COPY composer.json composer.json
-
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin && \
     su - devops -c "composer.phar install --prefer-dist"
-
 RUN chown -R devops:www-data  /var/www/devops
-
-CMD /usr/sbin/apache2ctl -D FOREGROUND
-EXPOSE 80
-
 RUN chmod 777 deploy/prepareEnv.sh
+RUN /usr/sbin/apache2ctl -D FOREGROUND
+EXPOSE 80
 RUN ./deploy/prepareEnv.sh

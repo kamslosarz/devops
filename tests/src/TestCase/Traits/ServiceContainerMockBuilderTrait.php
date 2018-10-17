@@ -3,14 +3,15 @@
 namespace Test\TestCase\Traits;
 
 use Test\MockBuilder\ContainerMockBuilder;
+use Test\MockBuilder\ServiceContainerMockBuilder;
 
 trait ServiceContainerMockBuilderTrait
 {
     /**
-     * @return ContainerMockBuilder
+     * @return ServiceContainerMockBuilder
      */
     protected function getServiceContainerMockBuilder()
     {
-        return new ContainerMockBuilder();
+        return new ServiceContainerMockBuilder();
     }
 }

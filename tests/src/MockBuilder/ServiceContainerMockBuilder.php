@@ -8,9 +8,10 @@ use Application\Service\Appender\Appender;
 use Application\Service\Cookie\Cookie;
 use Application\Service\Logger\Logger;
 use Application\Service\Request\Request;
+use Application\Service\Translator\Translator;
 use Mockery as m;
 
-class ContainerMockBuilder
+class ServiceContainerMockBuilder
 {
     private $sessionMock;
     private $routeMock;
@@ -233,7 +234,7 @@ class ContainerMockBuilder
     {
         if(!$this->translatorMock)
         {
-            $this->translatorMock = m::mock('translator')
+            $this->translatorMock = m::mock(Translator::class)
                 ->shouldReceive('translate')
                 ->andReturnUsing(function ($arg)
                 {
