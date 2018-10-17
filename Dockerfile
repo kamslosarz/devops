@@ -1,4 +1,4 @@
-FROM php:7.1.2-apache
+FROM php:7.2.11-apache
 RUN apt-get update -q && \
     a2enmod env && \
     a2enmod rewrite && \
@@ -12,6 +12,7 @@ RUN apt-get update -q && \
     apt-get install openssh-client
 
 ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
+EXPOSE 80
 
 WORKDIR /var/www/devops
 RUN rm -rf /var/www/devops/*
@@ -24,10 +25,15 @@ COPY config config
 COPY deploy deploy
 COPY console console
 COPY composer.json composer.json
+
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin && \
     su - devops -c "composer.phar install --prefer-dist"
+
 RUN chown -R devops:www-data  /var/www/devops
 RUN chmod 777 deploy/prepareEnv.sh
-RUN /usr/sbin/apache2ctl -D FOREGROUND
-EXPOSE 80
-RUN ./deploy/prepareEnv.sh
+CMD /usr/sbin/apache2ctl -D FOREGROUND
+
+#USER devops
+#RUN ./deploy/prepareEnv.sh
+
+

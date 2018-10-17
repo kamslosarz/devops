@@ -13,7 +13,14 @@ class Ssh extends ConsoleExecutable
     {
         $dockerName = $commandParameters->dockerName ? $commandParameters->dockerName : self::DOCKER_CONTAINER_NAME;
 
-        $this->executeInShell('docker exec -it -u devops %s /bin/bash', [$dockerName]);
+        if($commandParameters->offsetExists(0))
+        {
+            $this->executeInShell('docker exec -it -u %s %s /bin/bash', [$commandParameters->offsetGet(0), $dockerName]);
+        }
+        else
+        {
+            $this->executeInShell('docker exec -it -u devops %s /bin/bash', [$dockerName]);
+        }
     }
 
     public function isValid(CommandParameters $commandParameters)
