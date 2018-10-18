@@ -9,6 +9,15 @@ Use Application\Console\Command\Command\CommandParameters;
 
 class Build extends Command
 {
+    const CACHEABLES_EXTENSIONS = [
+        'css',
+        'js',
+        'png',
+        'jpg',
+        'jpeg',
+        'gif',
+    ];
+
     /**
      * @param CommandParameters $commandParameters
      * @return $this
@@ -16,55 +25,49 @@ class Build extends Command
      */
     public function execute(CommandParameters $commandParameters)
     {
-        $template = Config::get('twig')['loader']['templates'] . DIRECTORY_SEPARATOR;
-        $templates = [
-            $template . 'admin' . DIRECTORY_SEPARATOR . 'assets',
-            $template . 'assets'
-        ];
+        $dir = Config::get('twig')['loader']['templates'] . DIRECTORY_SEPARATOR;
 
-        foreach($templates as $dir)
+        /** @var \SplFileInfo $fileInfo */
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
         {
-            /** @var \SplFileInfo $fileInfo */
-            foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
+            if($fileInfo->isFile() && $this->isResource($fileInfo))
             {
-                if($fileInfo->isFile())
+                $dest = str_replace(
+                    Config::get('twig')['loader']['templates'],
+                    sprintf('%s/assets', Config::get('web_dir')),
+                    str_replace('/assets', '', $fileInfo->getPathname())
+                );
+
+                if(!file_exists($dest))
                 {
-                    $dest = str_replace(
-                        Config::get('twig')['loader']['templates'],
-                        sprintf('%s/assets', Config::get('web_dir')),
-                        str_replace('/assets', '', $fileInfo->getPathname())
-                    );
-                    if(!is_file($dest))
+                    $destDirectory = dirname($dest);
+
+                    if(!file_exists($destDirectory))
                     {
-                        $destDirectory = dirname($dest);
-                        if(!is_dir($destDirectory))
+                        $status = @mkdir($destDirectory, 0777, true);
+
+                        if(!$status)
                         {
-                            $status = mkdir($destDirectory, 0777, true);
-
-                            if(!$status)
-                            {
-                                throw new CommandException(sprintf('Cannot create \'%s\' dir \'%s\'', $destDirectory, $status));
-                            }
+                            throw new CommandException(sprintf('Cannot create "%s" dir: "%s"', $destDirectory, $status));
                         }
-
-                        if(!is_writable($destDirectory))
-                        {
-                            throw new CommandException(sprintf('Directory \'%s\' must be writable', $destDirectory));
-                        }
-
-                        touch($dest);
-                        chmod($dest, 0777);
                     }
 
-                    if(!is_writable($dest))
+                    if(!is_writable($destDirectory))
                     {
-                        throw new CommandException(sprintf('Cannot write to file \'%s\'', $dest));
+                        throw new CommandException(sprintf('Directory "%s" must be writable', $destDirectory));
                     }
-
-                    copy($fileInfo->getPathname(), $dest);
-
-                    $this->addOutput(sprintf('Caching file %s', $dest));
+                    touch($dest);
+                    chmod($dest, 0777);
                 }
+
+                if(!is_writable($dest))
+                {
+                    throw new CommandException(sprintf('Cannot write to file "%s"', $dest));
+                }
+
+                copy($fileInfo->getPathname(), $dest);
+
+                $this->addOutput(sprintf('Caching file %s', $dest) . PHP_EOL);
             }
         }
 
@@ -74,5 +77,10 @@ class Build extends Command
     public function isValid(CommandParameters $commandParameters)
     {
         return true;
+    }
+
+    private function isResource(\SplFileInfo $fileInfo)
+    {
+        return in_array($fileInfo->getExtension(), self::CACHEABLES_EXTENSIONS);
     }
 }

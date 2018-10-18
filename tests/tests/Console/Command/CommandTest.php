@@ -31,6 +31,10 @@ class CommandTest extends ConsoleTestCase
                 Command\Cache\Clear::class,
                 'cache:clear'
             ],
+            'DataSet build cache command' => [
+                Command\Cache\Build::class,
+                'cache:build'
+            ],
             'DataSet ssh command' => [
                 Command\Docker\Ssh::class,
                 'docker:ssh'

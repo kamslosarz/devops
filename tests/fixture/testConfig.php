@@ -17,6 +17,6 @@ return [
         'adapter' => 'files',
         'path' => dirname(dirname(__DIR__)) . '/tests/fixture/langs'
     ],
-    'web_dir' => dirname(dirname(__DIR__)) . '/www',
+    'web_dir' => FIXTURE_DIR. '/www',
     'servicesMapFIle' => __DIR__ . '/serviceMap.php',
 ];

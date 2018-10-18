@@ -15,6 +15,19 @@ abstract class Command
     const COMMAND_NAMESPACE = 'Application\Console\Command\Command';
     private $output;
 
+
+    public function __construct()
+    {
+        $this->serviceContainer = new ServiceContainer();
+    }
+
+    public function setServiceContainer(ServiceContainer $serviceContainer)
+    {
+        $this->serviceContainer = $serviceContainer;
+
+        return $this;
+    }
+
     /**
      * @param $command
      * @return mixed|null
@@ -29,11 +42,6 @@ abstract class Command
         $command = self::getCommandNamespace($command);
 
         return Factory::getInstance($command);
-    }
-
-    public function __construct()
-    {
-        $this->serviceContainer = new ServiceContainer();
     }
 
     /**
@@ -62,6 +70,7 @@ abstract class Command
 
     /**
      * @return mixed
+     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function getLogger()

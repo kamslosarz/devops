@@ -4,6 +4,7 @@ namespace Application\Controller;
 
 
 use Application\Factory\Factory;
+use Application\Form\Form;
 use Application\Router\Router;
 use Application\Service\ServiceContainer\ServiceContainer;
 
@@ -77,7 +78,7 @@ abstract class Controller
     /**
      * @param $form
      * @param null $entity
-     * @return mixed
+     * @return Form
      * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */

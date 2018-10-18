@@ -24,7 +24,6 @@ class ConsoleParameters extends ParameterHolder
             unset($parameters[1]);
         }
 
-
         parent::__construct(array_values($parameters));
     }
 
@@ -35,23 +34,19 @@ class ConsoleParameters extends ParameterHolder
 
     public function getCommandParameters()
     {
-        if($this->commandParameters instanceof CommandParameters)
-        {
-            return $this->commandParameters;
-        }
-        else
+        if(!$this->commandParameters instanceof CommandParameters)
         {
             $this->commandParameters = new CommandParameters($this->parameters);
-
-            return $this->commandParameters;
         }
+
+        return $this->commandParameters;
     }
 
-    public function getCommandClassName($string)
+    private function getCommandClassName($string)
     {
         $name = preg_replace_callback(self::COMMAND_PATTERN, function ($args)
         {
-            return sprintf('%s\\%s%s', self::normalizeCommand($args[1]), $args[2], $args[3]);
+            return sprintf('%s\\%s%s', $this->normalizeCommand($args[1]), $args[2], $args[3]);
 
         }, $string, 1, $count);
 
@@ -62,11 +57,11 @@ class ConsoleParameters extends ParameterHolder
 
         return preg_replace_callback(self::CLASS_LAST_NAMESPACE_FRAGMENT, function ($args)
         {
-            return sprintf('%s%s', $args[1], self::normalizeCommand($args[2]));
+            return sprintf('%s%s', $args[1], $this->normalizeCommand($args[2]));
         }, $name);
     }
 
-    public static function normalizeCommand($string)
+    private function normalizeCommand($string)
     {
         return preg_replace_callback(self::COMMAND_NAME_PATTERN, function ($letter)
         {

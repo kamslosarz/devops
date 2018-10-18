@@ -1,11 +1,13 @@
-- add create ProjectControllerTest
+- add commands tests
+- add ProjectControllerTest
 - add profiler
 - add annotation
     - route annotation
     - validate request method type
     - request method annotation
  - add sqlite user perms
-- refactor to create instance of framework usage. Framework will be used as composer requirement
+- refactor to framework will be used as composer requirement
     - create place to test controllers (functional)
     - create place to develop services, controllers, views
 - add command to generate crud based on php array config (index/list, edit, delete, create, details)
+- move database to other container

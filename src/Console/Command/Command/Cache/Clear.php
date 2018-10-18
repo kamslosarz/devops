@@ -11,6 +11,8 @@ class Clear extends Command
     public function execute(CommandParameters $commandParameters)
     {
         shell_exec(sprintf('rm -rf %s/assets/*', Config::get('web_dir')));
+
+        return true;
     }
 
     public function isValid(CommandParameters $commandParameters)

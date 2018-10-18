@@ -62,7 +62,7 @@ class UserTest extends FunctionalTestCase
 
     protected function setUp()
     {
-        Config::set(Config::loadFlatFile(FIXTURE_DIR . '/controllersTestConfig.php'));
+        Config::set(Config::loadFlatFile(FIXTURE_DIR . '/testConfig.php'));
 
         parent::setUp();
     }

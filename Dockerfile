@@ -2,14 +2,12 @@ FROM php:7.2.11-apache
 RUN apt-get update -q && \
     a2enmod env && \
     a2enmod rewrite && \
-    apt-get install zip unzip  && \
+    apt-get install -y zip unzip git openssh-client sqlite3 && \
     docker-php-ext-install pdo_mysql && \
     rm -rf /var/www/devops && \
     mkdir 0777 /var/www/devops && \
     useradd -g www-data -d /var/www/devops -s /bin/bash -p $(echo devops | openssl passwd -1 -stdin) devops && \
-    chown -R devops:www-data /var/www/devops && \
-    apt-get install -y git && \
-    apt-get install openssh-client
+    chown -R devops:www-data /var/www/devops
 
 ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 EXPOSE 80
@@ -33,7 +31,8 @@ RUN chown -R devops:www-data  /var/www/devops
 RUN chmod 777 deploy/prepareEnv.sh
 CMD /usr/sbin/apache2ctl -D FOREGROUND
 
-#USER devops
-#RUN ./deploy/prepareEnv.sh
+USER devops
+RUN ./deploy/prepareEnv.sh
+USER root
 
 

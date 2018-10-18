@@ -6,7 +6,7 @@ use Application\Application;
 
 abstract class Config
 {
-    public static $config;
+    private static $config;
     private static $configs = [];
 
     public static function set($config)

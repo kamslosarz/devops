@@ -4,6 +4,7 @@ namespace Application\Controller\Admin;
 
 use Application\Config\Config;
 use Application\Controller\Controller;
+use Application\Form\Form;
 use Application\Form\User\LoginForm;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\RedirectResponse;
@@ -22,6 +23,7 @@ class UserController extends Controller
      */
     public function loginAction()
     {
+        /** @var Form $form */
         $form = $this->getForm(LoginForm::class);
         $request = $this->getRequest();
 
