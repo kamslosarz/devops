@@ -3,38 +3,22 @@
 namespace tests\Annotations\Converter\Types;
 
 
-use Application\Annotations\AnnotationException;
 use Application\Annotations\Converter\Types\ModelConverter;
-use Model\Base\UserQuery;
 use Model\User;
 use PHPUnit\DbUnit\DataSet\ArrayDataSet;
 use Test\TestCase\DatabaseTestCase;
 
 class ModelConverterTest extends DatabaseTestCase
 {
-    public function testShouldThrowAnnotationExceptionWhenObjectNotFound()
+    public function testShouldInvalidateConverter()
     {
         $options = new \stdClass();
         $options->type = 'Model';
-        $options->class = User::class;
+        $options->class = 'Model\Base\NotExistingModelTest';
 
         $modelConverter = new ModelConverter($options);
-        $model = $modelConverter(1);
 
-        $this->assertNull($model);
-    }
-
-    public function testShouldThrowAnnotationExceptionWhenModelNotExists()
-    {
-        $this->expectException(AnnotationException::class);
-        $this->expectExceptionMessage('Model to convert not exists');
-
-        $options = new \stdClass();
-        $options->type = 'Model';
-        $options->class = '\Model\ModelThatNotExists';
-
-        $modelConverter = new ModelConverter($options);
-        $modelConverter(10);
+        $this->assertFalse($modelConverter->isValid());
     }
 
     public function testShouldConvertModel()

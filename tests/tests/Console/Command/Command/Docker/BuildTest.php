@@ -19,17 +19,19 @@ class BuildTest extends TestCase
     public function testShouldValidateCommand()
     {
         $build = m::mock(Build::class)
-            ->shouldAllowMockingProtectedMethods()
             ->makePartial()
+            ->shouldAllowMockingProtectedMethods()
             ->shouldReceive('executeInShell')
-            ->with('docker-compose up --build -d')
             ->once()
-            ->andReturnUsing(function ($arg){
+            ->andReturnUsing(function ($arg)
+            {
                 return $arg;
             })->getMock();
 
         $build->setServiceContainer($this->getServiceContainerMockBuilder()->build());
         $build->execute(m::mock(CommandParameters::class));
-        $build->shouldHaveReceived('executeInShell')->once();
+        $build->shouldHaveReceived('executeInShell')
+            ->with('docker-compose up --build -d')
+            ->once();
     }
 }

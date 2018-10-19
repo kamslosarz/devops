@@ -10,17 +10,16 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             ->shouldReceive('__invoke')
             ->andReturnTrue()
             ->getMock()
-            ->shouldReceive('getResults')
+            ->shouldReceive('getResponse')
             ->andReturn(m::mock(\Application\Response\Response::class))
             ->getMock();
 
         $application = new \Application\Application();
         $application->setContainer($containerMock);
-        $results = $application();
+        $response = $application()->getResponse();
 
-        $this->assertInstanceOf(\Application\Response\Response::class, $results);
-        $containerMock->shouldHaveReceived('__invoke')
-            ->once();
+        $this->assertInstanceOf(\Application\Response\Response::class, $response);
+        $containerMock->shouldHaveReceived('__invoke')->once();
     }
 
     public function testShouldSetDifferentEnvironments()

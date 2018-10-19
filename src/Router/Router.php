@@ -97,7 +97,6 @@ class Router
      * @param $action
      * @param array $parameters
      * @return int|mixed|null|string
-     * @throws RouteException
      */
     public static function getRouteUrlByParameters($controller, $action, $parameters = [])
     {
@@ -114,11 +113,6 @@ class Router
                     $relativeUrl = str_replace(sprintf('[%s]', $key), $value, $relativeUrl);
                 }
             }
-        }
-
-        if(!$relativeUrl)
-        {
-            throw new RouteException(sprintf('Route \'%s:%s\' with parameters \'%s\' not found', $controller, $action, implode(',', $parameters)));
         }
 
         return $relativeUrl;

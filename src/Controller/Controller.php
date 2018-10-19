@@ -17,7 +17,6 @@ abstract class Controller
      * Controller constructor.
      * @param ServiceContainer $serviceContainer
      * @param Router $router
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function __construct(ServiceContainer $serviceContainer, Router $router)
@@ -37,7 +36,6 @@ abstract class Controller
     /**
      * @param $serviceName
      * @return mixed
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     protected function getService($serviceName)
@@ -47,7 +45,6 @@ abstract class Controller
 
     /**
      * @return mixed
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     protected function getUser()
@@ -57,7 +54,6 @@ abstract class Controller
 
     /**
      * @return mixed
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     protected function getRequest()
@@ -67,7 +63,6 @@ abstract class Controller
 
     /**
      * @return mixed
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     protected function getTranslator()
@@ -79,7 +74,6 @@ abstract class Controller
      * @param $form
      * @param null $entity
      * @return Form
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     protected function getForm($form, $entity = null)

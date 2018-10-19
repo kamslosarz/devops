@@ -14,7 +14,6 @@ class ServiceContainer
      * @param $serviceName
      * @return mixed
      * @throws ServiceContainerException
-     * @throws \Application\Config\ConfigException
      */
     public function getService($serviceName)
     {
@@ -30,7 +29,6 @@ class ServiceContainer
      * @param $serviceName
      * @return mixed
      * @throws ServiceContainerException
-     * @throws \Application\Config\ConfigException
      */
     private function loadService($serviceName)
     {

@@ -2,7 +2,7 @@
 
 namespace tests\Annotations\Annotation;
 
-use Application\Annotations\Converter\Converter;
+use Application\Annotations\Converter\ConverterAnnotation;
 use Application\Router\Dispatcher\ControllerParameters;
 use Model\User;
 use PHPUnit\DbUnit\DataSet\ArrayDataSet;
@@ -26,7 +26,7 @@ class ConverterTest extends TestCase
     public function testShouldConvertParameter($name, $value, $options, $converted)
     {
         $controllerParameters = new ControllerParameters([$name => $value]);
-        $converter = new Converter($name, $value, $options);
+        $converter = new ConverterAnnotation($name, $value, $options);
         $converter->annotate($controllerParameters);
         $controllerParameters->overrideParameters();
 
@@ -36,7 +36,7 @@ class ConverterTest extends TestCase
     public function shouldConvertParameter()
     {
         return [
-            'Test case Converter' => [
+            'Test case ConverterAnnotation' => [
                 'user',
                 999,
                 json_decode(json_encode([

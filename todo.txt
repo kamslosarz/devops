@@ -1,5 +1,3 @@
-- add commands tests
-- add ProjectControllerTest
 - add profiler
 - add annotation
     - route annotation

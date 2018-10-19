@@ -10,4 +10,7 @@ abstract class ConverterType
     {
         $this->options = $options;
     }
+
+    abstract public function isValid(): bool;
+    abstract public function __invoke($value);
 }

@@ -44,7 +44,7 @@ class Annotations
     private function parseDocComment($comment)
     {
         $annotations = [];
-        $annotationsMap = AnnotationsMap::getMap();
+        $annotationsMap = AnnotationsMap::MAP;
         $commentLines = preg_split("/\*(\.*)/", $comment);
 
         foreach($commentLines as $commentLine)

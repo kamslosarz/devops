@@ -61,7 +61,7 @@ abstract class Config
             return include $filename;
         }
 
-        throw new ConfigException(sprintf('File \'%s\' not exists', $filename));
+        return [];
     }
 
 }

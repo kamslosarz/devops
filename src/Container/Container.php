@@ -24,12 +24,11 @@ class Container
     protected $context;
     /** @var ServiceContainer */
     protected $serviceContainer;
-    protected $results;
+    protected $response;
     protected $view;
 
     /**
      * Container constructor.
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
      */
@@ -43,22 +42,21 @@ class Container
     /**
      * @return bool
      * @throws RouteException
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
     public function __invoke()
     {
-        if(!$this->results)
+        if(!$this->response)
         {
             try
             {
                 ($this->context)();
-                $this->results = $this->context->getResults();
+                $this->response = $this->context->getResponse();
             }
             catch(RouteException $routeException)
             {
-                $this->results = new ErrorResponse(['exception' => $routeException]);
+                $this->response = new ErrorResponse(['exception' => $routeException]);
             }
             catch(AccessDeniedException $accessDeniedException)
             {
@@ -67,40 +65,35 @@ class Container
                 if($this->serviceContainer->getService('accessChecker')->hasAccess($route))
                 {
                     $this->serviceContainer->getService('appender')->append($accessDeniedException->getMessage(), AppenderLevel::ERROR);
-                    $this->results = new RedirectResponse($this->context->getRouter()->getRouteByName(Config::get('defaultAction'))->getUrl());
+                    $this->response = new RedirectResponse($this->context->getRouter()->getRouteByName(Config::get('defaultAction'))->getUrl());
                 }
                 else
                 {
-                    $this->results = new RedirectResponse($this->context->getRouter()->getRouteByName(Config::get('loginAction'))->getUrl());
+                    $this->response = new RedirectResponse($this->context->getRouter()->getRouteByName(Config::get('loginAction'))->getUrl());
                 }
             }
 
-            switch($this->results->getType())
+            switch($this->response->getType())
             {
                 case ResponseTypes::JSON:
-                    $this->results->setContent($this->results->getJson());
+                    $this->response->setContent($this->response->getJson());
                     break;
                 case ResponseTypes::ERROR:
-                    $this->results->setContent($this->view->render(new ViewElement(
+                    $this->response->setContent($this->view->render(new ViewElement(
                         'error',
-                        $this->results->getParameters()
+                        $this->response->getParameters()
                     )));
                     break;
                 case ResponseTypes::REDIRECT:
 
                     break;
                 default:
-
-                    $this->results->setContent($this->view->render(new ViewElement(
-                        $this->results->getRoute(),
-                        $this->results->getParameters()
+                    $this->response->setContent($this->view->render(new ViewElement(
+                        $this->response->getRoute(),
+                        $this->response->getParameters()
                     )));
-
                     break;
             }
-
-            $this->serviceContainer->getService('session')->save();
-            $this->serviceContainer->getService('cookie')->save();
         }
 
         return true;
@@ -109,9 +102,9 @@ class Container
     /**
      * @return Response
      */
-    public function getResults()
+    public function getResponse()
     {
-        return $this->results;
+        return $this->response;
     }
 
     public function getContext()

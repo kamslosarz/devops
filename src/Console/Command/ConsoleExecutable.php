@@ -15,7 +15,6 @@ abstract class ConsoleExecutable extends Command
             passthru($command, $return_var);
         }
 
-
         return $return_var;
     }
 }

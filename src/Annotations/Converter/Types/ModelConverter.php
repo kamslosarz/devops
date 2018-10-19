@@ -2,54 +2,39 @@
 
 namespace Application\Annotations\Converter\Types;
 
-
-use Application\Annotations\AnnotationException;
-use Model\UserQuery;
+use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 
 class ModelConverter extends ConverterType
 {
-    /**
-     * @param $value
-     * @return mixed
-     * @throws AnnotationException
-     */
-    public function __invoke($value)
+    private $class;
+
+    public function __construct(\stdClass $options)
     {
-        try
-        {
-            $class = $this->getModelQueryClass();
+        parent::__construct($options);
 
-            if(!class_exists($class))
-            {
-                throw new AnnotationException('Model to convert not exists');
-            }
-
-            return eval($this->getInvokeCommand($value, $class));
-        }
-        catch(\Exception $e)
-        {
-            throw new AnnotationException(sprintf('Unable to convert model "%s"', $e->getMessage(), $e->getCode(), $e));
-        }
+        $this->class = $this->getModelQueryClass();
     }
 
-    /**
-     * @return string
-     */
-    private function getModelQueryClass()
+    public function __invoke($value)
+    {
+        return eval($this->getInvokeCommand($value));
+    }
+
+    public function isValid(): bool
+    {
+        return class_exists($this->class);
+    }
+
+    private function getModelQueryClass(): string
     {
         return sprintf('%sQuery', $this->options->class);
     }
 
-    /**
-     * @param $value
-     * @param $class
-     * @return string
-     */
-    private function getInvokeCommand($value, $class)
+    private function getInvokeCommand($value): string
     {
         return sprintf(
             "return %s::create()->filterByPrimaryKey(%d)->findOne();",
-            $class,
+            $this->class,
             $value);
     }
 }

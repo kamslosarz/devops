@@ -57,9 +57,7 @@ class ApplicationContainer
         $_SESSION = $this->request->getSession();
         $_COOKIE = $this->request->getCookie();
 
-        $application = new Application(Application::TEST);
-        $application();
-        $this->response = $application->getResults();
+        $this->response = (new Application(Application::TEST))()->getResponse();
 
         return $this->response->getContent();
     }

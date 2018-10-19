@@ -2,16 +2,11 @@
 
 namespace Application\Annotations;
 
-use Application\Annotations\Converter\Converter;
+use Application\Annotations\Converter\ConverterAnnotation;
 
 class AnnotationsMap
 {
-    private static $map = [
-        '@convert' => Converter::class
+    const MAP = [
+        '@convert' => ConverterAnnotation::class
     ];
-
-    public static function getMap()
-    {
-        return self::$map;
-    }
 }

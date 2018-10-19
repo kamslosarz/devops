@@ -23,9 +23,8 @@ class Console
      * @return mixed
      * @throws ConsoleException
      * @throws \Application\Router\Dispatcher\DispatcherException
-     * @throws \ReflectionException
      */
-    public function run()
+    public function __invoke()
     {
         /** @var Command $command */
         $command = Command::getCommand($this->consoleParameters->getCommand());

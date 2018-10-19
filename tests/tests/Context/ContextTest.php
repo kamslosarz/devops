@@ -101,7 +101,7 @@ class ContextTest extends TestCase
         $context = new Context($serviceContainerMock);
         $context();
 
-        $response = $context->getResults();
+        $response = $context->getResponse();
 
         $this->assertInstanceOf(Response::class, $response, 'invalid response type');
         $this->assertEquals([], $response->getHeaders(), 'invalid response headers');
@@ -153,7 +153,7 @@ class ContextTest extends TestCase
         $context = new Context($serviceContainerMock->build());
 
         $context();
-        $response = $context->getResults();
+        $response = $context->getResponse();
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertEquals(['Location: /admin/login'], $response->getHeaders());

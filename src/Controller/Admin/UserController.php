@@ -17,7 +17,6 @@ class UserController extends Controller
 {
     /**
      * @return Response|RedirectResponse
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Propel\Runtime\Exception\PropelException
      */
@@ -56,7 +55,6 @@ class UserController extends Controller
 
     /**
      * @return RedirectResponse
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Response\ResponseTypes\RedirectResponseException
@@ -95,7 +93,6 @@ class UserController extends Controller
     /**
      * @param User $user
      * @return Response
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Propel\Runtime\Exception\PropelException
      * @convert('user', options={"type":"Model", "class":"\Model\User"})

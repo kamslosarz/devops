@@ -17,15 +17,6 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('/admin/login', $config['app_admin_login']['url']);
     }
 
-    public function testShouldThrowConfigException()
-    {
-        $filename = FIXTURE_DIR . DIRECTORY_SEPARATOR . 'NOT_EXISTING_FILE.txt';
-        $this->expectException(\Application\Config\ConfigException::class);
-        $this->expectExceptionMessage(sprintf('File \'%s\' not exists', $filename));
-
-        \Application\Config\Config::loadFlatFile($filename);
-    }
-
     /**
      * @param $env
      * @param $filename

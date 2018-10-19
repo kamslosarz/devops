@@ -21,7 +21,7 @@ try
 {
     $console = new Console(new ConsoleParameters($argv));
 
-    echo $console->run();
+    echo $console();
 }
 catch(\Application\Console\ConsoleException $e)
 {

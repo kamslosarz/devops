@@ -23,13 +23,12 @@ class Context
     private $appender;
     private $serviceContainer;
     /** @var Response */
-    private $results;
+    private $response;
 
     /**
      * Context constructor.
      * @param ServiceContainer $serviceContainer
      * @throws ServiceContainerException
-     * @throws \Application\Config\ConfigException
      */
     public function __construct(ServiceContainer $serviceContainer)
     {
@@ -43,7 +42,6 @@ class Context
      * @throws AccessDeniedException
      * @throws RouteException
      * @throws ServiceContainerException
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Router\Dispatcher\DispatcherException
      */
     public function __invoke()
@@ -70,8 +68,8 @@ class Context
         $dispatcher->dispatch($controllerParameters);
 
         /** @var Response $response */
-        $this->results = $dispatcher->getResponse();
-        $this->results->setRoute($route);
+        $this->response = $dispatcher->getResponse();
+        $this->response->setRoute($route);
     }
 
     public function getRouter()
@@ -84,9 +82,9 @@ class Context
         return $this->appender;
     }
 
-    public function getResults()
+    public function getResponse()
     {
-        return $this->results;
+        return $this->response;
     }
 
 }

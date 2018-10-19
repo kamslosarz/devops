@@ -2,6 +2,7 @@
 
 namespace tests\Functional\Controller;
 
+use Application\Config\ConfigException;
 use Test\TestCase\ControllerTestCase;
 use Application\Config\Config;
 use Test\TestCase\FunctionalTestCase;
@@ -19,9 +20,7 @@ class UserTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @throws \Propel\Runtime\Exception\PropelException
-     */
+
     public function testShouldLogoutAction()
     {
         $dispatcher = $this->getApplicationContainer();
@@ -32,6 +31,9 @@ class UserTest extends FunctionalTestCase
         $this->assertEquals('Successfully logged out', $_SESSION['messages']['SUCCESS']);
     }
 
+    /**
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
     public function testShouldExecuteLoginActionPostAndLoginUser()
     {
         $dispatcher = $this->getApplicationContainer(false);
@@ -42,17 +44,16 @@ class UserTest extends FunctionalTestCase
         ]);
 
         $dispatcher->dispatch('/admin/login');
+
         $this->assertEquals(
             $_SESSION[\Application\Service\AuthService\AuthService::AUTH_KEY_NAME],
-            $this->getUser()->getUserAuthTokens(
-                \Model\UserAuthTokenQuery::create()->limit(1)->orderByCreatedAt(\Propel\Runtime\ActiveQuery\ModelCriteria::DESC)
-            )->getFirst()->getToken()
+            $this->getUser()
+                ->getUserAuthTokens(\Model\UserAuthTokenQuery::create()->limit(1)->orderByCreatedAt(\Propel\Runtime\ActiveQuery\ModelCriteria::DESC))
+                ->getFirst()
+                ->getToken()
         );
-        $this->assertEquals(
-            $_SESSION['messages'], [
-                'SUCCESS' => 'Successfully logged in'
-            ]
-        );
+
+        $this->assertEquals($_SESSION['messages'], ['SUCCESS' => 'Successfully logged in']);
     }
 
     public function getDataSet()

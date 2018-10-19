@@ -34,7 +34,7 @@ class ContainerTest extends TestCase
             ->shouldReceive('__invoke')
             ->once()
             ->getMock()
-            ->shouldReceive('getResults')
+            ->shouldReceive('getResponse')
             ->once()
             ->andReturn((new \Application\Response\Response([
                 'test', 'test'
@@ -48,7 +48,7 @@ class ContainerTest extends TestCase
         $container = new \Test\Decorator\ContainerDecorator($this->getServiceContainerMockBuilder()->build(), $contextMock);
         $container();
 
-        $this->assertEquals(1, preg_match_all('/<html lang=\"[a-z]+\">(.*?)<\/html>/si', $container->getResults()->getContent()));
+        $this->assertEquals(1, preg_match_all('/<html lang=\"[a-z]+\">(.*?)<\/html>/si', $container->getResponse()->getContent()));
     }
 
     /**
@@ -68,7 +68,7 @@ class ContainerTest extends TestCase
         $contextMock = m::mock(\Application\Context\Context::class)
             ->shouldReceive('__invoke')
             ->getMock()
-            ->shouldReceive('getResults')
+            ->shouldReceive('getResponse')
             ->andReturn(
                 m::mock(\Application\Service\Request\Request::class)
                     ->shouldReceive('getType')
@@ -157,7 +157,7 @@ class ContainerTest extends TestCase
         $container();
 
         /** @var \Application\Response\ResponseTypes\RedirectResponse $response */
-        $response = $container->getResults();
+        $response = $container->getResponse();
 
         $this->assertInstanceOf(\Application\Response\ResponseTypes\RedirectResponse::class, $response);
         $this->assertEquals(['Location: app_admin_index'], $response->getHeaders());
@@ -208,7 +208,7 @@ class ContainerTest extends TestCase
         $container();
 
         /** @var \Application\Response\ResponseTypes\RedirectResponse $response */
-        $response = $container->getResults();
+        $response = $container->getResponse();
 
         $this->assertInstanceOf(\Application\Response\ResponseTypes\RedirectResponse::class, $response);
         $this->assertEquals(['Location: app_admin_login'], $response->getHeaders());
@@ -221,7 +221,7 @@ class ContainerTest extends TestCase
      * @throws \Application\View\Twig\TwigFactoryException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
-    public function testShouldReturnErrorResponse()
+    public function testShouldReturnErrorResponseOnContextInvokeError()
     {
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMockBuilder->setAccessCheckerMock(
@@ -231,18 +231,15 @@ class ContainerTest extends TestCase
                 ->andReturn(true)
                 ->getMock()
         );
+
         $contextMock = m::mock(\Application\Context\Context::class)
             ->shouldReceive('__invoke')
-            ->andThrow(\Application\Router\RouteException::class, 'Route \'/a/s/d/1\' not found')
+            ->andThrows(\Application\Router\RouteException::class)
             ->getMock();
 
         $viewMock = m::mock(\Application\View\View::class)
             ->shouldReceive('render')
-            ->withArgs(function (\Application\View\ViewElement $viewElement)
-            {
-                return (($viewElement->getParameters()['exception'] instanceof \Application\Router\RouteException) && $viewElement->getParameters()['exception']->getMessage() === 'Route \'/a/s/d/1\' not found');
-            })
-            ->andReturn('error: Route \'/a/s/d/1\' not found')
+            ->andReturn('Route \'/a/s/d/1\' not found')
             ->getMock();
 
         $container = new \Test\Decorator\ContainerDecorator(
@@ -254,11 +251,11 @@ class ContainerTest extends TestCase
         $container();
 
         /** @var \Application\Response\ResponseTypes\RedirectResponse $response */
-        $response = $container->getResults();
+        $response = $container->getResponse();
 
         $this->assertInstanceOf(\Application\Response\ResponseTypes\ErrorResponse::class, $response);
         $this->assertInstanceOf(\Application\Router\RouteException::class, $response->getParameters()['exception']);
-        $this->assertEquals('Route \'/a/s/d/1\' not found', $response->getParameters()['exception']->getMessage());
+        $this->assertEquals('Route \'/a/s/d/1\' not found', $response->getContent());
     }
 
     /**
@@ -285,7 +282,7 @@ class ContainerTest extends TestCase
             ->shouldReceive('__invoke')
             ->once()
             ->getMock()
-            ->shouldReceive('getResults')
+            ->shouldReceive('getResponse')
             ->once()
             ->andReturn($jsonResponse)
             ->getMock();
@@ -303,7 +300,7 @@ class ContainerTest extends TestCase
         $container();
 
         /** @var \Application\Response\ResponseTypes\JsonResponse $response */
-        $response = $container->getResults();
+        $response = $container->getResponse();
 
         $this->assertInstanceOf(\Application\Response\ResponseTypes\JsonResponse::class, $response);
         $this->assertEquals(json_encode($responseParameters), $response->getContent());
@@ -333,7 +330,7 @@ class ContainerTest extends TestCase
             ->shouldReceive('__invoke')
             ->once()
             ->getMock()
-            ->shouldReceive('getResults')
+            ->shouldReceive('getResponse')
             ->once()
             ->andReturn($errorResponse)
             ->getMock();
@@ -351,7 +348,7 @@ class ContainerTest extends TestCase
         $container();
 
         /** @var \Application\Response\ResponseTypes\JsonResponse $response */
-        $response = $container->getResults();
+        $response = $container->getResponse();
 
         $this->assertInstanceOf(\Application\Response\ResponseTypes\ErrorResponse::class, $response);
         $this->assertEquals($responseParameters, $response->getParameters());

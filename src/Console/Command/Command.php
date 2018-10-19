@@ -70,7 +70,6 @@ abstract class Command
 
     /**
      * @return mixed
-     * @throws \Application\Config\ConfigException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function getLogger()

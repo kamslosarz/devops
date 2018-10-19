@@ -14,9 +14,15 @@ final class Application
     private static $environment = '';
 
     /** @var Response $response */
-    private $results = null;
+    private $response = null;
     private $container = null;
 
+    /**
+     * Application constructor.
+     * @param string $environment
+     * @throws Service\ServiceContainer\ServiceContainerException
+     * @throws View\Twig\TwigFactoryException
+     */
     public function __construct($environment = '')
     {
         self::$environment = $environment;
@@ -27,18 +33,18 @@ final class Application
 
     public function __invoke()
     {
-        if(is_null($this->results))
+        if(is_null($this->response))
         {
             ($this->container)();
-            $this->results = $this->container->getResults();
+            $this->response = $this->container->getResponse();
         }
 
-        return $this->results;
+        return $this;
     }
 
-    public function getResults()
+    public function getResponse()
     {
-        return $this->results;
+        return $this->response;
     }
 
     public static function getEnvironment()

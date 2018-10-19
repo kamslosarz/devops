@@ -3,7 +3,7 @@
 namespace tests\Annotations;
 
 use Application\Annotations\Annotations;
-use Application\Annotations\Converter\Converter;
+use Application\Annotations\Converter\ConverterAnnotation;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
 
@@ -61,7 +61,7 @@ class AnnotationsTest extends TestCase
                  * @return Response
                  * @throws \Propel\Runtime\Exception\PropelException
                  */',
-                [Converter::class, Converter::class]
+                [ConverterAnnotation::class, ConverterAnnotation::class]
             ],
             'dataSet converter 2' => [
                 '/**
@@ -71,7 +71,7 @@ class AnnotationsTest extends TestCase
                  * @return Response
                  * @throws \Propel\Runtime\Exception\PropelException
                  */',
-                [Converter::class, Converter::class]
+                [ConverterAnnotation::class, ConverterAnnotation::class]
             ],
         ];
 
