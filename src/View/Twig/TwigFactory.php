@@ -11,10 +11,10 @@ abstract class TwigFactory
 {
     /**
      * @param ServiceContainer $serviceContainer
+     * @param $config
      * @return \Twig_Environment
-     * @throws TwigFactoryException
      */
-    public static function getInstance(ServiceContainer $serviceContainer, $config)
+    public static function getInstance(ServiceContainer $serviceContainer, $config): \Twig_Environment
     {
         $loader = new \Twig_Loader_Filesystem($config['loader']['templates']);
         $twig = new \Twig_Environment($loader, [

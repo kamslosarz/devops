@@ -2,13 +2,14 @@
 
 namespace Application\Console\Command\Command\Docker;
 
+use Application\Console\Command\Command;
 use Application\Console\Command\Command\CommandParameters;
-use Application\Console\Command\ConsoleExecutable;
+use Application\Response\ResponseTypes\ConsoleResponse;
 
-class Build extends ConsoleExecutable
+class Build extends Command
 {
-    public function execute(CommandParameters $commandParameters)
+    public function execute(CommandParameters $commandParameters): ConsoleResponse
     {
-        $this->executeInShell('docker-compose up --build -d');
+        return $this->setOutput($this->executeInShell('docker-compose up --build -d'))->sendOutput();
     }
 }

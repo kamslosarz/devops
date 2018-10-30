@@ -8,91 +8,26 @@ use Test\TestCase\ConsoleTestCase;
 
 class ConsoleTest extends ConsoleTestCase
 {
-    public function testShouldCreateInstance()
-    {
-        $consoleParameters = new ConsoleParameters([
-            'test',
-            'test'
-        ]);
-
-        $console = new Console($consoleParameters);
-        $this->assertInstanceOf(Console::class, $console);
-    }
+    use \Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 
     /**
-     * @throws ConsoleException
-     * @throws ReflectionException
-     * @throws \Application\Router\Dispatcher\DispatcherException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
-    public function testShouldExecuteCommand()
+    public function testShouldInvokeConsoleCommand()
     {
-        $commandParametersMock = m::mock(\Application\Console\Command\Command\CommandParameters::class)
-            ->shouldReceive('toArray')
-            ->andReturns([
-                'TestExecuteCommandAdminUsername',
-                'TestExecuteCommandAdminPassword'
-            ])
-            ->getMock();
-
-        $consoleParametersMock = m::mock(ConsoleParameters::class)
+        $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
+        $consoleParameters = m::mock(ConsoleParameters::class);
+        $consoleParameters
             ->shouldReceive('getCommand')
-            ->once()
-            ->andReturns('Admin\Create')
+            ->andReturn('test:command')
             ->getMock()
             ->shouldReceive('getCommandParameters')
-            ->once()
-            ->andReturns($commandParametersMock)
+            ->andReturn(m::mock(\Application\Console\Command\Command\CommandParameters::class))
             ->getMock();
 
-        $results = (new Console($consoleParametersMock))();
-        $this->assertEquals('Admin created', $results);
+        $console = new Console($consoleParameters, $this->getServiceContainerConfig());
+        $response = $console();
+
+        $this->assertThat($response->getContent(), self::equalTo('Test command invoked'));
     }
-
-    /**
-     * @param $exceptionMessage
-     * @param $command
-     * @param $parameters
-     * @throws ConsoleException
-     * @throws ReflectionException
-     * @throws \Application\Router\Dispatcher\DispatcherException
-     *
-     * @dataProvider shouldThrowConsoleException
-     */
-    public function testShouldThrowConsoleException($exceptionMessage, $command, $parameters)
-    {
-        $commandParametersMock = m::mock(\Application\Console\Command\Command\CommandParameters::class);
-        foreach($parameters as $key => $value)
-        {
-            $commandParametersMock->{$key} = $value;
-        }
-
-        $this->expectException(ConsoleException::class);
-        $this->expectExceptionMessage($exceptionMessage);
-
-        $consoleParametersMock = m::mock(ConsoleParameters::class)
-            ->shouldReceive('getCommand')
-            ->once()
-            ->andReturns($command)
-            ->getMock()
-            ->shouldReceive('getCommandParameters')
-            ->once()
-            ->andReturns($parameters)
-            ->getMock();
-
-        $console = new Console($consoleParametersMock);
-
-        $console();
-    }
-
-    public function shouldThrowConsoleException()
-    {
-        return [
-            'invalid command' => [
-                'Command InvalidCommand\InvalidAction not found',
-                'InvalidCommand\InvalidAction',
-                []
-            ]
-        ];
-    }
-
 }

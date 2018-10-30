@@ -2,7 +2,6 @@
 
 namespace Application\Service\Translator\LanguageManager\Adapter;
 
-use Application\Config\Config;
 use Application\ParameterHolder\ParameterHolder;
 
 class FileAdapter extends Adapter
@@ -10,17 +9,17 @@ class FileAdapter extends Adapter
     /** @var ParameterHolder $resources */
     private $resources;
 
-    public function __construct($langCode)
+    public function __construct($langCode, $config)
     {
-        $this->loadLanguageResources($langCode);
+        $this->loadLanguageResources($langCode, $config);
     }
 
-    private function loadLanguageResources($langCode)
+    private function loadLanguageResources($langCode, $config): void
     {
         $this->resources = new ParameterHolder();
 
         /** @var \SplFileInfo $fileInfo */
-        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(Config::get('translator')['path']), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($config['path']), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
         {
             if($fileInfo->isFile() && $fileInfo->getBasename() === sprintf('%s.php', $langCode) && $fileInfo->getExtension() === 'php')
             {
@@ -29,12 +28,12 @@ class FileAdapter extends Adapter
         }
     }
 
-    public function getResource($key)
+    public function getResource($key): string
     {
         return $this->resources->{$key};
     }
 
-    public function hasResource($key)
+    public function hasResource($key): bool
     {
         return $this->resources->offsetExists($key);
     }

@@ -25,7 +25,11 @@ class LanguageManagerTest extends TestCase
             ->once()
             ->getMock();
 
-        $languageManager = new LanguageManager('en');
+        $languageManager = new LanguageManager('en', [
+            'adapter' => 'files',
+            'path' => FIXTURE_DIR . '/langs'
+        ]);
+
         $languageManager->setAdapter($adapterMock);
         $phrase = $languageManager->getPhrase('test-resource');
 

@@ -7,10 +7,6 @@ use Application\ParameterHolder\ParameterHolder;
 
 class ConsoleParameters extends ParameterHolder
 {
-    const COMMAND_PATTERN = '/([A-Za-z1-9\-]+):([A-Za-z1-9\-]+)([:]|$)/';
-    const COMMAND_NAME_PATTERN = '/\-([a-z]){1}/';
-    const CLASS_LAST_NAMESPACE_FRAGMENT = '/(\\\)([a-zA-Z0-9]+)$/';
-
     private $command;
     private $commandParameters;
 
@@ -18,7 +14,7 @@ class ConsoleParameters extends ParameterHolder
     {
         if(isset($parameters[1]))
         {
-            $this->command = $this->getCommandClassName($parameters[1]);
+            $this->command = $parameters[1];
 
             unset($parameters[0]);
             unset($parameters[1]);
@@ -27,51 +23,18 @@ class ConsoleParameters extends ParameterHolder
         parent::__construct(array_values($parameters));
     }
 
-    public function getCommand()
+    public function getCommand(): string
     {
         return $this->command;
     }
 
-    public function getCommandParameters()
+    public function getCommandParameters(): CommandParameters
     {
-        if(!$this->commandParameters instanceof CommandParameters)
+        if(!($this->commandParameters instanceof CommandParameters))
         {
             $this->commandParameters = new CommandParameters($this->parameters);
         }
 
         return $this->commandParameters;
-    }
-
-    private function getCommandClassName($string)
-    {
-        $name = preg_replace_callback(self::COMMAND_PATTERN, function ($args)
-        {
-            return sprintf('%s\\%s%s', $this->normalizeCommand($args[1]), $args[2], $args[3]);
-
-        }, $string, 1, $count);
-
-        if($count)
-        {
-            return $this->getCommandClassName($name);
-        }
-
-        return preg_replace_callback(self::CLASS_LAST_NAMESPACE_FRAGMENT, function ($args)
-        {
-            return sprintf('%s%s', $args[1], $this->normalizeCommand($args[2]));
-        }, $name);
-    }
-
-    private function normalizeCommand($string)
-    {
-        return preg_replace_callback(self::COMMAND_NAME_PATTERN, function ($letter)
-        {
-            if(!isset($letter[1]))
-            {
-                return null;
-            }
-
-            return strtoupper($letter[1]);
-
-        }, ucfirst(strtolower($string)));
     }
 }

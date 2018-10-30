@@ -21,7 +21,7 @@ abstract class Field
      * @return Field
      * @throws FieldException
      */
-    public static function instance($name, $type, $options, $attributes)
+    public static function instance($name, $type, $options, $attributes): Field
     {
         /** @var Field $field */
         $field = Factory::getInstance($type, [$options]);
@@ -42,38 +42,38 @@ abstract class Field
         $this->options = $options;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function setType($type)
+    public function setType($type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function setAttributes($attributes = [])
+    public function setAttributes($attributes = []): self
     {
         $this->attributes = $attributes;
 
         return $this;
     }
 
-    public function getAttributesAsString()
+    public function getAttributesAsString(): string
     {
         $attrs = '';
         foreach($this->attributes as $name => $attr)
@@ -89,24 +89,24 @@ abstract class Field
         return isset($this->options[$option]) ? $this->options[$option] : null;
     }
 
-    public function setOption($option, $value)
+    public function setOption($option, $value): self
     {
         $this->options[$option] = $value;
 
         return $this;
     }
 
-    public function isValid()
+    public function isValid(): bool
     {
         return true;
     }
 
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->getOption('label');
     }
 
-    public function setValue($value)
+    public function setValue($value): self
     {
         $this->value = $value;
 

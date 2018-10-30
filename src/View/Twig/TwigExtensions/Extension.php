@@ -3,6 +3,7 @@
 namespace Application\View\Twig\TwigExtensions;
 
 use Application\Service\ServiceContainer\ServiceContainer;
+use Application\Service\ServiceInterface;
 
 class Extension extends \Twig_Extension
 {
@@ -13,7 +14,7 @@ class Extension extends \Twig_Extension
         $this->serviceContainer = $serviceContainer;
     }
 
-    public function getService($serviceName)
+    public function getService($serviceName): ServiceInterface
     {
         return $this->serviceContainer->getService($serviceName);
     }

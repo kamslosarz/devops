@@ -3,6 +3,7 @@
 namespace Application\Service\ServiceContainer;
 
 use Application\Factory\Factory;
+use Application\Service\ServiceInterface;
 
 class ServiceResolver
 {
@@ -15,7 +16,7 @@ class ServiceResolver
         $this->serviceParameters = $serviceParameters;
     }
 
-    public function __invoke()
+    public function __invoke(): ServiceInterface
     {
         return Factory::getInstance($this->serviceClass, $this->serviceParameters);
     }

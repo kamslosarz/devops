@@ -2,7 +2,7 @@
 
 namespace Application\ParameterHolder;
 
-class ParameterHolder implements \ArrayAccess
+class ParameterHolder implements \ArrayAccess, \Countable
 {
     protected $parameters = [];
 
@@ -23,12 +23,12 @@ class ParameterHolder implements \ArrayAccess
         return $this;
     }
 
-    public function count()
+    public function count(): int
     {
-        return sizeof($this->parameters);
+        return count($this->parameters);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->parameters[$offset]);
     }
@@ -52,12 +52,12 @@ class ParameterHolder implements \ArrayAccess
         return $this;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->parameters;
     }
 
-    public function add(array $parameters = [])
+    public function add(array $parameters = []): self
     {
         $this->parameters = array_merge($parameters, $this->parameters);
 

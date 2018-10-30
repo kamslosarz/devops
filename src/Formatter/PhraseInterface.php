@@ -6,7 +6,7 @@ interface PhraseInterface
 {
     public function __construct($phrase);
 
-    public function setVariables($variables);
+    public function setVariables($variables): self;
 
-    public function __toString();
+    public function __toString(): string;
 }

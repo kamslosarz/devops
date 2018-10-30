@@ -14,7 +14,8 @@ class JsonResponse extends Response
         $this->setType(ResponseTypes::JSON);
     }
 
-    public function getJson(){
+    public function getJson(): string
+    {
         return json_encode($this->parameters);
     }
 }

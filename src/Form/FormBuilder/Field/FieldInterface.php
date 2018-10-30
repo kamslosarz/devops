@@ -4,7 +4,7 @@ namespace Application\Form\FormBuilder\Field;
 
 interface FieldInterface
 {
-    public function getTagname();
+    public function getTagname(): string;
 
-    public function isValid();
+    public function isValid(): bool;
 }

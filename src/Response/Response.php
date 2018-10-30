@@ -2,7 +2,7 @@
 
 namespace Application\Response;
 
-use Application\Router\Route;
+use Application\Service\Router\Route;
 
 class Response
 {
@@ -11,78 +11,68 @@ class Response
     protected $type = ResponseTypes::HTML;
     protected $content;
     protected $parameters;
-    /** @var Route $route */
-    protected $route;
+    protected $resource;
 
-    public function __construct($parameters = [])
+    public function __construct($resource = '', $parameters = [])
     {
         $this->parameters = $parameters;
+        $this->resource = $resource;
     }
 
-    public function setHeaders(array $headers = [])
+    public function getResource(): string
+    {
+        return $this->resource;
+    }
+
+    public function setHeaders(array $headers = []): self
     {
         $this->headers = $headers;
 
         return $this;
     }
 
-    public function setCode($code)
+    public function setCode($code): self
     {
         $this->code = $code;
 
         return $this;
     }
 
-    public function setContent($content)
+    public function setContent($content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function setType($type)
+    public function setType($type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    public function setRoute($route)
-    {
-        $this->route = $route;
-
-        return $this;
-    }
-
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * @return Route
-     */
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-    public function __invoke()
+    public function __invoke(): string
     {
         if(!headers_sent())
         {

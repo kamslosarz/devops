@@ -14,16 +14,17 @@ class Translator implements ServiceInterface
 
     private $request;
     private $languageCode;
+    /** @var LanguageManager $languageManager*/
     private $languageManager;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, $config)
     {
         $this->request = $request;
         $this->setLanguageCode($this->getLanguageCodeCookie() ?? $this->getLanguageCodeFromGlobals());
-        $this->languageManager = Factory::getInstance(LanguageManager::class, [$this->languageCode]);
+        $this->languageManager = Factory::getInstance(LanguageManager::class, [$this->languageCode, $config]);
     }
 
-    public function translate($phrase, $variables = [])
+    public function translate($phrase, $variables = []): Phrase
     {
         /** @var Phrase $phrase */
         $phrase = $this->languageManager->getPhrase($phrase);
@@ -32,19 +33,19 @@ class Translator implements ServiceInterface
         return $phrase;
     }
 
-    public function getLanguageCode()
+    public function getLanguageCode(): string
     {
         return $this->languageCode;
     }
 
-    public function setLanguageCode($code)
+    public function setLanguageCode($code): self
     {
         $this->languageCode = $code;
 
         return $this->setLanguageCodeCookie($code);
     }
 
-    private function setLanguageCodeCookie($langCode)
+    private function setLanguageCodeCookie($langCode): self
     {
         $this->request->getCookie()->set(self::LANG_CODE_COOKIE, $langCode);
 

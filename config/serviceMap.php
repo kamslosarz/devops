@@ -1,9 +1,14 @@
 <?php
 
 return [
+    'config' => [
+        \Application\Service\Config\Config::class, [
+            include __DIR__ . '/config.php'
+        ]
+    ],
     'logger' => [
         \Application\Service\Logger\Logger::class, [
-            'instances' => [
+            [
                 'ApplicationLogger' => [
                     'dir' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR,
                     'name' => 'app'
@@ -48,7 +53,22 @@ return [
     ],
     'translator' => [
         \Application\Service\Translator\Translator::class, [
-            '@request'
+            '@request', [
+                'adapter' => 'files',
+                'path' => dirname(__DIR__). '/config/langs'
+            ]
+        ]
+    ],
+    'router' => [
+        \Application\Service\Router\Router::class, [
+            '@request',
+            include 'routes.php'
+        ]
+    ],
+    'commandRouter' => [
+        \Application\Service\Router\Router::class, [
+            '@request',
+            include 'routes.php'
         ]
     ]
 ];

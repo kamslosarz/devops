@@ -2,7 +2,7 @@
 
 namespace tests\Service\AccessChecker;
 
-use Application\Router\Route;
+use Application\Service\Router\Route;
 use Application\Service\AccessChecker\AccessChecker;
 use Application\Service\AuthService\AuthService;
 use Model\Role;
@@ -34,7 +34,7 @@ class AccessCheckerTest extends TestCase
                                     ->andReturns([
                                         m::mock(UserPrivilege::class)
                                             ->shouldReceive('getName')
-                                            ->andReturn('app_route_name')
+                                            ->andReturn('/test/route')
                                             ->getMock()
                                     ])->getMock()
                             )
@@ -44,11 +44,8 @@ class AccessCheckerTest extends TestCase
             )->getMock();
 
         $routeMock = m::mock(Route::class)
-            ->shouldReceive('getAccess')
-            ->andReturn(Route::ACCESS_PRIVATE)
-            ->getMock()
             ->shouldReceive('getName')
-            ->andReturn('app_route_name')
+            ->andReturn('/test/route')
             ->getMock();
 
         $accessChecker = new AccessChecker($authService);
@@ -66,7 +63,7 @@ class AccessCheckerTest extends TestCase
                     ->andReturns([
                         m::mock(UserPrivilege::class)
                             ->shouldReceive('getName')
-                            ->andReturn('app_route_name')
+                            ->andReturn('/test/route')
                             ->getMock()
                     ])
                     ->getMock()
@@ -76,30 +73,8 @@ class AccessCheckerTest extends TestCase
             )->getMock();
 
         $routeMock = m::mock(Route::class)
-            ->shouldReceive('getAccess')
-            ->andReturn(Route::ACCESS_PRIVATE)
-            ->getMock()
             ->shouldReceive('getName')
-            ->andReturn('app_route_name')
-            ->getMock();
-
-        $accessChecker = new AccessChecker($authService);
-
-        $this->assertTrue($accessChecker->hasAccess($routeMock));
-    }
-
-    public function testShouldCheckIfUserHasAccessToPublicRoute()
-    {
-        $authService = m::mock(AuthService::class)
-            ->shouldReceive('getUser')
-            ->andReturn(
-                m::mock(User::class)
-            )
-            ->getMock();
-
-        $routeMock = m::mock(Route::class)
-            ->shouldReceive('getAccess')
-            ->andReturn(Route::ACCESS_PUBLIC)
+            ->andReturn('/test/route')
             ->getMock();
 
         $accessChecker = new AccessChecker($authService);

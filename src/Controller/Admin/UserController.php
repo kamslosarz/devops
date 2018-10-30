@@ -20,7 +20,7 @@ class UserController extends Controller
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function loginAction()
+    public function loginAction(): Response
     {
         /** @var Form $form */
         $form = $this->getForm(LoginForm::class);
@@ -55,11 +55,10 @@ class UserController extends Controller
 
     /**
      * @return RedirectResponse
-     * @throws \Application\Router\RouteException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Response\ResponseTypes\RedirectResponseException
      */
-    public function logoutAction()
+    public function logoutAction(): Response
     {
         /** @var AuthService $authService */
         $authService = $this->getService('auth');
@@ -69,7 +68,7 @@ class UserController extends Controller
         return new RedirectResponse($this->router->getRouteByName(Config::get('loginAction'))->getUrl());
     }
 
-    public function indexAction()
+    public function indexAction(): Response
     {
         $users = UserQuery::create()->find();
 
@@ -79,11 +78,10 @@ class UserController extends Controller
     }
 
     /**
-     * @convert('user', options={"type":"Model", "class":"\Model\User"})
      * @param User $user
      * @return Response
      */
-    public function editAction(User $user)
+    public function editAction(User $user): Response
     {
         return new Response([
             'user' => $user
@@ -95,9 +93,8 @@ class UserController extends Controller
      * @return Response
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Propel\Runtime\Exception\PropelException
-     * @convert('user', options={"type":"Model", "class":"\Model\User"})
      */
-    public function deleteAction(User $user)
+    public function deleteAction(User $user): Response
     {
         $user->delete();
         $this->addMessage($this->getService('translator')->translate('User was deleted'), AppenderLevel::SUCCESS);

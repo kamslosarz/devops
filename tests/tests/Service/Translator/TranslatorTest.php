@@ -7,13 +7,16 @@ use Application\Service\Request\Request;
 use Application\Service\Translator\Translator;
 use PHPUnit\Framework\TestCase;
 use Mockery as m;
+use Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 
 
 class TranslatorTest extends TestCase
 {
+    use ServiceContainerMockBuilderTrait;
+
     public function testShouldReturnTranslatorService()
     {
-        $serviceContainer = new \Application\Service\ServiceContainer\ServiceContainer();
+        $serviceContainer = new \Application\Service\ServiceContainer\ServiceContainer($this->getServiceContainerConfig());
         $translator = $serviceContainer->getService('translator');
 
         $this->assertInstanceOf(Translator::class, $translator);
@@ -31,17 +34,17 @@ class TranslatorTest extends TestCase
             ->once()
             ->getMock();
 
-        $this->assertEquals('pl', $this->getTranslator(
-            $this->getRequestMock()
-                ->shouldReceive('getCookie')
-                ->andReturn($cookieMock)
-                ->getMock()
-        )->getLanguageCode());
+        $this->assertEquals('pl', $this->getTranslator($this->getRequestMock()
+            ->shouldReceive('getCookie')
+            ->andReturn($cookieMock)
+            ->getMock(),
+            $this->getConfig())->getLanguageCode());
 
         $cookieMock->shouldHaveReceived('set');
     }
 
-    public function testShouldGetLanguageCodeFromGlobals(){
+    public function testShouldGetLanguageCodeFromGlobals()
+    {
 
         $cookieMock = m::mock(Cookie::class)
             ->shouldReceive('get')
@@ -61,8 +64,8 @@ class TranslatorTest extends TestCase
                 ->shouldReceive('server')
                 ->with('HTTP_ACCEPT_LANGUAGE')
                 ->andReturn('pl,pl-PL,pl-PL;q=0.8,fr;q=0.6,pl-PL;q=0.4')
-                ->getMock()
-        )->getLanguageCode());
+                ->getMock(),
+            $this->getConfig())->getLanguageCode());
 
         $cookieMock->shouldHaveReceived('set');
     }
@@ -72,9 +75,17 @@ class TranslatorTest extends TestCase
         return m::mock(Request::class);
     }
 
-    private function getTranslator($requestMock)
+    private function getTranslator($requestMock, $config)
     {
-        return new Translator($requestMock);
+        return new Translator($requestMock, $config);
+    }
+
+    public function getConfig()
+    {
+        return [
+            'adapter' => 'files',
+            'path' => FIXTURE_DIR . '/langs'
+        ];
     }
 }
 

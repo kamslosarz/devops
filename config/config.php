@@ -2,6 +2,7 @@
 
 return [
     'routes' => include 'routes.php',
+    'commands' => include 'commands.php',
     'defaultAction' => 'app_admin_index',
     'loginAction' => 'app_admin_login',
     'twig' => [
@@ -10,10 +11,7 @@ return [
             'cache' => false
         ]
     ],
-    'translator' => [
-        'adapter' => 'files',
-        'path' => __DIR__ . '/langs'
-    ],
-    'servicesMapFIle' => __DIR__.'/serviceMap.php',
-    'web_dir' => dirname(__DIR__) . '/www'
+    'servicesMapFIle' => __DIR__ . '/serviceMap.php',
+    'web_dir' => dirname(__DIR__) . '/www',
+    'environment' => '_dev'
 ];

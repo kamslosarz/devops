@@ -2,104 +2,87 @@
 
 namespace Application\Console\Command;
 
+use Application\Console\Validator;
+use Application\EventManager\Event;
 use Application\Factory\Factory;
+use Application\Formatter\Constraint\Constraint;
 use Application\Response\ResponseTypes\ConsoleResponse;
-use Application\Service\ServiceContainer\ServiceContainer;
 use Application\Console\Command\Command\CommandParameters;
 
 abstract class Command
 {
-    private $errors;
-    private $serviceContainer;
+    protected $output;
+    protected $event;
+    protected $parameters;
 
-    const COMMAND_NAMESPACE = 'Application\Console\Command\Command';
-    private $output;
-
-
-    public function __construct()
+    public function __construct(Event $event)
     {
-        $this->serviceContainer = new ServiceContainer();
+        $this->event = $event;
     }
 
-    public function setServiceContainer(ServiceContainer $serviceContainer)
-    {
-        $this->serviceContainer = $serviceContainer;
-
-        return $this;
-    }
-
-    /**
-     * @param $command
-     * @return mixed|null
-     */
-    public static function getCommand($command)
-    {
-        if(!self::exists($command))
-        {
-            return null;
-        }
-
-        $command = self::getCommandNamespace($command);
-
-        return Factory::getInstance($command);
-    }
-
-    /**
-     * @param $command
-     * @return bool
-     */
-    private static function exists($command)
-    {
-        return class_exists(self::getCommandNamespace($command));
-    }
-
-    private static function getCommandNamespace($command)
-    {
-        return sprintf('%s\%s', self::COMMAND_NAMESPACE, $command);
-    }
-
-    public function setError($error)
-    {
-        $this->errors[] = $error;
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     * @return mixed
-     * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     */
-    public function getLogger()
-    {
-        return $this->serviceContainer->getService('logger');
-    }
-
-    public function setOutput($output)
+    protected function setOutput($output): self
     {
         $this->output = $output;
 
         return $this;
     }
 
-    public function addOutput($output)
+    protected function addOutput($output): self
     {
         $this->output .= $output;
 
         return $this;
     }
 
-    protected function sendOutput()
+    /**
+     * @return ConsoleResponse
+     */
+    protected function sendOutput(): ConsoleResponse
     {
         return (new ConsoleResponse())->setContent($this->output);
     }
 
-    public function isValid(CommandParameters $commandParameters)
+    /**
+     * @param CommandParameters $commandParameters
+     * @throws CommandException
+     */
+    public function validate(CommandParameters $commandParameters): void
     {
-        return true;
+        if($commandParameters->count() !== $this->getParametersCount())
+        {
+            throw new CommandException(sprintf('Invalid parameters. %d expected, but %d given.', $this->getParametersCount(), $commandParameters->count()));
+        }
+
+        foreach($this->parameters as $offset => $parameter)
+        {
+            /** @var Constraint $constraint */
+            $constraint = Factory::getInstance($parameter[1], [$commandParameters->offsetGet($offset), $parameter[0]]);
+
+            if(!$constraint->isValid())
+            {
+                throw new CommandException(implode(',', $constraint->getErrors()));
+            }
+        }
     }
 
-    abstract public function execute(CommandParameters $commandParameters);
+    private function getParametersCount(): int
+    {
+        return count($this->parameters);
+    }
+
+    abstract public function execute(CommandParameters $commandParameters): ConsoleResponse;
+
+    protected function executeInShell($command, $parameters = [])
+    {
+        if(!empty($parameters))
+        {
+            passthru(sprintf($command, ...$parameters), $return_var);
+        }
+        else
+        {
+            passthru($command, $return_var);
+        }
+
+        return $return_var;
+    }
 }

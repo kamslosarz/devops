@@ -17,19 +17,19 @@ class FormBuilder
      * @return $this
      * @throws FieldException
      */
-    public function addField($name, $type, $options = [], $attributes = [])
+    public function addField($name, $type, $options = [], $attributes = []): self
     {
         $this->fields[$name] = Field::instance($name, $type, $options, $attributes);
 
         return $this;
     }
 
-    public function getField($name)
+    public function getField($name): Field
     {
         return $this->fields[$name];
     }
 
-    public function getFields()
+    public function getFields(): array
     {
         return $this->fields;
     }

@@ -18,23 +18,25 @@ class Cookie implements ServiceInterface
         return $this->cookie[$key] ?? $default;
     }
 
-    public function set($key, $value)
+    public function set($key, $value): self
     {
         $this->cookie[$key] = $value;
 
         return $this;
     }
 
-    public function save()
+    public function save(): self
     {
         $_COOKIE = $this->cookie;
 
         return $this;
     }
 
-    public function clear()
+    public function clear(): self
     {
         $_COOKIE = null;
         $this->cookie = null;
+
+        return $this;
     }
 }

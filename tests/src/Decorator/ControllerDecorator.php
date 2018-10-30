@@ -6,6 +6,7 @@ use Application\Controller\Controller;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\JsonResponse;
 use Application\Response\ResponseTypes\RedirectResponse;
+use Application\EventManager\ControllerActionEvent;
 use Model\User;
 
 class ControllerDecorator extends Controller
@@ -46,5 +47,19 @@ class ControllerDecorator extends Controller
     public function logoutAction()
     {
         return new RedirectResponse('/admin/login');
+    }
+
+    public function eventManagerTestAction($param1, $param2)
+    {
+        return new Response([
+            'eventManagerTestAction',
+            $param1,
+            $param2
+        ]);
+    }
+
+    public function testRouteAction()
+    {
+        return new Response('index.html.twig', ['testRouteAction']);
     }
 }

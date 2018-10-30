@@ -7,14 +7,14 @@ class Menu extends Extension implements \Twig_Extension_GlobalsInterface
     const ANY_PATTERN = '*';
     const ANY_REGEX = '[0-9a-zA-Z\/]{0,}';
 
-    public function getGlobals()
+    public function getGlobals(): array
     {
         return [
             'menu' => $this
         ];
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction('url', [$this, 'url'], ['is_safe' => ['html']]),
@@ -22,12 +22,12 @@ class Menu extends Extension implements \Twig_Extension_GlobalsInterface
         ];
     }
 
-    public function url($url, $class, $title)
+    public function url($url, $class, $title): string
     {
         return sprintf('<a href="%s"><i class="%s"></i><p>%s</p></a>', $url, $class, $title);
     }
 
-    public function isUri($uri)
+    public function isUri($uri): bool
     {
         if(!preg_match('/[\*]+/', $uri))
         {

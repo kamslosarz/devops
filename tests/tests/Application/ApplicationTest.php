@@ -4,19 +4,26 @@ use Mockery as m;
 
 class ApplicationTest extends \PHPUnit\Framework\TestCase
 {
+    use \Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
+
+    /**
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @throws \Application\View\Twig\TwigFactoryException
+     */
     public function testShouldInvokeApplication()
     {
         $containerMock = m::mock(\Application\Container\Container::class)
             ->shouldReceive('__invoke')
-            ->andReturnTrue()
+            ->andReturnSelf()
             ->getMock()
             ->shouldReceive('getResponse')
             ->andReturn(m::mock(\Application\Response\Response::class))
             ->getMock();
 
-        $application = new \Application\Application();
+        $application = new \Application\Application('_test', $this->getServiceContainerConfig());
         $application->setContainer($containerMock);
-        $response = $application()->getResponse();
+
+        $response = $application();
 
         $this->assertInstanceOf(\Application\Response\Response::class, $response);
         $containerMock->shouldHaveReceived('__invoke')->once();

@@ -22,7 +22,7 @@ class Logger implements ServiceInterface
      * @param string $level
      * @throws LoggerException
      */
-    public function log($logger, $message, $level = LoggerLevel::INFO)
+    public function log($logger, $message, $level = LoggerLevel::INFO): void
     {
         if(!Application::isTest())
         {
@@ -42,8 +42,8 @@ class Logger implements ServiceInterface
         }
     }
 
-    public function getFilename($logger)
+    public function getFilename($logger): string
     {
-        return $this->config['instances'][$logger]['dir'] . date('Y-m-d-') . $this->config['instances'][$logger]['name'] . self::LOGGER_FILE_SUFFIX;
+        return $this->config[$logger]['dir'] . date('Y-m-d-') . $this->config[$logger]['name'] . self::LOGGER_FILE_SUFFIX;
     }
 }

@@ -4,32 +4,33 @@ namespace Application\Form\User;
 
 use Application\Form\Form;
 use Application\Form\FormBuilder\Field\FieldTypes;
+use Application\Form\FormBuilder\FormBuilder;
 use Application\Router\Router;
 use Application\Service\Request\RequestMethods;
 
 class LoginForm extends Form
 {
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return [
-            'action' => $this->router->getRouteByName('app_admin_login')->getUrl(),
-            'title' => $this->translator->translate('Please login'),
+            'action' => $this->getUrl('/admin/login'),
+            'title' => $this->translate('Please login'),
             'name' => 'login',
             'class' => 'login-form'
         ];
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
         return RequestMethods::POST;
     }
 
-    public function getFormBuilder()
+    public function getFormBuilder(): FormBuilder
     {
         return $this->formBuilder;
     }
 
-    protected function build()
+    protected function build(): FormBuilder
     {
         return $this->formBuilder->addField('username', FieldTypes::INPUT, [
             'label' => 'Username'

@@ -19,7 +19,7 @@ use Application\Console\ConsoleParameters;
 
 try
 {
-    $console = new Console(new ConsoleParameters($argv));
+    $console = new Console(new ConsoleParameters($argv), ['servicesMapFile' => dirname(__DIR__) . '/config/serviceMap.php']);
 
     echo $console();
 }

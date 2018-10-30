@@ -11,7 +11,7 @@ use Application\Response\Response;
  */
 class AdminController extends Controller
 {
-    public function testAction($integer, $string)
+    public function testAction($integer, $string): Response
     {
         return new Response([
             $integer, $string
@@ -20,8 +20,9 @@ class AdminController extends Controller
 
     /**
      * @return Response
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         return new Response([]);
     }

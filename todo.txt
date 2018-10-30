@@ -1,11 +1,10 @@
+- TESTS
+    - commands tests
+    - ServiceContainerTest
+
 - add profiler
 - add annotation
     - route annotation
     - validate request method type
     - request method annotation
- - add sqlite user perms
-- refactor to framework will be used as composer requirement
-    - create place to test controllers (functional)
-    - create place to develop services, controllers, views
-- add command to generate crud based on php array config (index/list, edit, delete, create, details)
-- move database to other container
+- add sqlite user perms

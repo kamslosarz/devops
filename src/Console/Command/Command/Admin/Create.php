@@ -5,54 +5,53 @@ namespace Application\Console\Command\Command\Admin;
 use Application\Config\Config;
 use Application\Console\Command\Command;
 use Application\Console\Command\Command\CommandParameters;
+use Application\Console\Command\CommandException;
+use Application\Formatter\Constraint\PasswordMatcher;
+use Application\Formatter\Constraint\UsernameMatcher;
+use Application\Response\ResponseTypes\ConsoleResponse;
 use Model\User as user;
 use Model\UserPrivilege;
 use Model\UserQuery;
 
 class Create extends Command
 {
+    protected $parameters = [
+        ['username', UsernameMatcher::class],
+        ['password', PasswordMatcher::class]
+    ];
+
     /**
      * @param CommandParameters $commandParameters
-     * @return bool
+     * @throws \Application\Console\Command\CommandException
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function isValid(CommandParameters $commandParameters)
+    public function validate(CommandParameters $commandParameters): void
     {
-        $parameters = $commandParameters->toArray();
+        parent::validate($commandParameters);
 
-        if(!$parameters[0] || !$parameters[1])
-        {
-            $this->setError(sprintf('Invalid user data \'%s\' \'%s\'', $parameters[0], $parameters[1]));
-
-            return false;
-        }
-
-        $user = UserQuery::create()->findOneByUsername($parameters[0]);
+        $user = UserQuery::create()->findOneByUsername($commandParameters->offsetGet(0));
 
         if($user instanceof User)
         {
-            if(isset($parameters[2]) && $parameters[2])
+            if($commandParameters->offsetExists(2) && $commandParameters->offsetGet(2))
             {
                 $user->delete();
-
-                return true;
             }
 
-            $this->setError('User already exists');
-
-            return false;
+            $this->addError('User already exists');
         }
-
-        return true;
     }
 
     /**
      * @param CommandParameters $commandParameters
-     * @return $this
+     * @return ConsoleResponse
+     * @throws \Application\Console\Command\CommandException
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function execute(CommandParameters $commandParameters)
+    public function execute(CommandParameters $commandParameters): ConsoleResponse
     {
+        $this->validate($commandParameters);
+
         $parameters = $commandParameters->toArray();
         $user = new User();
         $user->setUsername($parameters[0])

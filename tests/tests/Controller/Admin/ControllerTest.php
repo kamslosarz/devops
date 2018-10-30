@@ -6,43 +6,50 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 {
     use \Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 
+    /**
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
     public function testShouldConstructController()
     {
-        $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
-        $routerMock = $this->getRouterMock();
+        $event = m::mock(\Application\EventManager\Event::class);
+        $event->shouldReceive('getServiceContainer')
+            ->andReturn($this->getServiceContainerMockBuilder()->build())
+            ->getMock();
 
-        $controller = new \Test\Decorator\ControllerDecorator($serviceContainerMockBuilder->build(), $routerMock);
-        $this->assertInstanceOf(\Application\Controller\Controller::class, $controller);
+        $controller = new \Test\Decorator\ControllerDecorator($event);
+
+        $this->assertThat($controller, self::isInstanceOf(\Application\Controller\Controller::class));
     }
 
     /**
-     * @doesNotPerformAssertions
+     * @throws ReflectionException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function testShouldAddMessage()
     {
-        $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
-        $appenderMock = m::mock(\Application\Service\Appender\Appender::class)
+        $appender = m::mock(Application\Service\Appender\Appender::class)
             ->shouldReceive('append')
-            ->withArgs([
-                'test message',
-                'test level'
-            ])
+            ->with('test message to show', \Application\Service\Appender\AppenderLevel::WARN)
             ->once()
             ->getMock();
 
-        $serviceContainerMockBuilder->setAppenderMock($appenderMock);
-        $controller = $this->getController($serviceContainerMockBuilder->build());
-        $method = $this->getMethod($controller, 'addMessage');
-        $results = $method->invokeArgs($controller, [
-            'test message',
-            'test level'
-        ]);
+        $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
+        $serviceContainerMockBuilder->setAppenderMock($appender);
 
-        $appenderMock->shouldHaveReceived('append')
-            ->withArgs([
-                'test message',
-                'test level'
-            ])->once();
+        $event = m::mock(\Application\EventManager\Event::class);
+        $event->shouldReceive('getServiceContainer')
+            ->andReturn($serviceContainerMockBuilder->build())
+            ->getMock();
+
+        $controller = new \Test\Decorator\ControllerDecorator($event);
+
+        $addMessage = new ReflectionMethod($controller, 'addMessage');
+        $addMessage->setAccessible(true);
+        $response = $addMessage->invoke($controller, 'test message to show', \Application\Service\Appender\AppenderLevel::WARN);
+
+        $this->assertThat($response, self::isInstanceOf(\Application\Controller\Controller::class));
+
+        $appender->shouldHaveReceived('append')->once();
     }
 
     /**
@@ -54,12 +61,12 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
         $serviceContainerMock = $serviceContainerMockBuilder->build()
             ->shouldReceive('getService')
             ->with('testService')
-            ->andReturnTrue()
+            ->andReturn(m::mock(\Application\Service\ServiceInterface::class))
             ->getMock();
 
         $controller = $this->getController($serviceContainerMock);
         $method = $this->getMethod($controller, 'getService');
-        $results = $method->invokeArgs($controller, [
+        $method->invokeArgs($controller, [
             'testService'
         ]);
 
@@ -70,15 +77,18 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @doesNotPerformAssertions
-     * @dataProvider servicesDataDataProvider
+     * @param $methodName
      * @param $serviceName
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @dataProvider servicesDataDataProvider
      */
-    public function testShouldGetServices($methodName, $serviceName)
+    public function testShouldInvokeGetServices($methodName, $serviceName)
     {
         $serviceContainerMockBuilder = $this->getServiceContainerMockBuilder();
         $serviceContainerMock = $serviceContainerMockBuilder->build()
             ->shouldReceive('getService')
             ->with($serviceName)
+            ->andReturn(m::mock(\Application\Service\ServiceInterface::class))
             ->getMock();
 
         $controller = $this->getController($serviceContainerMock);
@@ -146,14 +156,19 @@ class ControllerTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(\Test\Fixture\TestForm::class, $results);
     }
 
-    private function getRouterMock()
-    {
-        return m::mock(\Application\Router\Router::class);
-    }
-
+    /**
+     * @param m\MockInterface $serviceContainerMock
+     * @return \Test\Decorator\ControllerDecorator
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
     private function getController(m\MockInterface $serviceContainerMock)
     {
-        return new \Test\Decorator\ControllerDecorator($serviceContainerMock, $this->getRouterMock());
+        $event = m::mock(\Application\EventManager\Event::class);
+        $event->shouldReceive('getServiceContainer')
+            ->andReturn($serviceContainerMock)
+            ->getMock();
+
+        return new \Test\Decorator\ControllerDecorator($event);
     }
 
     private function getMethod($controller, $method)

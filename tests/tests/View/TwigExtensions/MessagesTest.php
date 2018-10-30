@@ -2,6 +2,7 @@
 
 namespace tests\View\TwigExtensions;
 
+use Application\Service\Session\Session;
 use Application\View\Twig\TwigExtensions\Messages;
 use Test\TestCase\TwigExtensionTestCase;
 use Mockery as m;

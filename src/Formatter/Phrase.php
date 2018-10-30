@@ -12,14 +12,14 @@ class Phrase implements PhraseInterface
         $this->phrase = $phrase;
     }
 
-    public function setVariables($variables)
+    public function setVariables($variables): self
     {
         $this->variables = $variables;
 
         return $this;
     }
 
-    private function applyVariables()
+    private function applyVariables(): string
     {
         return str_replace(array_map(function ($item){
 
@@ -39,7 +39,7 @@ class Phrase implements PhraseInterface
         }
     }
 
-    private function hasVariables()
+    private function hasVariables(): bool
     {
         return !empty($this->variables);
     }

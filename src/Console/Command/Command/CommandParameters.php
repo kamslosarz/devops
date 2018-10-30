@@ -6,4 +6,5 @@ use Application\ParameterHolder\ParameterHolder;
 
 class CommandParameters extends ParameterHolder
 {
+
 }

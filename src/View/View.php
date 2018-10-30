@@ -3,7 +3,10 @@
 namespace Application\View;
 
 use Application\Config\Config;
+use Application\ParameterHolder\ParameterHolder;
+use Application\Response\Response;
 use Application\Service\Logger\LoggerLevel;
+use Application\Service\ServiceContainer\ServiceContainer;
 use Application\View\Twig\TwigFactory;
 
 class View
@@ -14,32 +17,27 @@ class View
 
     /**
      * View constructor.
-     * @param $serviceContainer
+     * @param ServiceContainer $serviceContainer
      * @throws Twig\TwigFactoryException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
-    public function __construct($serviceContainer)
+    public function __construct(ServiceContainer $serviceContainer)
     {
+        $config = $serviceContainer->getService('config');
         $this->serviceContainer = $serviceContainer;
-        $this->twig = TwigFactory::getInstance($serviceContainer, Config::get('twig'));
-        $this->viewPath = Config::get('twig')['loader']['templates'];
+        $this->twig = TwigFactory::getInstance($serviceContainer, $config->twig);
+        $this->viewPath = $config->twig['loader']['templates'];
     }
 
     /**
-     * @param ViewElement $viewElement
-     * @return null|\string
+     * @param Response $response
+     * @return null|string
      */
-    public function render(ViewElement $viewElement)
+    public function render(Response $response): string
     {
         try
         {
-            $filename = sprintf('%s.html.twig', $viewElement->getViewName());
-
-            if(is_file(sprintf('%s/%s', $this->viewPath, $filename)))
-            {
-                return $this->twig->render($filename, $viewElement->getParameters());
-            }
-
-            return null;
+            return $this->twig->render($response->getResource(), $response->getParameters() + ['services' => $this->serviceContainer]);
         }
         catch(\Twig_Error_Loader $e)
         {
@@ -55,7 +53,7 @@ class View
         }
     }
 
-    private function handleViewError(\Exception $exception)
+    private function handleViewError(\Exception $exception): string
     {
         $this->serviceContainer->getService('logger')->log(
             'ApplicationLogger',

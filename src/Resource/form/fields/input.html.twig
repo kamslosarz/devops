@@ -2,5 +2,10 @@
     {% if field.label %}
         <label for="{{ form.label(field.name) }}">{{ field.label }}</label>
     {% endif %}
-    <input id="{{ form.label(field.name) }}" title="{{ form.name(field.name) }}" name="{{ form.name(field.name) }}"{% if field.value %} value="{{ field.value }}"{% endif %}{{ field.attributesAsString|raw }}>
+            id="{{ form.label(field.name) }}"
+            title="{{ form.name(field.name) }}"
+            name="{{ form.name(field.name) }}"
+            {% if field.value %} value="{{ field.value }}"{% endif %}
+
+    {{ field.attributesAsString|raw }}>
 </p>

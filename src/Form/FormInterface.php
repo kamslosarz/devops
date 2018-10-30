@@ -5,7 +5,7 @@ namespace Application\Form;
 
 interface FormInterface
 {
-    public function getAttributes();
+    public function getAttributes(): array ;
 
-    public function getMethod();
+    public function getMethod(): string ;
 }

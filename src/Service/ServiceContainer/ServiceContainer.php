@@ -2,27 +2,17 @@
 
 namespace Application\Service\ServiceContainer;
 
-
-use Application\Config\Config;
+use Application\Service\ServiceInterface;
 use Application\Service\ServiceParameters;
 
 class ServiceContainer
 {
     private $serviceContainer = [];
+    private $servicesMap;
 
-    /**
-     * @param $serviceName
-     * @return mixed
-     * @throws ServiceContainerException
-     */
-    public function getService($serviceName)
+    public function __construct(array $config)
     {
-        if(isset($this->serviceContainer[$serviceName]))
-        {
-            return $this->serviceContainer[$serviceName];
-        }
-
-        return $this->loadService($serviceName);
+        $this->servicesMap = include $config['servicesMapFile'];
     }
 
     /**
@@ -30,19 +20,34 @@ class ServiceContainer
      * @return mixed
      * @throws ServiceContainerException
      */
-    private function loadService($serviceName)
+    public function getService($serviceName): ServiceInterface
     {
-        $serviceMap = Config::loadFlatFile(Config::get('servicesMapFIle'));
-
-        if(!isset($serviceMap[$serviceName]))
+        if(!$this->serviceExists($serviceName))
         {
             throw new ServiceContainerException(sprintf('Service \'%s\' not found', $serviceName));
         }
 
-        $parameters = [];
-        $serviceParameters = new ServiceParameters($serviceMap[$serviceName]);
+        if(isset($this->serviceContainer[$serviceName]))
+        {
+            return $this->serviceContainer[$serviceName];
+        }
 
-        foreach($serviceParameters->getParameters() as $parameterName => $parameter)
+        $this->loadService($serviceName);
+
+        return $this->getService($serviceName);
+    }
+
+    /**
+     * @param $serviceName
+     * @return mixed
+     * @throws ServiceContainerException
+     */
+    private function loadService($serviceName): void
+    {
+        $parameters = [];
+        $serviceParameters = new ServiceParameters($this->servicesMap[$serviceName]);
+
+        foreach($serviceParameters->getParameters() as $parameter)
         {
             if(is_string($parameter) && substr($parameter, 0, 1) === '@')
             {
@@ -50,12 +55,15 @@ class ServiceContainer
             }
             else
             {
-                $parameters[] = [$parameterName => $parameter];
+                $parameters[] = $parameter;
             }
         }
 
         $this->serviceContainer[$serviceName] = (new ServiceResolver($serviceParameters->getClassname(), $parameters))();
+    }
 
-        return $this->getService($serviceName);
+    private function serviceExists($serviceName): bool
+    {
+        return isset($this->servicesMap[$serviceName]);
     }
 }

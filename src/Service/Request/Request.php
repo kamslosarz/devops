@@ -2,7 +2,7 @@
 
 namespace Application\Service\Request;
 
-use Application\Router\Route;
+use Application\Service\Router\Route;
 use Application\Service\Cookie\Cookie;
 use Application\Service\ServiceInterface;
 use Application\Service\Session\Session;
@@ -41,41 +41,29 @@ class Request implements ServiceInterface
         return $this->post[$key];
     }
 
-    public function isPost()
+    public function isPost(): bool
     {
         return strtolower($this->server('REQUEST_METHOD')) === RequestMethods::POST;
     }
 
-    public function getSession()
+    public function getSession(): Session
     {
         return $this->session;
     }
 
-    public function getCookie()
+    public function getCookie(): Cookie
     {
         return $this->cookie;
     }
 
-    public function getRequestUri()
+    public function getRequestUri(): string
     {
         return $this->server('REQUEST_URI');
     }
 
-    public function getRequestMethod()
+    public function getRequestMethod(): string
     {
         return $this->server('REQUEST_METHOD');
-    }
-
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-    public function setRoute(Route $route)
-    {
-        $this->route = $route;
-
-        return $this;
     }
 }
 

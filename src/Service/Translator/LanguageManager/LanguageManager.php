@@ -17,12 +17,12 @@ class LanguageManager
     /** @var Adapter $translationAdapter */
     private $adapter;
 
-    public function __construct($languageCode)
+    public function __construct($languageCode, $config)
     {
-        $this->adapter = Factory::getInstance($this->getAdapterClass(Config::get('translator')['adapter']), [$languageCode]);
+        $this->adapter = Factory::getInstance($this->getAdapterClass($config['adapter']), [$languageCode, $config]);
     }
 
-    public function setAdapter(Adapter $adapter)
+    public function setAdapter(Adapter $adapter): self
     {
         $this->adapter = $adapter;
 
@@ -33,7 +33,7 @@ class LanguageManager
      * @param $phrase
      * @return Phrase
      */
-    public function getPhrase($phrase)
+    public function getPhrase($phrase): Phrase
     {
         if($this->adapter->hasResource($phrase))
         {
@@ -45,7 +45,7 @@ class LanguageManager
         }
     }
 
-    private function getAdapterClass($adapter)
+    private function getAdapterClass($adapter): string
     {
         return self::ADAPTERS_MAP[$adapter];
     }

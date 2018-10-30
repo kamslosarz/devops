@@ -2,12 +2,14 @@
 
 namespace Test\MockBuilder;
 
-use Application\Router\Route;
+use Application\Service\Config\Config;
+use Application\Service\Router\Route;
 use Application\Service\AccessChecker\AccessChecker;
 use Application\Service\Appender\Appender;
 use Application\Service\Cookie\Cookie;
 use Application\Service\Logger\Logger;
 use Application\Service\Request\Request;
+use Application\Service\Router\Router;
 use Application\Service\Translator\Translator;
 use Mockery as m;
 
@@ -21,6 +23,9 @@ class ServiceContainerMockBuilder
     private $cookieMock;
     private $appenderMock;
     private $translatorMock;
+    private $routerMock;
+    private $commandRouterMock ;
+    private $configMock ;
 
     /**
      * @param $cookieMock
@@ -110,6 +115,35 @@ class ServiceContainerMockBuilder
         return $this;
     }
 
+    /**
+     * @param $routerMock
+     * @return $this
+     */
+    public function setRouterMock($routerMock)
+    {
+        $this->routerMock = $routerMock;
+
+        return $this;
+    }
+
+    /**
+     * @param $commandRouterMock
+     * @return $this
+     */
+    public function setCommandRouterMock($commandRouterMock)
+    {
+        $this->commandRouterMock = $commandRouterMock;
+
+        return $this;
+    }
+
+    public function setConfigMock($configMock){
+
+        $this->configMock = $configMock;
+
+        return $this;
+    }
+
     public function getSessionMock()
     {
         if(!$this->sessionMock)
@@ -136,7 +170,7 @@ class ServiceContainerMockBuilder
         {
             $this->routeMock = m::mock(Route::class)
                 ->shouldReceive('getAccess')
-                ->andReturns(Route::ACCESS_PUBLIC)
+                ->andReturns('public')
                 ->getMock()
                 ->shouldReceive('getController')
                 ->andReturn('Admin\AdminController')
@@ -246,6 +280,36 @@ class ServiceContainerMockBuilder
         return $this->translatorMock;
     }
 
+    public function getRouterMock()
+    {
+        if(!$this->routerMock)
+        {
+            $this->routerMock = m::mock(Router::class);
+        }
+
+        return $this->routerMock;
+    }
+
+    public function getCommandRouterMock()
+    {
+        if(!$this->commandRouterMock)
+        {
+            $this->commandRouterMock = m::mock(Router::class);
+        }
+
+        return $this->commandRouterMock;
+    }
+
+    public function getConfigMock()
+    {
+        if(!$this->configMock)
+        {
+            $this->configMock = m::mock(Config::class);
+        }
+
+        return $this->configMock;
+    }
+
     public function build()
     {
         return m::mock(\Application\Service\ServiceContainer\ServiceContainer::class)
@@ -281,6 +345,18 @@ class ServiceContainerMockBuilder
             ->shouldReceive('getService')
             ->withArgs(['translator'])
             ->andReturns($this->getTranslatorMock())
+            ->getMock()
+            ->shouldReceive('getService')
+            ->withArgs(['router'])
+            ->andReturns($this->getRouterMock())
+            ->getMock()
+            ->shouldReceive('getService')
+            ->withArgs(['commandRouter'])
+            ->andReturns($this->getCommandRouterMock())
+            ->getMock()
+            ->shouldReceive('getService')
+            ->withArgs(['config'])
+            ->andReturns($this->getConfigMock())
             ->getMock();
 
     }

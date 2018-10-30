@@ -14,4 +14,11 @@ trait ServiceContainerMockBuilderTrait
     {
         return new ServiceContainerMockBuilder();
     }
+
+    protected function getServiceContainerConfig()
+    {
+        return [
+            'servicesMapFile' => FIXTURE_DIR . '/config/serviceMap.php'
+        ];
+    }
 }

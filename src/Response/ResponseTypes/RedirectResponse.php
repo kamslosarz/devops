@@ -4,7 +4,7 @@ namespace Application\Response\ResponseTypes;
 
 use Application\Response\Response;
 use Application\Response\ResponseTypes;
-use Application\Router\Route;
+use Application\Service\Router\Route;
 use Application\Router\Router;
 use Response\ResponseTypes\RedirectResponseException;
 

@@ -1,68 +1,20 @@
 <?php
 
-use Application\Console\Command\Command;
-use Application\Console\Command\CommandException;
-use Test\TestCase\ConsoleTestCase;
+namespace tests\Console\Command;
 
-class CommandTest extends ConsoleTestCase
+use Application\Console\Command\Command\CommandParameters;
+use Application\EventManager\Event;
+use PHPUnit\Framework\TestCase;
+use Test\Decorator\CommandDecorator;
+use Mockery as m;
+
+class CommandTest extends TestCase
 {
-    /**
-     * @dataProvider shouldReturnInstanceDataProvider
-     * @param $command
-     * @throws CommandException
-     */
-    public function testShouldReturnInstance($class, $commandName)
+    public function testShouldInvokeCommand()
     {
-        $command = Command::getCommand((new \Application\Console\ConsoleParameters(['',
-            $commandName
-        ]))->getCommand());
-
-        $this->assertInstanceOf($class, $command);
-    }
-
-    public function shouldReturnInstanceDataProvider()
-    {
-        return [
-            'DataSet Admin command' => [
-                Command\Admin\Create::class,
-                'admin:create'
-            ],
-            'DataSet Clear cache command' => [
-                Command\Cache\Clear::class,
-                'cache:clear'
-            ],
-            'DataSet build cache command' => [
-                Command\Cache\Build::class,
-                'cache:build'
-            ],
-            'DataSet ssh command' => [
-                Command\Docker\Ssh::class,
-                'docker:ssh'
-            ],
-            'DataSet start command' => [
-                Command\Docker\Start::class,
-                'docker:start'
-            ],
-            'DataSet stop command' => [
-                Command\Docker\Stop::class,
-                'docker:stop'
-            ],
-            'DataSet config build routes command' => [
-                Command\Config\Build\Routes::class,
-                'config:build:routes'
-            ]
-        ];
-    }
-
-    /**
-     * @throws CommandException
-     */
-    public function testShouldReturnNull()
-    {
-        $command = Command::getCommand((new \Application\Console\ConsoleParameters(['',
-            'notExistingCommand'
-        ]))->getCommand());
-
-        $this->assertNull($command);
+        $event = new Event();
+        $command = new CommandDecorator($event);
+        $response = $command->execute(m::mock(CommandParameters::class));
+        $this->assertThat($response->getContent(), self::equalTo('Test command invoked'));
     }
 }

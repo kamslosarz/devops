@@ -7,7 +7,7 @@ use Application\Form\FormBuilder\Field\FieldInterface;
 
 class Input extends Field implements FieldInterface
 {
-    public function getTagname()
+    public function getTagname(): string
     {
         return 'input';
     }

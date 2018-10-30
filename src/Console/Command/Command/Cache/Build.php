@@ -6,6 +6,7 @@ use Application\Config\Config;
 use Application\Console\Command\Command;
 use Application\Console\Command\CommandException;
 Use Application\Console\Command\Command\CommandParameters;
+use Application\Response\ResponseTypes\ConsoleResponse;
 
 class Build extends Command
 {
@@ -20,12 +21,14 @@ class Build extends Command
 
     /**
      * @param CommandParameters $commandParameters
-     * @return $this
+     * @return ConsoleResponse
      * @throws CommandException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
-    public function execute(CommandParameters $commandParameters)
+    public function execute(CommandParameters $commandParameters): ConsoleResponse
     {
-        $dir = Config::get('twig')['loader']['templates'] . DIRECTORY_SEPARATOR;
+        $config = $this->event->getServiceContainer()->getService('config');
+        $dir = $config->twig['loader']['templates'] . DIRECTORY_SEPARATOR;
 
         /** @var \SplFileInfo $fileInfo */
         foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
@@ -74,12 +77,7 @@ class Build extends Command
         return $this->sendOutput();
     }
 
-    public function isValid(CommandParameters $commandParameters)
-    {
-        return true;
-    }
-
-    private function isResource(\SplFileInfo $fileInfo)
+    private function isResource(\SplFileInfo $fileInfo): bool
     {
         return in_array($fileInfo->getExtension(), self::CACHEABLES_EXTENSIONS);
     }

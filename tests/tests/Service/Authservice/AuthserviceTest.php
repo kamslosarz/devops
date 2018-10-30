@@ -4,12 +4,14 @@ use Mockery as m;
 
 class AuthServiceTests extends \Test\TestCase\DatabaseTestCase
 {
+    use \Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
+
     /**
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function testShouldReturnAuthService()
     {
-        $serviceContainer = new \Application\Service\ServiceContainer\ServiceContainer();
+        $serviceContainer = new \Application\Service\ServiceContainer\ServiceContainer($this->getServiceContainerConfig());
         $authService = $serviceContainer->getService('auth');
 
         $this->assertInstanceOf(\Application\Service\AuthService\AuthService::class, $authService);

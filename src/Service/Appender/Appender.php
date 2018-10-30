@@ -14,7 +14,7 @@ class Appender implements ServiceInterface
         $this->session = $session;
     }
 
-    public function append($message, $level)
+    public function append($message, $level): self
     {
         $this->session->set('messages', array_merge_recursive([$level => $message], (array)$this->session->get('messages')));
 

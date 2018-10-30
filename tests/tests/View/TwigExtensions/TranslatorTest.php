@@ -2,10 +2,8 @@
 
 namespace tests\View\TwigExtensions;
 
-use Application\View\Twig\TwigExtensions\Messages;
-use Application\View\Twig\TwigExtensions\Service;
+use Application\Formatter\Phrase;
 use Application\View\Twig\TwigExtensions\Translator;
-use function foo\func;
 use Test\TestCase\TwigExtensionTestCase;
 use Mockery as m;
 
@@ -45,13 +43,14 @@ class TranslatorTest extends TwigExtensionTestCase
                 ->withArgs(['test-with-variables', ['two' => 2]])
                 ->andReturnUsing(function ($phrase, $vars)
                 {
-                    return [$phrase, $vars];
+                    return (new Phrase($phrase))->setVariables($vars);
                 })
                 ->getMock()
         );
 
         $translator = new Translator($serviceContainerMockBuilder->build());
         $results = $translator->translate('test-with-variables', ['two' => 2]);
-        $this->assertEquals(['test-with-variables', ['two' => 2]], $results);
+
+        $this->assertEquals('test-with-variables', $results);
     }
 }

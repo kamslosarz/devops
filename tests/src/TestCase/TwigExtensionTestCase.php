@@ -12,9 +12,9 @@ abstract class TwigExtensionTestCase extends TestCase
 {
     const TMP_WEB_DIR = FIXTURE_DIR . '/tmp_web_dir';
 
-    public function setUp()
+    public function getConfig()
     {
-        Config::set([
+        return [
             'twig' => [
                 'loader' => [
                     'templates' => FIXTURE_DIR . '/resource',
@@ -22,11 +22,7 @@ abstract class TwigExtensionTestCase extends TestCase
                 ]
             ],
             'web_dir' => self::TMP_WEB_DIR
-        ]);
-
-        m::mock('mkdir');
-
-        return parent::setUp();
+        ];
     }
 
     public function tearDown()

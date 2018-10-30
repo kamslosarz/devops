@@ -2,46 +2,37 @@
 
 namespace Application\Console;
 
-
-use Application\Console\Command\Command;
-use Application\Router\Dispatcher\ConsoleDispatcher;
+use Application\EventManager\Event;
+use Application\EventManager\EventManager;
+use Application\Response\Response;
 use Application\Service\ServiceContainer\ServiceContainer;
+
 
 class Console
 {
-    /** @var ConsoleParameters $consoleParameters */
     private $consoleParameters;
     private $serviceContainer;
 
-    public function __construct(ConsoleParameters $consoleParameters)
+    public function __construct(ConsoleParameters $consoleParameters, array $serviceContainerConfig)
     {
         $this->consoleParameters = $consoleParameters;
-        $this->serviceContainer = new ServiceContainer();
+        $this->serviceContainer = new ServiceContainer($serviceContainerConfig);
     }
 
     /**
-     * @return mixed
-     * @throws ConsoleException
-     * @throws \Application\Router\Dispatcher\DispatcherException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     * @doesNotPerformAssertions
      */
-    public function __invoke()
+    public function __invoke(): Response
     {
-        /** @var Command $command */
-        $command = Command::getCommand($this->consoleParameters->getCommand());
+        $eventManager = new EventManager();
+        $commandSubscriber = new CommandSubscriber($this->serviceContainer);
+        $eventManager->addSubscriber($commandSubscriber);
+        $event = (new Event())
+            ->setParameters($this->consoleParameters->getCommandParameters());
 
-        if(is_null($command))
-        {
-            throw new ConsoleException(sprintf('Command %s not found', $this->consoleParameters->getCommand()));
-        }
+        $eventManager->dispatch($this->consoleParameters->getCommand(), $event);
 
-        if(!$command->isValid($this->consoleParameters->getCommandParameters()))
-        {
-            throw new ConsoleException(implode(PHP_EOL, $command->getErrors()));
-        }
-
-        $dispatcher = new ConsoleDispatcher($command, 'execute');
-        $dispatcher->dispatch($this->consoleParameters);
-
-        return $dispatcher->getResponse()->getContent();
+        return $event->getResponse();
     }
 }

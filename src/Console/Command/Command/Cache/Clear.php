@@ -2,21 +2,14 @@
 
 namespace Application\Console\Command\Command\Cache;
 
-use Application\Config\Config;
 use Application\Console\Command\Command;
 use Application\Console\Command\Command\CommandParameters;
+use Application\Response\ResponseTypes\ConsoleResponse;
 
 class Clear extends Command
 {
-    public function execute(CommandParameters $commandParameters)
+    public function execute(CommandParameters $commandParameters): ConsoleResponse
     {
-        shell_exec(sprintf('rm -rf %s/assets/*', Config::get('web_dir')));
-
-        return true;
-    }
-
-    public function isValid(CommandParameters $commandParameters)
-    {
-        return true;
+        $this->addOutput(shell_exec(sprintf('rm -rf %s/assets/*', Config::get('web_dir'))))->sendOutput();
     }
 }

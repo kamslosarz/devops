@@ -9,7 +9,7 @@ use Application\Service\Request\RequestMethods;
 
 class FormHandler
 {
-    public function handle(Form $form, Request $request)
+    public function handle(Form $form, Request $request): bool
     {
         if($form->getMethod() === RequestMethods::POST)
         {

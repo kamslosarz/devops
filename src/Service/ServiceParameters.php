@@ -16,12 +16,12 @@ class ServiceParameters
         $this->parameters = $parameters[1];
     }
 
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    public function getClassname()
+    public function getClassname(): string
     {
         return $this->classname;
     }

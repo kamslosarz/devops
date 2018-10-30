@@ -14,7 +14,7 @@ class Session implements ServiceInterface
         $this->session = $_SESSION;
     }
 
-    public function set($key, $value)
+    public function set($key, $value): self
     {
         $this->session[$key] = $value;
 
@@ -26,14 +26,14 @@ class Session implements ServiceInterface
         return isset($this->session[$key]) ? $this->session[$key] : null;
     }
 
-    public function save()
+    public function save(): self
     {
         $_SESSION = $this->session;
 
         return $this;
     }
 
-    public function clear($key = null)
+    public function clear($key = null): void
     {
         if(!$key)
         {
@@ -48,7 +48,7 @@ class Session implements ServiceInterface
         }
     }
 
-    private function init()
+    private function init(): void
     {
         if(!session_id())
         {

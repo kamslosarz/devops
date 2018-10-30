@@ -5,6 +5,7 @@ namespace Application\Service\AuthService;
 use Application\Service\Request\Request;
 use Application\Service\ServiceInterface;
 use Model\Privilege;
+use Model\User;
 use Model\UserAuthTokenQuery;
 use Model\UserQuery;
 
@@ -35,7 +36,7 @@ class AuthService implements ServiceInterface
      * @return mixed|\Model\User
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function authenticate($username, $password)
+    public function authenticate($username, $password): User
     {
         $password = md5($password);
 
@@ -67,7 +68,7 @@ class AuthService implements ServiceInterface
      * @return bool
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function isAuthenticated()
+    public function isAuthenticated(): bool
     {
         if(!$this->request->getSession()->get(self::AUTH_KEY_NAME))
         {
@@ -89,22 +90,22 @@ class AuthService implements ServiceInterface
         return false;
     }
 
-    public function createAuthToken($username, $password)
+    public function createAuthToken($username, $password): string
     {
         return md5($username . $password);
     }
 
-    public function clearSession()
+    public function clearSession(): void
     {
         $this->request->getSession()->clear(self::AUTH_KEY_NAME);
     }
 
-    public function getSessionToken()
+    public function getSessionToken(): string
     {
         return $this->sessionToken;
     }
 
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }

@@ -9,8 +9,6 @@
 namespace tests\Service\ServiceContainer;
 
 use Application\Service\ServiceContainer\ServiceResolver;
-use Application\View\Twig\TwigExtensions\Service;
-use Mockery as m;
 use PHPUnit\Framework\TestCase;
 use Test\Decorator\ServiceDecorator;
 

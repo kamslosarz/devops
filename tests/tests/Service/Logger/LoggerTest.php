@@ -21,12 +21,10 @@ class LoggerTest extends TestCase
     public function testShouldLogMessage()
     {
         $logger = new Logger([
-            'instances' => [
-                'TestLogger' => [
-                    'dir' => FIXTURE_DIR . '/logs/',
-                    'name' => 'app'
-                ],
-            ]
+            'TestLogger' => [
+                'dir' => FIXTURE_DIR . '/logs/',
+                'name' => 'app'
+            ],
         ]);
 
         Application::setEnvironment('tmp_prod');
@@ -42,12 +40,10 @@ class LoggerTest extends TestCase
         $this->expectExceptionMessage(sprintf('Directory \'%s\' is not writable', FIXTURE_DIR . '/not_writable_dir'));
 
         $logger = new Logger([
-            'instances' => [
-                'TestLogger' => [
-                    'dir' => FIXTURE_DIR . '/not_writable_dir/',
-                    'name' => 'app'
-                ],
-            ]
+            'TestLogger' => [
+                'dir' => FIXTURE_DIR . '/not_writable_dir/',
+                'name' => 'app'
+            ],
         ]);
 
         Application::setEnvironment('tmp_prod');

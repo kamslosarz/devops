@@ -2,9 +2,7 @@
 
 namespace Application;
 
-use Application\Config\Config;
 use Application\Container\Container;
-use Application\Context\Context;
 use Application\Response\Response;
 
 final class Application
@@ -14,37 +12,25 @@ final class Application
     private static $environment = '';
 
     /** @var Response $response */
-    private $response = null;
     private $container = null;
 
     /**
      * Application constructor.
-     * @param string $environment
+     * @param $environment
+     * @param $serviceContainerConfig
      * @throws Service\ServiceContainer\ServiceContainerException
      * @throws View\Twig\TwigFactoryException
      */
-    public function __construct($environment = '')
+    public function __construct($environment, $serviceContainerConfig)
     {
         self::$environment = $environment;
-        Config::load();
 
-        $this->container = new Container();
+        $this->container = new Container($serviceContainerConfig);
     }
 
-    public function __invoke()
+    public function __invoke(): Response
     {
-        if(is_null($this->response))
-        {
-            ($this->container)();
-            $this->response = $this->container->getResponse();
-        }
-
-        return $this;
-    }
-
-    public function getResponse()
-    {
-        return $this->response;
+        return ($this->container)()->getResponse();
     }
 
     public static function getEnvironment()
@@ -52,17 +38,17 @@ final class Application
         return self::$environment;
     }
 
-    public static function setEnvironment($environment)
+    public static function setEnvironment($environment): void
     {
         self::$environment = $environment;
     }
 
-    public static function isTest()
+    public static function isTest(): bool
     {
         return self::$environment === self::TEST;
     }
 
-    public function setContainer(Container $container)
+    public function setContainer(Container $container): self
     {
         $this->container = $container;
 

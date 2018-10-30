@@ -4,12 +4,13 @@ namespace Test\Fixture;
 
 use Application\Form\Form;
 use Application\Form\FormBuilder\Field\FieldTypes;
+use Application\Form\FormBuilder\FormBuilder;
 use Application\Form\FormInterface;
 use Application\Service\Request;
 
 class TestForm extends Form implements FormInterface
 {
-    protected function build()
+    protected function build(): FormBuilder
     {
         return $this->formBuilder->addField('username', FieldTypes::INPUT, [
             'label' => 'Input'
@@ -32,16 +33,16 @@ class TestForm extends Form implements FormInterface
             ]);
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
         return Request\RequestMethods::POST;
     }
 
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return [
-            'action' => $this->router->getRouteByName('app_test_action')->getUrl(),
-            'title' => $this->translator->translate('Test Form'),
+            'action' => $this->getUrl('/test/route'),
+            'title' => $this->translate('Test Form'),
             'name' => 'test_form',
             'class' => 'test-form'
         ];

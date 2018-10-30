@@ -2,63 +2,29 @@
 
 namespace tests\Console;
 
+
 use Application\Console\ConsoleParameters;
 use PHPUnit\Framework\TestCase;
 
 class ConsoleParametersTest extends TestCase
 {
-    public function testShouldConstructParameters()
+    public function testShouldGetCommand()
     {
         $consoleParameters = new ConsoleParameters([
-            'parameter1',
-            'parameter2'
+            'test', 'test:command', 'args args'
         ]);
 
-        $this->assertEquals('parameter2', $consoleParameters->getCommand());
+        $this->assertThat($consoleParameters->getCommand(), self::equalTo('test:command'));
     }
 
     public function testShouldGetCommandParameters()
     {
         $consoleParameters = new ConsoleParameters([
-            'parameter1',
-            'parameter2',
-            'parameter3',
+            'test', 'test:command', 'args args', 'args2', 'arg3'
         ]);
 
-        $commandParameters = $consoleParameters->getCommandParameters();
-        $this->assertEquals(['parameter3'], $commandParameters->toArray());
-    }
-
-    /**
-     * @dataProvider commandsDataProvider
-     * @param $command
-     * @param $commandNamespace
-     */
-    public function testShouldGetCommandName($command, $commandNamespace)
-    {
-        $consoleParameters = new ConsoleParameters([
-            '',
-            $command,
-        ]);
-
-        $this->assertEquals($commandNamespace, $consoleParameters->getCommand());
-    }
-
-    public function commandsDataProvider()
-    {
-        return [
-            'Test case 1' => [
-                'test:test',
-                'Test\Test'
-            ],
-            'Test case 2' => [
-                'test:command:to:do:smth',
-                'Test\Command\To\Do\Smth'
-            ],
-            'Test case 3' => [
-                'test:Upper-and-Lower:Cases',
-                'Test\UpperAndLower\Cases'
-            ]
-        ];
+        $this->assertThat($consoleParameters->getCommandParameters()->toArray(), self::equalTo([
+            'args args', 'args2', 'arg3'
+        ]));
     }
 }

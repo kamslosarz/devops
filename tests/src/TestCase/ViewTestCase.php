@@ -8,12 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 abstract class ViewTestCase extends TestCase
 {
-    /**
-     * @return \Twig_Environment
-     */
-    public function getTwig()
+    public function getTwig(): \Twig_Environment
     {
-        $config = Config::get('twig');
+        $config = $this->getConfig();
         $loader = new \Twig_Loader_Filesystem($config['loader']['templates']);
 
         return new \Twig_Environment($loader, [
@@ -22,15 +19,16 @@ abstract class ViewTestCase extends TestCase
         ]);
     }
 
-    /**
-     * @param $html
-     * @return \DOMDocument
-     */
-    public function getDom($html)
+    public function getDom($html): \DOMDocument
     {
         $dom = new \DOMDocument($html);
         $dom->loadHTML($html);
 
         return $dom;
+    }
+
+    public function getConfig(): array
+    {
+        return (include FIXTURE_DIR . '/config/configTest.php')['twig'];
     }
 }
