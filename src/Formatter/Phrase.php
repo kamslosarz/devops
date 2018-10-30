@@ -12,7 +12,7 @@ class Phrase implements PhraseInterface
         $this->phrase = $phrase;
     }
 
-    public function setVariables($variables): self
+    public function setVariables($variables): PhraseInterface
     {
         $this->variables = $variables;
 

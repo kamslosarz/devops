@@ -68,7 +68,7 @@ return [
     'commandRouter' => [
         \Application\Service\Router\Router::class, [
             '@request',
-            include 'routes.php'
+            include 'commands.php'
         ]
     ]
 ];

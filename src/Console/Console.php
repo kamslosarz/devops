@@ -20,6 +20,8 @@ class Console
     }
 
     /**
+     * @return Response
+     * @throws ConsoleException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @doesNotPerformAssertions
      */
@@ -28,10 +30,14 @@ class Console
         $eventManager = new EventManager();
         $commandSubscriber = new CommandSubscriber($this->serviceContainer);
         $eventManager->addSubscriber($commandSubscriber);
-        $event = (new Event())
-            ->setParameters($this->consoleParameters->getCommandParameters());
+        $event = (new Event())->setParameters($this->consoleParameters->getCommandParameters());
+        $command = $this->consoleParameters->getCommand();
+        if(!$eventManager->hasEvent($command))
+        {
+            throw new ConsoleException('Command not found');
+        }
 
-        $eventManager->dispatch($this->consoleParameters->getCommand(), $event);
+        $eventManager->dispatch($command, $event);
 
         return $event->getResponse();
     }

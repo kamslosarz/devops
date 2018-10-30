@@ -4,7 +4,6 @@ namespace Application\Service\Router;
 
 use Application\Service\Request\Request;
 use Application\Service\ServiceInterface;
-use Service\Router\RouterException;
 
 class Router implements ServiceInterface
 {
@@ -74,7 +73,7 @@ class Router implements ServiceInterface
      * @param $route
      * @param $parameters
      * @return string
-     * @throws RouterException
+     *
      */
     public function getUrl($route, $parameters): string
     {
