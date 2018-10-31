@@ -5,6 +5,7 @@ namespace tests\EventManager;
 use Application\EventManager\Event;
 use Application\EventManager\EventListenerInterface;
 use Application\EventManager\EventManager;
+use Application\ParameterHolder\ParameterHolder;
 use Application\Response\Response;
 use PHPUnit\DbUnit\DataSet\ArrayDataSet;
 use Test\TestCase\DatabaseTestCase;
@@ -36,10 +37,12 @@ class EventManagerTest extends DatabaseTestCase
             ->andReturnSelf()
             ->getMock();
 
-        $eventManager->addListener('onTestEvent', function (Event $event)
-        {
-            return m::mock(Response::class);
-        });
+        $eventManager->addListeners('onTestEvent', [
+            function (Event $event)
+            {
+                return m::mock(Response::class);
+            }
+        ]);
 
         $eventManager->dispatch('onTestEvent', $event);
         $event->shouldHaveReceived('setResponse')->once();
@@ -56,11 +59,18 @@ class EventManagerTest extends DatabaseTestCase
             ->with(Response::class)
             ->once()
             ->andReturnSelf()
-            ->getMock();
+            ->getMock()
+            ->shouldReceive('getParameters')
+            ->andReturn(
+                m::mock(ParameterHolder::class)
+                    ->shouldReceive('toArray')
+                    ->andReturn([])
+                    ->getMock()
+            )->getMock();
 
         $listener = $this->getAnonimousListener($event);
-        $eventManager->addListener('onTestEvent',
-            [$listener, 'onTestEvent']);
+        $eventManager->addListeners('onTestEvent',
+            [[$listener, 'onTestEvent']]);
 
         $eventManager->dispatch('onTestEvent', $event);
         $event->shouldHaveReceived('setResponse')->once();
@@ -79,8 +89,7 @@ class EventManagerTest extends DatabaseTestCase
 
             public function onTestEvent(): Response
             {
-                return new Response(
-                    [
+                return new Response('action.html.twig', [
                         'onTestEventCalled' => true,
                     ]
                 );

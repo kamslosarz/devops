@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Formatter;
+namespace Application\ParameterHolder\Formatter;
 
 class Phrase implements PhraseInterface
 {

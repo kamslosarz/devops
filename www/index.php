@@ -16,8 +16,9 @@ try
     }
 
     require_once '../vendor/autoload.php';
+    require_once '../config/propel_config.php';
 
-    (new \Application\Application(include '../config/propel/config.php'))()->getResponse()();
+    (new \Application\Application(include '../config/config.php'))()();
 }
 catch(\Exception $e)
 {

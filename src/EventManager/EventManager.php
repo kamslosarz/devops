@@ -8,18 +8,25 @@ class EventManager
 {
     private $listeners = [];
 
-    public function addListener($event, $listener): self
+    public function addListeners($event, array $listeners): self
     {
-        $this->listeners[$event][] = $listener;
+        $this->listeners[$event][] = $listeners;
+
+        return $this;
+    }
+
+    public function addListener($event, $listeners): self
+    {
+        $this->listeners[$event][] = [$listeners];
 
         return $this;
     }
 
     public function addSubscriber(SubscriberInterface $subscriber): self
     {
-        foreach($subscriber->getSubscribedEvents() as $event => $listener)
+        foreach($subscriber->getSubscribedEvents() as $event => $listeners)
         {
-            $this->addListener($event, $listener);
+            $this->addListeners($event, $listeners);
         }
 
         return $this;
@@ -32,20 +39,37 @@ class EventManager
 
     public function dispatch($eventName, Event $event): void
     {
-        foreach($this->listeners[$eventName] as $listener)
+        foreach($this->listeners[$eventName] as $listeners)
         {
-            if(!is_array($listener) || is_object($listener[0]))
+            foreach($listeners as $listener)
             {
-                $event->setResponse(call_user_func($listener, $event));
-            }
-            else
-            {
-                $event->setResponse(call_user_func_array([
-                        Factory::getInstance($listener[0], [$event]),
-                        $listener[1],
-                    ], [$event->getParameters()])
-                );
+                if(is_object($listener))
+                {
+                    $event->setResponse(call_user_func($listener, $event));
+                }
+                elseif(isset($listener[0]) && is_callable($listener[0]))
+                {
+                    $event->setResponse(call_user_func($listener[0], $event));
+                }
+                else
+                {
+                    $listener = $this->getListenerStructure($listener);
+                    $event->setResponse(call_user_func_array([
+                            Factory::getInstance($listener->instance, [$event, $listener->parameters]),
+                            $listener->method,
+                        ], $event->getParameters()->toArray())
+                    );
+                }
             }
         }
+    }
+
+    public function getListenerStructure($listener)
+    {
+        return (object)[
+            'instance' => $listener[0],
+            'method' => $listener[1],
+            'parameters' => $listener[2] ?? null
+        ];
     }
 }

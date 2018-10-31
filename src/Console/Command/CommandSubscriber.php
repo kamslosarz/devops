@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Console;
+namespace Application\Console\Command;
 
 use Application\EventManager\EventSubscriber;
 use Application\Service\ServiceContainer\ServiceContainer;

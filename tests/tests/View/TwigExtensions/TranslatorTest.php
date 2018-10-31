@@ -2,7 +2,7 @@
 
 namespace tests\View\TwigExtensions;
 
-use Application\Formatter\Phrase;
+use Application\ParameterHolder\Formatter\Phrase;
 use Application\View\Twig\TwigExtensions\Translator;
 use Test\TestCase\TwigExtensionTestCase;
 use Mockery as m;

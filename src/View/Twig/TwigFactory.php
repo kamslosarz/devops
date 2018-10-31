@@ -2,7 +2,6 @@
 
 namespace Application\View\Twig;
 
-use Application\Config\Config;
 use Application\Factory\Factory;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\View\Twig\TwigExtensions\TwigExtensionsMap;

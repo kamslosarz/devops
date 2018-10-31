@@ -2,9 +2,11 @@
 
 namespace Application\Console;
 
+use Application\Console\Command\CommandSubscriber;
 use Application\EventManager\Event;
 use Application\EventManager\EventManager;
 use Application\Response\Response;
+use Application\Response\ResponseTypes\ConsoleResponse;
 use Application\Service\ServiceContainer\ServiceContainer;
 
 
@@ -13,10 +15,10 @@ class Console
     private $consoleParameters;
     private $serviceContainer;
 
-    public function __construct(ConsoleParameters $consoleParameters, array $serviceContainerConfig)
+    public function __construct(ConsoleParameters $consoleParameters, array $config)
     {
         $this->consoleParameters = $consoleParameters;
-        $this->serviceContainer = new ServiceContainer($serviceContainerConfig);
+        $this->serviceContainer = new ServiceContainer(['servicesMapFile' => $config['servicesMapFile']]);
     }
 
     /**
@@ -25,13 +27,16 @@ class Console
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @doesNotPerformAssertions
      */
-    public function __invoke(): Response
+    public function __invoke(): ConsoleResponse
     {
         $eventManager = new EventManager();
         $commandSubscriber = new CommandSubscriber($this->serviceContainer);
         $eventManager->addSubscriber($commandSubscriber);
-        $event = (new Event())->setParameters($this->consoleParameters->getCommandParameters());
         $command = $this->consoleParameters->getCommand();
+        $event = (new Event())
+            ->setParameters($this->consoleParameters->getCommandParameters())
+            ->setServiceContainer($this->serviceContainer);
+
         if(!$eventManager->hasEvent($command))
         {
             throw new ConsoleException('Command not found');

@@ -8,6 +8,7 @@ use Application\EventManager\EventListenerInterface;
 use Application\Factory\Factory;
 use Application\Form\Form;
 use Application\Service\AuthService\AuthService;
+use Application\Service\Config\Config;
 use Application\Service\Request\Request;
 use Application\Service\Router\Router;
 use Application\Service\ServiceContainer\ServiceContainer;
@@ -94,5 +95,14 @@ abstract class Controller implements EventListenerInterface
     protected function getRouter(): Router
     {
         return $this->getService('router');
+    }
+
+    /**
+     * @return Config
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
+     */
+    protected function getConfig(): Config
+    {
+        return $this->getService('config');
     }
 }

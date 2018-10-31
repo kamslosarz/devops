@@ -2,10 +2,9 @@
 
 namespace Application\Console\Command\Command\Cache;
 
-use Application\Config\Config;
 use Application\Console\Command\Command;
 use Application\Console\Command\CommandException;
-Use Application\Console\Command\Command\CommandParameters;
+use Application\Console\Command\CommandParameters;
 use Application\Response\ResponseTypes\ConsoleResponse;
 
 class Build extends Command
@@ -20,12 +19,11 @@ class Build extends Command
     ];
 
     /**
-     * @param CommandParameters $commandParameters
      * @return ConsoleResponse
      * @throws CommandException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
-    public function execute(CommandParameters $commandParameters): ConsoleResponse
+    public function execute(): ConsoleResponse
     {
         $config = $this->event->getServiceContainer()->getService('config');
         $dir = $config->twig['loader']['templates'] . DIRECTORY_SEPARATOR;
@@ -36,8 +34,8 @@ class Build extends Command
             if($fileInfo->isFile() && $this->isResource($fileInfo))
             {
                 $dest = str_replace(
-                    Config::get('twig')['loader']['templates'],
-                    sprintf('%s/assets', Config::get('web_dir')),
+                    $config->twig['loader']['templates'],
+                    sprintf('%s/assets', $config->web_dir),
                     str_replace('/assets', '', $fileInfo->getPathname())
                 );
 

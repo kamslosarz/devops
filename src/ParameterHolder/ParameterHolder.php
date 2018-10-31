@@ -2,7 +2,7 @@
 
 namespace Application\ParameterHolder;
 
-class ParameterHolder implements \ArrayAccess, \Countable
+class ParameterHolder implements \ArrayAccess, \Countable, \JsonSerializable
 {
     protected $parameters = [];
 
@@ -62,5 +62,10 @@ class ParameterHolder implements \ArrayAccess, \Countable
         $this->parameters = array_merge($parameters, $this->parameters);
 
         return $this;
+    }
+
+    public function jsonSerialize(): string
+    {
+        return json_encode($this->parameters);
     }
 }

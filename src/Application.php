@@ -16,16 +16,14 @@ final class Application
 
     /**
      * Application constructor.
-     * @param $environment
-     * @param $serviceContainerConfig
+     * @param $config
      * @throws Service\ServiceContainer\ServiceContainerException
-     * @throws View\Twig\TwigFactoryException
      */
-    public function __construct($environment, $serviceContainerConfig)
+    public function __construct($config)
     {
-        self::$environment = $environment;
+        self::$environment = $config['environment'];
 
-        $this->container = new Container($serviceContainerConfig);
+        $this->container = new Container(['servicesMapFile' => $config['servicesMapFile']]);
     }
 
     public function __invoke(): Response

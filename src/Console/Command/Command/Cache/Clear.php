@@ -3,13 +3,17 @@
 namespace Application\Console\Command\Command\Cache;
 
 use Application\Console\Command\Command;
-use Application\Console\Command\Command\CommandParameters;
+use Application\Console\Command\CommandParameters;
 use Application\Response\ResponseTypes\ConsoleResponse;
 
 class Clear extends Command
 {
-    public function execute(CommandParameters $commandParameters): ConsoleResponse
+    public function execute(): ConsoleResponse
     {
-        $this->addOutput(shell_exec(sprintf('rm -rf %s/assets/*', Config::get('web_dir'))))->sendOutput();
+        $config = $this->event->getServiceContainer()->getService('config');
+
+        return $this->addOutput(shell_exec(sprintf('rm -rf %s/assets/*', $config->web_dir)))
+            ->addOutput('Cache cleared')
+            ->sendOutput();
     }
 }

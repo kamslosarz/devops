@@ -5,6 +5,7 @@ namespace Application\Form;
 use Application\Form\FormBuilder\Field\Field;
 use Application\Form\FormBuilder\FormBuilder;
 use Application\Form\FormHandler\FormHandler;
+use Application\ParameterHolder\Formatter\Phrase;
 use Application\Service\Request\Request;
 use Application\Service\Router\Router;
 use Application\Service\ServiceContainer\ServiceContainer;
@@ -16,7 +17,7 @@ abstract class Form implements FormInterface
     protected $formHandler;
     protected $entity;
     protected $data;
-    protected $attributes;
+    protected $attributes = [];
     /** @var Translator $translator */
     protected $translator;
     /** @var Router $router */
@@ -70,12 +71,12 @@ abstract class Form implements FormInterface
         return $this;
     }
 
-    public function getData($key = null): array
+    public function getData(): array
     {
-        return is_null($key) ? $this->data : $this->data[$key];
+        return $this->data;
     }
 
-    public function getEntity(): ActiveRecordInterface
+    public function getEntity(): ?ActiveRecordInterface
     {
         return $this->entity;
     }
@@ -85,12 +86,12 @@ abstract class Form implements FormInterface
         return !is_null($this->entity);
     }
 
-    public function getAttribute($attribute): array
+    public function getAttribute($attribute): ?string
     {
         return isset($this->getAttributes()[$attribute]) ? $this->getAttributes()[$attribute] : null;
     }
 
-    public function getUrl($route, array $parameters = null): string
+    public function getUrl($route, array $parameters = []): string
     {
         return $this->router->getUrl('/admin/login', $parameters);
     }

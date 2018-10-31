@@ -19,7 +19,7 @@ class ControllerDecorator extends Controller
      */
     public function testAction(User $user)
     {
-        return new Response([
+        return new Response('action.html.twig', [
             'user' => $user
         ]);
     }
@@ -31,17 +31,17 @@ class ControllerDecorator extends Controller
 
     public function indexAction()
     {
-        return new Response([]);
+        return new Response('action.html.twig');
     }
 
     public function returnResponseAction()
     {
-        return new Response();
+        return new Response('action.html.twig');
     }
 
     public function loginAction()
     {
-        return new Response([]);
+        return new Response('action.html.twig');
     }
 
     public function logoutAction()
@@ -49,17 +49,8 @@ class ControllerDecorator extends Controller
         return new RedirectResponse('/admin/login');
     }
 
-    public function eventManagerTestAction($param1, $param2)
-    {
-        return new Response([
-            'eventManagerTestAction',
-            $param1,
-            $param2
-        ]);
-    }
-
     public function testRouteAction()
     {
-        return new Response('index.html.twig', ['testRouteAction']);
+        return new Response('action.html.twig', ['testRouteAction']);
     }
 }

@@ -20,7 +20,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             ->andReturn(m::mock(\Application\Response\Response::class))
             ->getMock();
 
-        $application = new \Application\Application('_test', $this->getServiceContainerConfig());
+        $application = new \Application\Application(['environment' => '_test'] + $this->getServiceContainerConfig());
         $application->setContainer($containerMock);
 
         $response = $application();

@@ -2,7 +2,7 @@
 
 namespace Application\View\Twig\TwigExtensions;
 
-use Application\Formatter\Phrase;
+use Application\ParameterHolder\Formatter\Phrase;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Twig\TwigFilter;
 

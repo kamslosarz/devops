@@ -1,3 +1,4 @@
+- add route short access like app_admin_login => /admin/login/[params]
 - TESTS
     - commands tests
     - ServiceContainerTest
@@ -8,3 +9,4 @@
     - validate request method type
     - request method annotation
 - add sqlite user perms
+- make Application instance of Console

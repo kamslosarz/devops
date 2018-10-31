@@ -2,7 +2,6 @@
 
 namespace Application\Controller\Admin;
 
-use Application\Config\Config;
 use Application\Controller\Controller;
 use Application\Form\Form;
 use Application\Form\User\LoginForm;
@@ -25,30 +24,34 @@ class UserController extends Controller
         /** @var Form $form */
         $form = $this->getForm(LoginForm::class);
         $request = $this->getRequest();
+        $router = $this->getRouter();
+        $config = $this->getConfig();
 
         /** @var AuthService $authService */
         $authService = $this->getService('auth');
 
         if($authService->isAuthenticated())
         {
-            return new RedirectResponse($this->router->getRouteByName(Config::get('defaultAction'))->getUrl());
+            return new RedirectResponse($router->getUrl($config->defaultAction));
         }
 
         if($request->isPost())
         {
             $form->handle($request);
+            $data = $form->getData();
 
-            if($authService->authenticate($form->getData('username'), $form->getData('password')))
+            if($authService->authenticate($data['username'], $data['password']))
             {
-                $this->addMessage($this->getService('translator')->translate('Successfully logged in'), AppenderLevel::SUCCESS);
+                $this->addMessage($this->getService('translator')
+                    ->translate('Successfully logged in'), AppenderLevel::SUCCESS);
 
-                return new RedirectResponse($this->router->getRouteByName(Config::get('defaultAction'))->getUrl());
+                return new RedirectResponse($router->getUrl($config->defaultAction));
             }
 
             $this->addMessage('User not found', AppenderLevel::ERROR);
         }
 
-        return new Response([
+        return new Response('admin/user/login.html.twig', [
             'form' => $form->renderView()
         ]);
     }
@@ -62,17 +65,20 @@ class UserController extends Controller
     {
         /** @var AuthService $authService */
         $authService = $this->getService('auth');
+        $config = $this->getService('config');
+        $router = $this->getRouter();
+
         $authService->clearSession();
         $this->addMessage($this->getService('translator')->translate('Successfully logged out'), AppenderLevel::SUCCESS);
 
-        return new RedirectResponse($this->router->getRouteByName(Config::get('loginAction'))->getUrl());
+        return new RedirectResponse($router->getUrl($config->loginAction));
     }
 
     public function indexAction(): Response
     {
         $users = UserQuery::create()->find();
 
-        return new Response([
+        return new Response('admin/user/index.html.twig', [
             'users' => $users
         ]);
     }
@@ -83,7 +89,7 @@ class UserController extends Controller
      */
     public function editAction(User $user): Response
     {
-        return new Response([
+        return new Response('admin/user/edit.html.twig', [
             'user' => $user
         ]);
     }
@@ -99,6 +105,6 @@ class UserController extends Controller
         $user->delete();
         $this->addMessage($this->getService('translator')->translate('User was deleted'), AppenderLevel::SUCCESS);
 
-        return new Response();
+        return new RedirectResponse('/admin/users');
     }
 }

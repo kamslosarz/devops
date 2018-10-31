@@ -25,7 +25,7 @@ class Router implements ServiceInterface
         return $this->routes;
     }
 
-    public function getRoute(): Route
+    public function getRoute(): ?Route
     {
         $requestUri = $this->request->getRequestUri();
         $requestParameters = array_filter(explode('/', $requestUri));
@@ -50,7 +50,7 @@ class Router implements ServiceInterface
                     }
                 }
 
-                $this->route = new Route($name, $route);
+                $this->route = new Route($name, $route[0]);
 
                 break;
             }
@@ -73,26 +73,25 @@ class Router implements ServiceInterface
      * @param $route
      * @param $parameters
      * @return string
-     *
      */
-    public function getUrl($route, $parameters): string
+    public function getUrl($route, array $parameters = []): ?string
     {
+        $routeParameters = explode('/', $route);
+
         if($this->hasRoute($route))
         {
-            $route = explode('/', $route);
-
-            foreach($route as $id => $fragment)
+            foreach($routeParameters as $id => $fragment)
             {
                 if(preg_match(self::ROUTE_PARAM_PATTERN, $fragment, $match))
                 {
                     if(isset($parameters[$match[1]]))
                     {
-                        $route[$id] = $parameters[$match[1]];
+                        $routeParameters[$id] = $parameters[$match[1]];
                     }
                 }
             }
         }
 
-        return implode('/', $route);
+        return implode('/', $routeParameters);
     }
 }

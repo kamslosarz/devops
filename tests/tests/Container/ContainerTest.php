@@ -20,7 +20,8 @@ class ContainerTest extends TestCase
         $this->assertThat($response->getParameters(), self::equalTo(['testRouteAction']));
 
         $crawler = new \Symfony\Component\DomCrawler\Crawler($response->getContent());
-        $text = $crawler->filterXPath('//body/div/div[@class="main-content"]')->text();
-        $this->assertEquals('test', trim($text));
+        $text = $crawler->text();
+
+        $this->assertEquals('ACTION', trim($text));
     }
 }

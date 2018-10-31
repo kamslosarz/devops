@@ -3,7 +3,7 @@
 namespace Application\Service\Translator;
 
 use Application\Factory\Factory;
-use Application\Formatter\Phrase;
+use Application\ParameterHolder\Formatter\Phrase;
 use Application\Service\Request\Request;
 use Application\Service\ServiceInterface;
 use Application\Service\Translator\LanguageManager\LanguageManager;

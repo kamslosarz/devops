@@ -7,17 +7,19 @@ use Application\EventManager\Event;
 use Application\Factory\Factory;
 use Application\Formatter\Constraint\Constraint;
 use Application\Response\ResponseTypes\ConsoleResponse;
-use Application\Console\Command\Command\CommandParameters;
+use Application\Console\Command\CommandParameters;
 
 abstract class Command
 {
     protected $output;
     protected $event;
     protected $parameters;
+    protected $commandParameters;
 
     public function __construct(Event $event)
     {
         $this->event = $event;
+        $this->commandParameters = $event->getParameters();
     }
 
     protected function setOutput($output): self
@@ -41,36 +43,6 @@ abstract class Command
     {
         return (new ConsoleResponse())->setContent($this->output);
     }
-
-    /**
-     * @param CommandParameters $commandParameters
-     * @throws CommandException
-     */
-    public function validate(CommandParameters $commandParameters): void
-    {
-        if($commandParameters->count() !== $this->getParametersCount())
-        {
-            throw new CommandException(sprintf('Invalid parameters. %d expected, but %d given.', $this->getParametersCount(), $commandParameters->count()));
-        }
-
-        foreach($this->parameters as $offset => $parameter)
-        {
-            /** @var Constraint $constraint */
-            $constraint = Factory::getInstance($parameter[1], [$commandParameters->offsetGet($offset), $parameter[0]]);
-
-            if(!$constraint->isValid())
-            {
-                throw new CommandException(implode(',', $constraint->getErrors()));
-            }
-        }
-    }
-
-    private function getParametersCount(): int
-    {
-        return count($this->parameters);
-    }
-
-    abstract public function execute(CommandParameters $commandParameters): ConsoleResponse;
 
     protected function executeInShell($command, $parameters = [])
     {

@@ -2,7 +2,7 @@
 
 namespace tests\Console;
 
-use Application\Console\CommandSubscriber;
+use Application\Console\Command\CommandSubscriber;
 use PHPUnit\Framework\TestCase;
 use Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 

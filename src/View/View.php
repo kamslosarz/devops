@@ -2,8 +2,6 @@
 
 namespace Application\View;
 
-use Application\Config\Config;
-use Application\ParameterHolder\ParameterHolder;
 use Application\Response\Response;
 use Application\Service\Logger\LoggerLevel;
 use Application\Service\ServiceContainer\ServiceContainer;

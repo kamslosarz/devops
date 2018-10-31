@@ -3,7 +3,7 @@
         <fieldset>
             <legend>{{ form.title }}</legend>
             {% for field in form.fields %}
-                {% include 'form/fields/'~field.tagname~'.html.twig' with {'form':form, 'field':field} %}
+                {% include 'form/fields/'~field.tagname~'.html.twig' with {'form': form, 'field': field} %}
             {% endfor %}
         </fieldset>
     </form>

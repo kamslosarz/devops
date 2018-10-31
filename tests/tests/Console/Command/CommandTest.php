@@ -2,7 +2,7 @@
 
 namespace tests\Console\Command;
 
-use Application\Console\Command\Command\CommandParameters;
+use Application\Console\Command\CommandParameters;
 use Application\EventManager\Event;
 use PHPUnit\Framework\TestCase;
 use Test\Decorator\CommandDecorator;

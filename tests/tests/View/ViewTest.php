@@ -30,6 +30,7 @@ class ViewTest extends TestCase
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Application\View\Twig\TwigFactoryException
      */
+
     public function testShouldRenderView()
     {
         $configMock = m::mock(\Application\Service\Config\Config::class);
@@ -100,6 +101,7 @@ class ViewTest extends TestCase
             ->andReturn([])
             ->getMock());
 
-        $this->assertThat($results, self::equalTo('ERROR Unable to find template &quot;not-existing-file&quot; (looked into: /mnt/b4517e53-fc73-47a8-a901-625aa901c804/devops/tests/fixture/resource).'));
+        $resourcesPath = FIXTURE_DIR . '/resource';
+        $this->assertThat($results, self::equalTo(sprintf('ERROR Unable to find template &quot;not-existing-file&quot; (looked into: %s).', $resourcesPath)));
     }
 }

@@ -1,16 +1,16 @@
 <?php
 
-namespace Application\Formatter\Constraint;
+namespace Application\ParameterHolder\Constraint;
 
 abstract class Constraint
 {
-    protected $string;
+    protected $parameterValue;
     protected $parameterName;
-    protected $errors;
+    protected $errors = [];
 
-    public function __construct($string, $parameterName)
+    public function __construct($parameterValue, $parameterName)
     {
-        $this->string = $string;
+        $this->parameterValue = $parameterValue;
         $this->parameterName = $parameterName;
     }
 

@@ -2,9 +2,6 @@
 
 namespace Application\Service;
 
-use Application\Config\Config;
-use Application\ServiceContainer\ServiceResolver;
-
 class ServiceParameters
 {
     private $classname;

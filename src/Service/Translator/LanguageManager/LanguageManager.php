@@ -2,9 +2,8 @@
 
 namespace Application\Service\Translator\LanguageManager;
 
-use Application\Config\Config;
 use Application\Factory\Factory;
-use Application\Formatter\Phrase;
+use Application\ParameterHolder\Formatter\Phrase;
 use Application\Service\Translator\LanguageManager\Adapter\Adapter;
 use Application\Service\Translator\LanguageManager\Adapter\FileAdapter;
 

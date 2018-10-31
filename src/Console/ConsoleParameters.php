@@ -2,7 +2,7 @@
 
 namespace Application\Console;
 
-use Application\Console\Command\Command\CommandParameters;
+use Application\Console\Command\CommandParameters;
 use Application\ParameterHolder\ParameterHolder;
 
 class ConsoleParameters extends ParameterHolder

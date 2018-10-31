@@ -11,6 +11,7 @@ use Application\ParameterHolder\ParameterHolder;
 use Application\Response\Response;
 use Application\Response\ResponseTypes;
 use Application\Response\ResponseTypes\ErrorResponse;
+use Application\Service\Router\Route;
 use Application\Service\Router\Router;
 use Application\Service\ServiceContainer\ServiceContainer;
 use Application\View\View;
@@ -36,6 +37,7 @@ class Container
 
     /**
      * @return Container
+     * @throws \Exception
      */
     public function __invoke(): self
     {
@@ -49,19 +51,21 @@ class Container
                 ->setServiceContainer($this->serviceContainer);
 
             $this->eventManager->addSubscriber(new ControllerSubscriber($this->serviceContainer));
-            $route = $router->getRoute()->getName();
+            $route = $router->getRoute();
 
-            if(!$this->eventManager->hasEvent($route))
+            if(!($route instanceof Route))
             {
                 throw new EventmanagerException('Route not exists');
             }
 
-            $this->eventManager->dispatch($route, $event);
+            $this->eventManager->dispatch($route->getName(), $event);
             $this->response = $event->getResponse();
         }
         catch(\Exception $e)
         {
             $this->response = new ErrorResponse(['exception' => $e]);
+
+            throw $e;
         }
 
         switch($this->response->getType())

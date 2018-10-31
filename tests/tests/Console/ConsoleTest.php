@@ -22,7 +22,12 @@ class ConsoleTest extends ConsoleTestCase
             ->andReturn('test:command')
             ->getMock()
             ->shouldReceive('getCommandParameters')
-            ->andReturn(m::mock(\Application\Console\Command\Command\CommandParameters::class))
+            ->andReturn(
+                m::mock(\Application\Console\Command\CommandParameters::class)
+                    ->shouldReceive('toArray')
+                    ->andReturns([])
+                    ->getMock()
+            )
             ->getMock();
 
         $console = new Console($consoleParameters, $this->getServiceContainerConfig());

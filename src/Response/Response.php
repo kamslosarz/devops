@@ -9,14 +9,14 @@ class Response
     protected $code = 200;
     protected $headers = [];
     protected $type = ResponseTypes::HTML;
-    protected $content;
+    protected $content = '';
     protected $parameters;
     protected $resource;
 
-    public function __construct($resource = '', $parameters = [])
+    public function __construct($resource, array $parameters = [])
     {
-        $this->parameters = $parameters;
         $this->resource = $resource;
+        $this->parameters = $parameters;
     }
 
     public function getResource(): string
@@ -72,7 +72,7 @@ class Response
         return $this->parameters;
     }
 
-    public function __invoke(): string
+    public function __invoke(): void
     {
         if(!headers_sent())
         {

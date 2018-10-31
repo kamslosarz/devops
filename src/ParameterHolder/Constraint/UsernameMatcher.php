@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Formatter\Constraint;
+namespace Application\ParameterHolder\Constraint;
 
 class UsernameMatcher extends RegexpMatcher
 {

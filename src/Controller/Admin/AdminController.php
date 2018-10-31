@@ -11,19 +11,12 @@ use Application\Response\Response;
  */
 class AdminController extends Controller
 {
-    public function testAction($integer, $string): Response
-    {
-        return new Response([
-            $integer, $string
-        ]);
-    }
-
     /**
      * @return Response
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function indexAction(): Response
     {
-        return new Response([]);
+        return new Response('admin/user/index.html.twig', []);
     }
 }

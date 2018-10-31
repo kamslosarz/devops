@@ -1,5 +1,7 @@
 <?php
 
 return [
-    'test:command' => [\Test\Decorator\CommandDecorator::class, 'execute']
+    'test:command' => [
+        [\Test\Decorator\CommandDecorator::class, 'execute']
+    ]
 ];

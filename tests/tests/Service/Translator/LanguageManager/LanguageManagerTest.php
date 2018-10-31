@@ -2,7 +2,7 @@
 
 namespace tests\Service\Translator\LanguageManager;
 
-use Application\Formatter\Phrase;
+use Application\ParameterHolder\Formatter\Phrase;
 use Application\Service\Translator\LanguageManager\Adapter\Adapter;
 use Application\Service\Translator\LanguageManager\Adapter\FileAdapter;
 use Application\Service\Translator\LanguageManager\LanguageManager;

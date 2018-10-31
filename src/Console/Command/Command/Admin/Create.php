@@ -2,12 +2,9 @@
 
 namespace Application\Console\Command\Command\Admin;
 
-use Application\Config\Config;
 use Application\Console\Command\Command;
-use Application\Console\Command\Command\CommandParameters;
 use Application\Console\Command\CommandException;
-use Application\Formatter\Constraint\PasswordMatcher;
-use Application\Formatter\Constraint\UsernameMatcher;
+use Application\Console\Command\CommandParameters;
 use Application\Response\ResponseTypes\ConsoleResponse;
 use Model\User as user;
 use Model\UserPrivilege;
@@ -15,11 +12,6 @@ use Model\UserQuery;
 
 class Create extends Command
 {
-    protected $parameters = [
-        ['username', UsernameMatcher::class],
-        ['password', PasswordMatcher::class]
-    ];
-
     /**
      * @param CommandParameters $commandParameters
      * @throws \Application\Console\Command\CommandException
@@ -27,38 +19,35 @@ class Create extends Command
      */
     public function validate(CommandParameters $commandParameters): void
     {
-        parent::validate($commandParameters);
-
-        $user = UserQuery::create()->findOneByUsername($commandParameters->offsetGet(0));
+        $user = UserQuery::create()->findOneByUsername($this->commandParameters->offsetGet('username'));
 
         if($user instanceof User)
         {
-            if($commandParameters->offsetExists(2) && $commandParameters->offsetGet(2))
+            if($this->commandParameters->offsetExists('force') && $this->commandParameters->offsetGet('password'))
             {
                 $user->delete();
             }
 
-            $this->addError('User already exists');
+            throw new CommandException('User already exists');
         }
     }
 
     /**
-     * @param CommandParameters $commandParameters
+     * @param CommandParameters $username
+     * @param $password
+     * @param bool $force
      * @return ConsoleResponse
-     * @throws \Application\Console\Command\CommandException
+     * @throws \Application\Service\ServiceContainer\ServiceContainerException
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function execute(CommandParameters $commandParameters): ConsoleResponse
+    public function execute($username, $password, $force = false): ConsoleResponse
     {
-        $this->validate($commandParameters);
-
-        $parameters = $commandParameters->toArray();
         $user = new User();
-        $user->setUsername($parameters[0])
-            ->setPassword(md5($parameters[1]))
+        $user->setUsername($username)
+            ->setPassword(md5($password))
             ->save();
 
-        foreach(Config::get('routes') as $routeName => $route)
+        foreach($this->event->getServiceContainer()->getService('commandRouter')->getRoutes() as $routeName => $route)
         {
             $userPrivilege = new UserPrivilege();
             $userPrivilege->setName($routeName);
