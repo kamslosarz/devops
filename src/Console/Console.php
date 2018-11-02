@@ -9,7 +9,6 @@ use Application\Response\Response;
 use Application\Response\ResponseTypes\ConsoleResponse;
 use Application\Service\ServiceContainer\ServiceContainer;
 
-
 class Console
 {
     private $consoleParameters;

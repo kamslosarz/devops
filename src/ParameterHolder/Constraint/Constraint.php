@@ -19,5 +19,5 @@ abstract class Constraint
         return $this->errors;
     }
 
-    abstract function isValid(): bool;
+    abstract public function isValid(): bool;
 }

@@ -13,22 +13,18 @@ use Model\UserQuery;
 class Create extends Command
 {
     /**
-     * @param CommandParameters $commandParameters
-     * @throws \Application\Console\Command\CommandException
-     * @throws \Propel\Runtime\Exception\PropelException
+     * @throws CommandException
      */
-    public function validate(CommandParameters $commandParameters): void
+    public function validate(): void
     {
-        $user = UserQuery::create()->findOneByUsername($this->commandParameters->offsetGet('username'));
-
-        if($user instanceof User)
+        if(!$this->commandParameters->offsetExists('force'))
         {
-            if($this->commandParameters->offsetExists('force') && $this->commandParameters->offsetGet('password'))
-            {
-                $user->delete();
-            }
+            $user = UserQuery::create()->findOneByUsername($this->commandParameters->offsetGet('username'));
 
-            throw new CommandException('User already exists');
+            if($user instanceof User)
+            {
+                throw new CommandException('User already exists');
+            }
         }
     }
 
@@ -42,12 +38,22 @@ class Create extends Command
      */
     public function execute($username, $password, $force = false): ConsoleResponse
     {
+        if($force)
+        {
+            $user = UserQuery::create()->findOneByUsername($username);
+
+            if($user instanceof User)
+            {
+                $user->delete();
+            }
+        }
+
         $user = new User();
         $user->setUsername($username)
             ->setPassword(md5($password))
             ->save();
 
-        foreach($this->event->getServiceContainer()->getService('commandRouter')->getRoutes() as $routeName => $route)
+        foreach($this->event->getServiceContainer()->getService('router')->getRoutes() as $routeName => $route)
         {
             $userPrivilege = new UserPrivilege();
             $userPrivilege->setName($routeName);

@@ -8,6 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class ConsoleParametersTest extends TestCase
 {
+    public function testShouldConstructConsoleParameters()
+    {
+        $consoleParameters = new ConsoleParameters([
+            'admin:create'
+        ]);
+
+        $this->assertThat($consoleParameters, self::isInstanceOf(ConsoleParameters::class));
+    }
+
     public function testShouldGetCommand()
     {
         $consoleParameters = new ConsoleParameters([

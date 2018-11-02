@@ -11,6 +11,7 @@ class ConsoleTest extends ConsoleTestCase
     use \Test\TestCase\Traits\ServiceContainerMockBuilderTrait;
 
     /**
+     * @throws ConsoleException
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
      */
     public function testShouldInvokeConsoleCommand()

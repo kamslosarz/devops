@@ -87,8 +87,10 @@ class UserController extends Controller
      * @param User $user
      * @return Response
      */
-    public function editAction(User $user): Response
+    public function editAction($id): Response
     {
+        $user = UserQuery::create()->findOneById($id);
+
         return new Response('admin/user/edit.html.twig', [
             'user' => $user
         ]);

@@ -14,9 +14,9 @@ class CommandValidator extends ConstraintValidator
     /**
      * CommandValidator constructor.
      * @param Event $event
-     * @param $constraints
+     * @param array $constraints
      */
-    public function __construct(Event $event, $constraints)
+    public function __construct(Event $event, array $constraints)
     {
         parent::__construct($constraints);
 

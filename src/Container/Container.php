@@ -47,11 +47,11 @@ class Container
         {
             /** @var Router $router */
             $router = $this->serviceContainer->getService('router');
+            $route = $router->getRoute();
             $event->setParameters(new ParameterHolder($router->getParameters()))
                 ->setServiceContainer($this->serviceContainer);
 
             $this->eventManager->addSubscriber(new ControllerSubscriber($this->serviceContainer));
-            $route = $router->getRoute();
 
             if(!($route instanceof Route))
             {

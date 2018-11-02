@@ -24,8 +24,8 @@ class ServiceContainerMockBuilder
     private $appenderMock;
     private $translatorMock;
     private $routerMock;
-    private $commandRouterMock ;
-    private $configMock ;
+    private $commandRouterMock;
+    private $configMock;
 
     /**
      * @param $cookieMock
@@ -137,7 +137,8 @@ class ServiceContainerMockBuilder
         return $this;
     }
 
-    public function setConfigMock($configMock){
+    public function setConfigMock($configMock)
+    {
 
         $this->configMock = $configMock;
 

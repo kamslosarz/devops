@@ -29,46 +29,45 @@ class Build extends Command
         $dir = $config->twig['loader']['templates'] . DIRECTORY_SEPARATOR;
 
         /** @var \SplFileInfo $fileInfo */
-        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $fileInfo)
         {
             if($fileInfo->isFile() && $this->isResource($fileInfo))
             {
-                $dest = str_replace(
+                $cachePath = str_replace(
                     $config->twig['loader']['templates'],
                     sprintf('%s/assets', $config->web_dir),
                     str_replace('/assets', '', $fileInfo->getPathname())
                 );
 
-                if(!file_exists($dest))
+                if(!file_exists($cachePath))
                 {
-                    $destDirectory = dirname($dest);
+                    $cacheDirectory = dirname($cachePath);
 
-                    if(!file_exists($destDirectory))
+                    if(!file_exists($cacheDirectory))
                     {
-                        $status = @mkdir($destDirectory, 0777, true);
-
-                        if(!$status)
+                        if(!$this->createDirectory($cacheDirectory, 0777, true))
                         {
-                            throw new CommandException(sprintf('Cannot create "%s" dir: "%s"', $destDirectory, $status));
+                            throw new CommandException(sprintf('Cannot create dir directory "%s"', $cacheDirectory));
                         }
                     }
 
-                    if(!is_writable($destDirectory))
+                    if(!is_writable($cacheDirectory))
                     {
-                        throw new CommandException(sprintf('Directory "%s" must be writable', $destDirectory));
+                        throw new CommandException(sprintf('Directory "%s" must be writable', $cacheDirectory));
                     }
-                    touch($dest);
-                    chmod($dest, 0777);
+
+                    touch($cachePath);
+                    chmod($cachePath, 0777);
                 }
 
-                if(!is_writable($dest))
+                if(!is_writable($cachePath))
                 {
-                    throw new CommandException(sprintf('Cannot write to file "%s"', $dest));
+                    throw new CommandException(sprintf('Cannot write to file "%s"', $cachePath));
                 }
 
-                copy($fileInfo->getPathname(), $dest);
+                copy($fileInfo->getPathname(), $cachePath);
 
-                $this->addOutput(sprintf('Caching file %s', $dest) . PHP_EOL);
+                $this->addOutput(sprintf('Caching file %s', $cachePath) . PHP_EOL);
             }
         }
 
@@ -78,5 +77,10 @@ class Build extends Command
     private function isResource(\SplFileInfo $fileInfo): bool
     {
         return in_array($fileInfo->getExtension(), self::CACHEABLES_EXTENSIONS);
+    }
+
+    private function createDirectory($dir, $perms, $recursive): bool
+    {
+        return @mkdir($dir, $perms, $recursive);
     }
 }

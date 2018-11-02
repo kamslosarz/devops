@@ -22,6 +22,7 @@ abstract class ConstraintValidator
         foreach($this->constraints as $constraint)
         {
             $constraintStructure = $this->getConstraintStructure($constraint);
+
             $parameterValue = $parameters[$id++] ?? null;
 
             if(!$constraintStructure->isOptional || ($constraintStructure->isOptional && $parameterValue))
