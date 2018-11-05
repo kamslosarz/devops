@@ -13,7 +13,7 @@ class Response
     protected $parameters;
     protected $resource;
 
-    public function __construct($resource, array $parameters = [])
+    public function __construct($resource, $parameters = null)
     {
         $this->resource = $resource;
         $this->parameters = $parameters;

@@ -9,7 +9,7 @@ class JsonResponse extends Response
 {
     public function __construct($parameters)
     {
-        parent::__construct($parameters);
+        parent::__construct('', $parameters);
 
         $this->setType(ResponseTypes::JSON);
     }
@@ -17,5 +17,10 @@ class JsonResponse extends Response
     public function getJson(): string
     {
         return json_encode($this->parameters);
+    }
+
+    public function getContent(): string
+    {
+        return $this->getJson();
     }
 }

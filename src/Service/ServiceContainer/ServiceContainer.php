@@ -10,9 +10,9 @@ class ServiceContainer
     private $serviceContainer = [];
     private $servicesMap;
 
-    public function __construct(array $config)
+    public function __construct($servicesMap)
     {
-        $this->servicesMap = include $config['servicesMapFile'];
+        $this->servicesMap = $servicesMap;
     }
 
     /**

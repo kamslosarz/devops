@@ -28,4 +28,7 @@ return [
     '/test/route' => [
         [\Test\Decorator\ControllerDecorator::class, 'testRouteAction']
     ],
+    '/test/differentResponses/[type]' => [
+        [\Test\Decorator\ControllerDecorator::class, 'testDifferentResponses']
+    ],
 ];

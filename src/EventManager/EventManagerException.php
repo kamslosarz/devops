@@ -2,6 +2,6 @@
 
 namespace Application\EventManager;
 
-class EventmanagerException extends \Exception
+class EventManagerException extends \Exception
 {
 }

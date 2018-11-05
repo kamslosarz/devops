@@ -4,8 +4,11 @@ namespace Test\Decorator;
 
 use Application\Controller\Controller;
 use Application\Response\Response;
+use Application\Response\ResponseTypes;
 use Application\Response\ResponseTypes\JsonResponse;
 use Application\Response\ResponseTypes\RedirectResponse;
+use Application\Response\ResponseTypes\ErrorResponse;
+use Application\Response\ResponseTypes\ConsoleResponse;
 use Application\EventManager\ControllerActionEvent;
 use Model\User;
 
@@ -52,5 +55,28 @@ class ControllerDecorator extends Controller
     public function testRouteAction()
     {
         return new Response('action.html.twig', ['testRouteAction']);
+    }
+
+    public function testDifferentResponses($type)
+    {
+        $responseData = $this->getRequest()->post('responseData');
+
+        switch($type){
+            case ResponseTypes::JSON:
+                return new JsonResponse($responseData);
+            break;
+            case ResponseTypes::CONSOLE:
+                return new ConsoleResponse($responseData);
+            break;
+            case ResponseTypes::ERROR:
+                return new ErrorResponse($responseData);
+            break;
+            case ResponseTypes::REDIRECT:
+                return new RedirectResponse($responseData);
+            break;
+            default:
+                return new Response($responseData['resource'], $responseData['parameters']);
+            break;
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace Application\Container;
 use Application\Controller\ControllerSubscriber;
 use Application\EventManager\Event;
 use Application\EventManager\EventManager;
-use Application\EventManager\EventmanagerException;
+use Application\EventManager\EventManagerException;
 use Application\ParameterHolder\ParameterHolder;
 use Application\Response\Response;
 use Application\Response\ResponseTypes;
@@ -24,13 +24,12 @@ class Container
 
     /**
      * Container constructor.
-     * @param $serviceContainerConfig
+     * @param $servicesMap
      * @throws \Application\Service\ServiceContainer\ServiceContainerException
-     * @throws \Application\View\Twig\TwigFactoryException
      */
-    public function __construct($serviceContainerConfig)
+    public function __construct($servicesMap)
     {
-        $this->serviceContainer = new ServiceContainer($serviceContainerConfig);
+        $this->serviceContainer = new ServiceContainer($servicesMap);
         $this->eventManager = new EventManager();
         $this->view = new View($this->serviceContainer);
     }
@@ -55,7 +54,7 @@ class Container
 
             if(!($route instanceof Route))
             {
-                throw new EventmanagerException('Route not exists');
+                throw new EventManagerException('Route not exists');
             }
 
             $this->eventManager->dispatch($route->getName(), $event);
@@ -64,8 +63,6 @@ class Container
         catch(\Exception $e)
         {
             $this->response = new ErrorResponse(['exception' => $e]);
-
-            throw $e;
         }
 
         switch($this->response->getType())

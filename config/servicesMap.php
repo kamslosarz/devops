@@ -3,7 +3,17 @@
 return [
     'config' => [
         \Application\Service\Config\Config::class, [
-            include FIXTURE_DIR . '/config/configTest.php'
+            [
+                'defaultAction' => '/admin/index',
+                'loginAction' => '/admin/login',
+                'twig' => [
+                    'loader' => [
+                        'templates' => dirname(__DIR__) . '/src/Resource',
+                        'cache' => false
+                    ]
+                ],
+                'web_dir' => dirname(__DIR__) . '/www',
+            ]
         ]
     ],
     'logger' => [
@@ -55,27 +65,20 @@ return [
         \Application\Service\Translator\Translator::class, [
             '@request', [
                 'adapter' => 'files',
-                'path' => FIXTURE_DIR . '/langs'
-            ]
-        ]
-    ],
-    'testService' => [
-        \Test\Decorator\ServiceDecorator::class, [
-            '@request', [
-                'test' => 123
+                'path' => dirname(__DIR__) . '/config/langs'
             ]
         ]
     ],
     'router' => [
         \Application\Service\Router\Router::class, [
             '@request',
-            'routes' => include FIXTURE_DIR . '/config/routes.php'
+            include 'routes.php'
         ]
     ],
     'commandRouter' => [
         \Application\Service\Router\Router::class, [
             '@request',
-            'routes' => include FIXTURE_DIR . '/config/commands.php'
+            include 'commands.php'
         ]
     ]
 ];

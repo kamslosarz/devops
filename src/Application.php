@@ -23,7 +23,7 @@ final class Application
     {
         self::$environment = $config['environment'];
 
-        $this->container = new Container(['servicesMapFile' => $config['servicesMapFile']]);
+        $this->container = new Container($config['servicesMap']);
     }
 
     public function __invoke(): Response

@@ -56,7 +56,7 @@ class Request implements ServiceInterface
         return $this->cookie;
     }
 
-    public function getRequestUri(): string
+    public function getRequestUri(): ?string
     {
         return $this->server('REQUEST_URI');
     }

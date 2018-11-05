@@ -1,0 +1,10 @@
+{% spaceless %}
+<div>
+    <h1>Parameters: </h1>
+    <ul>
+        {% for key,name in list %}
+            <li>{{ key }}=> {{ name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endspaceless %}

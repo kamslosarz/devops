@@ -13,7 +13,7 @@ class ErrorResponse extends Response
      */
     public function __construct($parameters = [])
     {
-        parent::__construct('', $parameters);
+        parent::__construct('error.html.twig', $parameters);
 
         $this->setType(ResponseTypes::ERROR);
     }

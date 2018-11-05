@@ -14,10 +14,10 @@ class Console
     private $consoleParameters;
     private $serviceContainer;
 
-    public function __construct(ConsoleParameters $consoleParameters, array $config)
+    public function __construct(ConsoleParameters $consoleParameters, $servicesMap)
     {
         $this->consoleParameters = $consoleParameters;
-        $this->serviceContainer = new ServiceContainer(['servicesMapFile' => $config['servicesMapFile']]);
+        $this->serviceContainer = new ServiceContainer($servicesMap);
     }
 
     /**

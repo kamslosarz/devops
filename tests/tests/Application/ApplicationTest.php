@@ -11,8 +11,9 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     {
         $config = [
             'environment' => '_test',
-            'servicesMapFile' => FIXTURE_DIR . '/config/serviceMap.php'
+            'servicesMap' => include FIXTURE_DIR . '/config/servicesMap.php'
         ];
+
         $application = new \Application\Application($config);
 
         $this->assertThat($application, self::isInstanceOf(\Application\Application::class));
@@ -32,7 +33,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
             ->andReturn(m::mock(\Application\Response\Response::class))
             ->getMock();
 
-        $application = new \Application\Application(['environment' => '_test'] + $this->getServiceContainerConfig());
+        $application = new \Application\Application(['environment' => '_test'] + ['servicesMap' => $this->getServiceContainerConfig()]);
         $application->setContainer($containerMock);
 
         $response = $application();
@@ -55,7 +56,7 @@ class ApplicationTest extends \PHPUnit\Framework\TestCase
     public function testShouldSetContainer()
     {
         $containerMock = m::mock(\Application\Container\Container::class);
-        $application = new \Application\Application(['environment' => '_test'] + $this->getServiceContainerConfig());
+        $application = new \Application\Application(['environment' => '_test'] + ['servicesMap' => $this->getServiceContainerConfig()]);
 
         $application->setContainer($containerMock);
         $this->assertEquals($containerMock, $this->getContainer($application));
