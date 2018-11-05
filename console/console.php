@@ -19,15 +19,11 @@ use Application\Console\ConsoleParameters;
 
 try
 {
-    (new Console(new ConsoleParameters($argv), include dirname(__DIR__).'/config/config.php'))()();
-}
-catch(\Application\Console\ConsoleException $e)
-{
-    echo sprintf('ERROR: %s in %s', $e->getMessage(), $e->getTraceAsString());
+    (new Console(new ConsoleParameters($argv), (include dirname(__DIR__) . '/config/config.php')['servicesMap']))()();
+
+    echo PHP_EOL;
 }
 catch(\Exception $e)
 {
-    echo sprintf('ERROR: %s in %s', $e->getMessage(), $e->getTraceAsString());
+    echo sprintf('ERROR: %s' . PHP_EOL, $e->getMessage());
 }
-
-echo PHP_EOL;

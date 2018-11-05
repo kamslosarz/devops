@@ -2,7 +2,7 @@
 
 namespace Application\ParameterHolder;
 
-class ParameterHolder implements \ArrayAccess, \Countable, \JsonSerializable
+class ParameterHolder implements \ArrayAccess, \Countable, \JsonSerializable, \Iterator
 {
     protected $parameters = [];
 
@@ -52,11 +52,6 @@ class ParameterHolder implements \ArrayAccess, \Countable, \JsonSerializable
         return $this;
     }
 
-    public function toArray(): array
-    {
-        return $this->parameters;
-    }
-
     public function add(array $parameters = []): self
     {
         $this->parameters = array_merge($parameters, $this->parameters);
@@ -67,5 +62,37 @@ class ParameterHolder implements \ArrayAccess, \Countable, \JsonSerializable
     public function jsonSerialize(): string
     {
         return json_encode($this->parameters);
+    }
+
+    public function rewind()
+    {
+        reset($this->parameters);
+    }
+
+    public function current()
+    {
+        return current($this->parameters);
+    }
+
+    public function key()
+    {
+        return key($this->parameters);
+    }
+
+    public function next()
+    {
+        return next($this->parameters);
+    }
+
+    public function valid()
+    {
+        $key = key($this->parameters);
+
+        return ($key !== null && $key !== false);
+    }
+
+    public function toArray(): array
+    {
+        return $this->parameters;
     }
 }

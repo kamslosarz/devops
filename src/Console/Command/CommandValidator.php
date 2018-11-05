@@ -3,7 +3,8 @@
 namespace Application\Console\Command;
 
 use Application\EventManager\Event;
-use Application\ParameterHolder\Constraint\ConstraintValidator;
+use Application\ParameterHolder\ConstraintValidator\ConstraintException;
+use Application\ParameterHolder\ConstraintValidator\ConstraintValidator;
 use Application\Response\Response;
 use Application\Response\ResponseTypes\ConsoleResponse;
 
@@ -24,11 +25,23 @@ class CommandValidator extends ConstraintValidator
     }
 
     /**
+     * @return Response
      * @throws CommandException
+     * @throws ConstraintException
      */
     public function validate(): Response
     {
-        if(!$this->isValid($this->event->getParameters()->toArray()))
+        $parameters = $this->event->getParameters();
+
+        if($parameters->count() < $this->constraintBuilder->getRequiredCount())
+        {
+            throw new ConstraintException(sprintf(
+                'Too few arguments. %s are required',
+                implode(', ', array_keys($this->constraintBuilder->getRequiredConstraints()))
+            ));
+        }
+
+        if(!$this->isValid($parameters))
         {
             throw new CommandException(implode(', ', $this->getErrors()));
         }

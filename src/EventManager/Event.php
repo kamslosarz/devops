@@ -10,12 +10,7 @@ class Event
 {
     private $serviceContainer;
     private $response;
-    private $parameters = [];
-
-    public function __construct()
-    {
-        $this->parameters = new ParameterHolder($this->parameters);
-    }
+    private $parameters = null;
 
     public function getServiceContainer(): serviceContainer
     {
@@ -41,7 +36,7 @@ class Event
         return $this->response;
     }
 
-    public function getParameters(): ParameterHolder
+    public function getParameters(): ?ParameterHolder
     {
         return $this->parameters;
     }

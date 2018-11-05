@@ -20,7 +20,11 @@ class CommandValidatorTest extends TestCase
     {
         $event = m::mock(Event::class);
         $constraints = [
-            ['username', Constraint::class, true]
+            'username' => [
+                Constraint::class, [
+                    'optional' => true
+                ]
+            ]
         ];
 
         $commandValidator = new CommandValidator($event, $constraints);

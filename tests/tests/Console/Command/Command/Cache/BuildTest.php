@@ -46,7 +46,7 @@ class BuildTest extends TestCase
         $this->assertFileExists(sprintf('%s/www/assets/style-test.css', FIXTURE_DIR));
         $this->assertThat(
             trim($consoleResponse->getContent()),
-            self::equalTo('Caching file /mnt/b4517e53-fc73-47a8-a901-625aa901c804/devops/tests/fixture/www/assets/style-test.css')
+            self::equalTo(sprintf('Caching file %s/www/assets/style-test.css', FIXTURE_DIR))
         );
     }
 

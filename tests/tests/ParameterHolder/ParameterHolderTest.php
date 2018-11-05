@@ -63,4 +63,10 @@ class ParameterHolderTest extends TestCase
         ], $parameterHolder->toArray());
     }
 
+    public function testShouldJsonSerializeParameters()
+    {
+        $parameterHolder = new ParameterHolder();
+        $parameterHolder->test = 'test1234';
+        $this->assertThat($parameterHolder->jsonSerialize(), self::equalTo(json_encode(['test' => 'test1234'])));
+    }
 }

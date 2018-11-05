@@ -5,9 +5,23 @@ return [
         [
             \Application\Console\Command\CommandValidator::class, 'validate',
             [
-                ['username', \Application\ParameterHolder\Constraint\UsernameMatcher::class],
-                ['password', \Application\ParameterHolder\Constraint\PasswordMatcher::class],
-                ['force', \Application\ParameterHolder\Constraint\Boolean::class, true]
+                'username' => [
+                    \Application\ParameterHolder\ConstraintValidator\Constraint\UsernameConstraint::class => [
+                        'maxLength' => 8,
+                        'minLength' => 5
+                    ]
+                ],
+                'password' => [
+                    \Application\ParameterHolder\ConstraintValidator\Constraint\PasswordConstraint::class => [
+                        'maxLength' => 12,
+                        'minLength' => 6
+                    ]
+                ],
+                'force' => [
+                    \Application\ParameterHolder\ConstraintValidator\Constraint\Boolean::class => [
+                        'optional' => true
+                    ]
+                ]
             ]
         ],
         [
@@ -27,7 +41,16 @@ return [
         [
             \Application\Console\Command\CommandValidator::class, 'validate',
             [
-                ['username', \Application\ParameterHolder\Constraint\UsernameMatcher::class, true]
+                'username' => [
+                    \Application\ParameterHolder\ConstraintValidator\Constraint\UsernameConstraint::class => [
+                        'maxLength' => 8,
+                        'minLength' => 5
+                    ],
+                    \Application\ParameterHolder\ConstraintValidator\Constraint\LengthConstraint::class => [
+                        'min' => 1,
+                        'max' => 2
+                    ]
+                ],
             ]
         ],
         [

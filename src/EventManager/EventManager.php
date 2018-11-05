@@ -54,10 +54,10 @@ class EventManager
                 else
                 {
                     $listener = $this->getListenerStructure($listener);
-                    $event->setResponse(call_user_func_array([
+                    $event->setResponse(call_user_func([
                             Factory::getInstance($listener->instance, [$event, $listener->parameters]),
                             $listener->method,
-                        ], $event->getParameters()->toArray())
+                        ], ...$event->getParameters())
                     );
                 }
             }

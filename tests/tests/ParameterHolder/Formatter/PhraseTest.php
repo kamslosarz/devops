@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class PhraseTest extends TestCase
 {
-    public function testShouldApplyVariables()
+    public function testShouldApplyVariablesAndConvertToString()
     {
         $phrase = new Phrase('This is test phrase with variables %test% %second% %third%');
         $this->assertEquals($phrase, 'This is test phrase with variables %test% %second% %third%');
